@@ -43,3 +43,40 @@ def test_mapbiomas_down_without_cache(client, mapbiomas_mock):
 
 def test_dashboard_requires_session(client):
     assert client.get("/api/dashboard").status_code == 401
+
+
+# ---- Feature 002, US3: paridad panel ↔ ficha pública (constitución IV, SC-106) ----
+
+def _public(client, cnpj="04654691000106"):
+    cookies = dict(client.cookies)
+    client.cookies.clear()
+    d = client.get(f"/api/public/cnpj/{cnpj}").json()
+    client.cookies.update(cookies)
+    return d
+
+
+def test_dashboard_status_matches_public(client):
+    register(client)
+    d = client.get("/api/dashboard").json()
+    p = _public(client)
+    assert d["cnpj_status"] == p["status"] and d["cnpj_score"] == p["score"]
+
+
+def test_parity_after_removing_last_car(client):
+    register(client)
+    assert client.delete(f"/api/cars/{REF_CAR}").status_code == 204
+    d = client.get("/api/dashboard").json()
+    assert d["cnpj_status"]["level"] == "sem_dados" and d["cnpj_status"]["reason"] == "no_properties"
+    assert d["cnpj_status"] == _public(client)["status"]
+
+
+def test_status_is_cnpj_level_but_counts_are_account_level(client, mapbiomas_mock):
+    emb = {"code": "1", "source": "IBAMA", "processCode": "P1", "areaHa": 5.0, "description": ""}
+    mapbiomas_mock.embargoes[OTHER_CAR] = [emb]
+    register(client, email="b@test.com", cars=(OTHER_CAR,))
+    client.cookies.clear()
+    register(client, email="a@test.com", cars=(REF_CAR,))
+    d = client.get("/api/dashboard").json()
+    assert d["cars_count"] == 1 and d["embargoes_count"] == 0  # solo la cuenta
+    assert d["cnpj_status"]["level"] == "bronze"  # el CNPJ entero (embargo en OTHER_CAR)
+    assert d["cnpj_status"] == _public(client)["status"]

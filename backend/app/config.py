@@ -23,5 +23,11 @@ class Settings(BaseSettings):
     cookie_secure: bool = False
     cors_origins: list[str] = ["http://localhost:5173"]
 
+    # Consulta pública por CNPJ (feature 002): límite por IP en ventana de 1 h.
+    public_search_limit_per_hour: int = 30
+    # Solo True detrás de un proxy de confianza: usa la 1ª IP de X-Forwarded-For como cliente.
+    # Sin proxy, un visitante podría falsear la cabecera y saltarse el límite.
+    trust_proxy_headers: bool = False
+
 
 settings = Settings()

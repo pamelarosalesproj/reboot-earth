@@ -1,4 +1,4 @@
-import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { RequireAuth, useAuth } from './auth/AuthContext'
 import { t } from './i18n/pt-BR'
 import AppLayout from './layout/AppLayout'
@@ -7,6 +7,7 @@ import CarsPage from './pages/CarsPage'
 import HomePage from './pages/HomePage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
+import PublicCnpjPage from './pages/PublicCnpjPage'
 import RegisterPage from './pages/RegisterPage'
 
 /** Cabecera de las páginas públicas (la landing y el panel tienen la suya). */
@@ -22,6 +23,9 @@ function Header() {
         {t.appName}
       </Link>
       <nav>
+        <NavLink to="/consulta" className="btn btn-ghost topbar-tab">
+          {t.nav.search}
+        </NavLink>
         {producer ? (
           <button className="btn btn-primary" onClick={() => navigate('/painel')}>
             {t.nav.panel}
@@ -54,6 +58,8 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/registro" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/consulta" element={<PublicCnpjPage />} />
+        <Route path="/consulta/:cnpj" element={<PublicCnpjPage />} />
         <Route
           path="/painel"
           element={
@@ -65,6 +71,8 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="cars" element={<CarsPage />} />
           <Route path="cars/:code" element={<CarDetailPage />} />
+          <Route path="consulta" element={<PublicCnpjPage basePath="/painel/consulta" />} />
+          <Route path="consulta/:cnpj" element={<PublicCnpjPage basePath="/painel/consulta" />} />
         </Route>
         <Route path="/car/:code" element={<LegacyCarRedirect />} />
         <Route path="*" element={<Navigate to="/" replace />} />

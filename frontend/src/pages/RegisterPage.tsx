@@ -74,6 +74,7 @@ export default function RegisterPage() {
             className={fieldErrors.cnpj ? 'invalid' : ''}
           />
           {fieldErrors.cnpj && <span className="field-error">{fieldErrors.cnpj}</span>}
+          <span className="field-hint">{t.auth.cnpjPublicNotice}</span>
         </label>
 
         <label>

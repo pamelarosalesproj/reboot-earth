@@ -1,4 +1,4 @@
-import type { CarDetail, CarSummary, DashboardSummary, Me, ProducerCar } from '../types'
+import type { CarDetail, CarSummary, DashboardSummary, Me, ProducerCar, PublicCnpjReport } from '../types'
 
 export class ApiError extends Error {
   status: number
@@ -47,3 +47,6 @@ export const getSummary = (code: string, refresh?: boolean) =>
   apiFetch<CarSummary>(`/api/cars/${enc(code)}/summary${q(refresh)}`)
 export const getDetail = (code: string, refresh?: boolean) =>
   apiFetch<CarDetail>(`/api/cars/${enc(code)}/detail${q(refresh)}`)
+
+/** Ficha pública de un CNPJ (sin sesión). 429 → ApiError con body.retry_after_s. */
+export const getPublicCnpj = (cnpj: string) => apiFetch<PublicCnpjReport>(`/api/public/cnpj/${enc(cnpj)}`)

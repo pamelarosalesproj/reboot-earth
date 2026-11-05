@@ -1,0 +1,134 @@
+openapi: 3.1.0
+info:
+  title: RebootEarth – Consulta pública por CNPJ (feature 002)
+  version: 0.2.0
+  description: >
+    Endpoints nuevos o modificados por la feature 002. El resto del API está en
+    specs/001-producer-car-dashboard/contracts/openapi.yaml.
+paths:
+  /api/public/cnpj/{cnpj}:
+    get:
+      summary: Ficha pública de un CNPJ (sin sesión)
+      security: []
+      parameters:
+        - name: cnpj
+          in: path
+          required: true
+          description: 14 dígitos, con o sin máscara (la máscara URL-encoded o solo dígitos).
+          schema: { type: string }
+      responses:
+        "200":
+          description: >
+            Ficha del CNPJ. También responde 200 para un CNPJ válido no registrado
+            (registered=false, status.level=sem_dados, status.reason=not_registered).
+            Nunca devuelve 503 por fallos de MapBiomas.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicCnpjReport" }
+              examples:
+                silver:
+                  value:
+                    cnpj: "04654691000106"
+                    cnpj_formatted: "04.654.691/0001-06"
+                    registered: true
+                    status: { level: silver, reason: null, partial: false, basis: provisional }
+                    score: { state: em_calculo, value: null, computed_at: null, method_version: null }
+                    cars_count: 2
+                    cars_with_data: 2
+                    stale: false
+                    data_as_of: "2026-11-05T14:02:11Z"
+                not_registered:
+                  value:
+                    cnpj: "11222333000181"
+                    cnpj_formatted: "11.222.333/0001-81"
+                    registered: false
+                    status: { level: sem_dados, reason: not_registered, partial: false, basis: provisional }
+                    score: { state: nao_calculavel, value: null, computed_at: null, method_version: null }
+                    cars_count: 0
+                    cars_with_data: 0
+                    stale: false
+                    data_as_of: null
+        "422":
+          description: CNPJ con formato o dígitos verificadores inválidos.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ValidationError" }
+              example: { detail: "CNPJ inválido", field: cnpj, invalid_values: [] }
+        "429":
+          description: Límite de búsquedas superado (por defecto 30 por hora por IP).
+          headers:
+            Retry-After:
+              schema: { type: integer }
+              description: Segundos hasta poder volver a buscar.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [detail, retry_after_s]
+                properties:
+                  detail: { type: string, example: "Limite de consultas atingido. Tente novamente mais tarde." }
+                  retry_after_s: { type: integer }
+
+  /api/dashboard:
+    get:
+      summary: "(Modificado) Inicio del panel: añade cnpj_status y cnpj_score"
+      responses:
+        "200":
+          description: >
+            Igual que en 001, más cnpj_status y cnpj_score calculados a nivel CNPJ.
+            Deben ser idénticos a los de /api/public/cnpj/{cnpj} para el mismo CNPJ.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../../001-producer-car-dashboard/contracts/openapi.yaml#/components/schemas/DashboardSummary"
+                  - type: object
+                    required: [cnpj_status, cnpj_score]
+                    properties:
+                      cnpj_status: { $ref: "#/components/schemas/Status" }
+                      cnpj_score: { $ref: "#/components/schemas/Score" }
+
+components:
+  schemas:
+    PublicCnpjReport:
+      type: object
+      additionalProperties: false
+      required: [cnpj, cnpj_formatted, registered, status, score, cars_count, cars_with_data, stale, data_as_of]
+      properties:
+        cnpj: { type: string, pattern: "^[0-9]{14}$" }
+        cnpj_formatted: { type: string, example: "04.654.691/0001-06" }
+        registered: { type: boolean }
+        status: { $ref: "#/components/schemas/Status" }
+        score: { $ref: "#/components/schemas/Score" }
+        cars_count: { type: integer, minimum: 0 }
+        cars_with_data: { type: integer, minimum: 0 }
+        stale: { type: boolean, description: "Algún CAR servido desde caché vencida (MapBiomas no respondió)." }
+        data_as_of: { type: [string, "null"], format: date-time, description: "Fecha más antigua de los datos usados." }
+    Status:
+      type: object
+      additionalProperties: false
+      required: [level, reason, partial, basis]
+      properties:
+        level: { type: string, enum: [gold, silver, bronze, sem_dados] }
+        reason:
+          type: [string, "null"]
+          enum: [not_registered, no_properties, data_unavailable, null]
+          description: Solo con level=sem_dados.
+        partial: { type: boolean, description: "Algún CAR sin datos o con embargos no determinables." }
+        basis: { type: string, enum: [provisional, score] }
+    Score:
+      type: object
+      additionalProperties: false
+      required: [state, value, computed_at, method_version]
+      properties:
+        state: { type: string, enum: [em_calculo, nao_calculavel, disponivel] }
+        value: { type: [number, "null"] }
+        computed_at: { type: [string, "null"], format: date-time }
+        method_version: { type: [string, "null"] }
+    ValidationError:
+      type: object
+      required: [detail]
+      properties:
+        detail: { type: string }
+        field: { type: [string, "null"] }
+        invalid_values: { type: array, items: { type: string } }

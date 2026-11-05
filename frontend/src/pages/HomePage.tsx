@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getDashboard } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import { scoreText } from '../lib/status'
+import StatusBadge from '../components/StatusBadge'
 import { fmtDateTime, t } from '../i18n/pt-BR'
 import type { DashboardSummary } from '../types'
 
@@ -47,6 +49,17 @@ export default function HomePage() {
       )}
 
       {!data && !error && <p className="muted">{t.panel.loading}</p>}
+
+      {data && producer && (
+        <section className="card buyer-view">
+          <h2>{H.buyerViewTitle}</h2>
+          <StatusBadge status={data.cnpj_status} />
+          <p className="cnpj-report-score">{scoreText(data.cnpj_score)}</p>
+          <Link to={`/consulta/${producer.cnpj}`} className="btn btn-ghost btn-sm">
+            {H.buyerViewLink}
+          </Link>
+        </section>
+      )}
 
       {data && data.cars_count === 0 && (
         <section className="card empty-state">

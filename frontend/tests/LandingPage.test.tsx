@@ -39,4 +39,13 @@ describe('LandingPage', () => {
     expect(screen.getAllByText(/MapBiomas Alerta/).length).toBeGreaterThan(0)
     expect(screen.getByText('Como funciona')).toBeInTheDocument()
   })
+
+  it('no tiene buscador; el botón del comprador lleva a /consulta (FR-101, FR-115)', () => {
+    const { container } = renderWith(null)
+    expect(container.querySelector('input')).toBeNull()
+    const buttons = screen.getAllByRole('link', { name: /É comprador\? Consulte o status do seu produtor/ })
+    expect(buttons.length).toBeGreaterThanOrEqual(1)
+    buttons.forEach((b) => expect(b).toHaveAttribute('href', '/consulta'))
+    expect(screen.getByText('Para quem compra')).toBeInTheDocument()
+  })
 })
