@@ -516,3 +516,158 @@ th {
 .big-number.tone-danger .big-number-value {
   color: var(--danger);
 }
+
+/* ---- Nivel del CNPJ (feature 002) ---- */
+:root {
+  --gold: #8a6d00;
+  --gold-bg: #fbf3d0;
+  --silver: #4b5563;
+  --silver-bg: #eceef1;
+  --bronze: #8a4b1f;
+  --bronze-bg: #f8e6d8;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status p {
+  margin: 0;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-badge.gold {
+  color: var(--gold);
+  background: var(--gold-bg);
+}
+
+.status-badge.silver {
+  color: var(--silver);
+  background: var(--silver-bg);
+}
+
+.status-badge.bronze {
+  color: var(--bronze);
+  background: var(--bronze-bg);
+}
+
+.status-badge.sem_dados {
+  color: var(--muted);
+  background: var(--surface-alt);
+  border-style: dashed;
+}
+
+.status-reason {
+  font-weight: 600;
+}
+
+.status-provisional {
+  font-size: 0.85rem;
+}
+
+/* ---- Consulta pública por CNPJ (feature 002) ---- */
+.topbar-tab.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.field-hint {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.public-cnpj {
+  max-width: 640px;
+}
+
+.cnpj-search {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 16px 0 20px;
+}
+
+.cnpj-search label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.cnpj-search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cnpj-search-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.cnpj-report {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cnpj-report-head h2 {
+  margin: 2px 0 0;
+  font-size: 1.4rem;
+}
+
+.cnpj-report-score {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cnpj-report-facts {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.stale-tag {
+  color: var(--warn);
+}
+
+@media (max-width: 480px) {
+  .cnpj-search-row {
+    flex-direction: column;
+  }
+}
+
+.buyer-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.buyer-view h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.buyer-view .btn {
+  align-self: flex-start;
+}

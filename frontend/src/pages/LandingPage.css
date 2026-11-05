@@ -61,6 +61,11 @@
   gap: 12px;
 }
 
+/* Separa el botón del comprador de los accesos del productor en el hero. */
+.cta + .cta {
+  margin-top: 24px;
+}
+
 .final-cta .cta {
   justify-content: center;
 }
@@ -172,4 +177,33 @@
   padding: 24px 16px;
   border-top: 1px solid var(--border);
   font-size: 0.9rem;
+}
+
+/* Camino del comprador (feature 002): botón en el hero + sección propia, sin buscador. */
+.buyer-cta {
+  white-space: normal;
+  text-align: center;
+}
+
+.buyer-levels {
+  list-style: none;
+  padding: 0;
+  margin: 20px auto;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.buyer-levels li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.buyer-levels .status-badge {
+  min-width: 118px;
+  justify-content: center;
+  font-size: 0.95rem;
 }

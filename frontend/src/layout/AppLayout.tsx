@@ -39,6 +39,9 @@ export default function AppLayout() {
           <NavLink to="/painel/cars">
             <span aria-hidden>⌖</span> {t.sidebar.cars}
           </NavLink>
+          <NavLink to="/painel/consulta">
+            <span aria-hidden>⌕</span> {t.sidebar.search}
+          </NavLink>
         </nav>
 
         <button

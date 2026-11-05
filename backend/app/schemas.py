@@ -3,7 +3,7 @@
 from datetime import date, datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class RegisterRequest(BaseModel):
@@ -69,6 +69,44 @@ class CarDetail(BaseModel):
     embargoes: list[Embargo]
 
 
+class Status(BaseModel):
+    """Nivel de un CNPJ (specs/002 data-model.md §Status)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    level: Literal["gold", "silver", "bronze", "sem_dados"]
+    reason: Literal["not_registered", "no_properties", "data_unavailable"] | None  # solo con sem_dados
+    partial: bool
+    basis: Literal["provisional", "score"]
+
+
+class Score(BaseModel):
+    """Score de un CNPJ. Mientras no exista el método: em_calculo / nao_calculavel (FR-108)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    state: Literal["em_calculo", "nao_calculavel", "disponivel"]
+    value: float | None
+    computed_at: datetime | None
+    method_version: str | None
+
+
+class PublicCnpjReport(BaseModel):
+    """Ficha pública de un CNPJ. Modelo propio: no reutiliza CarSummary ni Me (FR-105, R8)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    cnpj: str
+    cnpj_formatted: str
+    registered: bool
+    status: Status
+    score: Score
+    cars_count: int
+    cars_with_data: int
+    stale: bool
+    data_as_of: datetime | None
+
+
 class DashboardSummary(BaseModel):
     """Totales del inicio. Alertas y embargos son únicos entre todos los CARs del productor."""
 
@@ -80,6 +118,9 @@ class DashboardSummary(BaseModel):
     cars_embargoes_unknown: int
     stale: bool
     oldest_fetched_at: datetime | None
+    # Feature 002: nivel y score a nivel CNPJ, idénticos a la ficha pública (FR-114, SC-106).
+    cnpj_status: Status
+    cnpj_score: Score
 
 
 class ErrorOut(BaseModel):

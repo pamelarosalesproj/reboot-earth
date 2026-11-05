@@ -13,6 +13,7 @@ from app import models  # noqa: F401
 from app.db import get_session
 from app.main import app
 from app.mapbiomas.client import MapBiomasClient, get_mapbiomas_client
+from app.rate_limit import public_limiter
 
 FIXTURES = Path(__file__).parent / "fixtures"
 REF_CAR = "PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0"
@@ -76,6 +77,13 @@ def mapbiomas_mock():
     with respx.mock(assert_all_called=False) as router:
         router.post(API_URL).mock(side_effect=fake.handler)
         yield fake
+
+
+@pytest.fixture(autouse=True)
+def _reset_public_limiter():
+    public_limiter.reset()
+    yield
+    public_limiter.reset()
 
 
 @pytest.fixture

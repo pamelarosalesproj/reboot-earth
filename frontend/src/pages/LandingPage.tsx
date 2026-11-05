@@ -4,6 +4,14 @@ import { useAuth } from '../auth/AuthContext'
 import { t } from '../i18n/pt-BR'
 import './LandingPage.css'
 
+function BuyerCta() {
+  return (
+    <Link to="/consulta" className="btn btn-light btn-lg buyer-cta">
+      {t.landing.buyerCta} →
+    </Link>
+  )
+}
+
 function Cta() {
   const { producer } = useAuth()
   if (producer) {
@@ -40,6 +48,9 @@ export default function LandingPage() {
           <h1>{L.title}</h1>
           <p>{L.subtitle}</p>
           <Cta />
+          <div className="cta">
+            <BuyerCta />
+          </div>
         </div>
       </section>
 
@@ -69,6 +80,26 @@ export default function LandingPage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="section buyers">
+        <h2>{L.buyerTitle}</h2>
+        <p>{L.buyerText}</p>
+        <ul className="buyer-levels">
+          {L.buyerLevels.map((b) => (
+            <li key={b.level}>
+              <span className={`status-badge ${b.level}`}>
+                <span className="status-dot" aria-hidden="true" />
+                {t.status.level[b.level]}
+              </span>
+              <span>{b.text}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="muted">{L.buyerPrivacy}</p>
+        <div className="cta">
+          <BuyerCta />
+        </div>
       </section>
 
       <section className="section source">

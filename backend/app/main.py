@@ -9,7 +9,8 @@ from fastapi.responses import JSONResponse
 from app.config import settings
 from app.db import create_db_and_tables
 from app.mapbiomas.client import MapBiomasError, MapBiomasUnavailable
-from app.routers import auth, cars, dashboard
+from app.rate_limit import RateLimited
+from app.routers import auth, cars, dashboard, public
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 log = logging.getLogger("app")
@@ -45,6 +46,15 @@ async def mapbiomas_error(_: Request, exc: MapBiomasError):
                         status_code=503)
 
 
+@app.exception_handler(RateLimited)
+async def rate_limited(_: Request, exc: RateLimited):
+    return JSONResponse(
+        {"detail": "Limite de consultas atingido. Tente novamente mais tarde.",
+         "retry_after_s": exc.retry_after_s},
+        status_code=429, headers={"Retry-After": str(exc.retry_after_s)},
+    )
+
+
 @app.exception_handler(RequestValidationError)
 async def request_validation(_: Request, exc: RequestValidationError):
     """Formato del contrato: {detail, field, invalid_values}."""
@@ -59,6 +69,7 @@ async def request_validation(_: Request, exc: RequestValidationError):
 app.include_router(auth.router, prefix="/api")
 app.include_router(cars.router, prefix="/api")
 app.include_router(dashboard.router, prefix="/api")
+app.include_router(public.router, prefix="/api")
 
 
 @app.get("/api/health")

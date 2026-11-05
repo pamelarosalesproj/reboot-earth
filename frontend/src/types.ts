@@ -61,6 +61,39 @@ export interface DashboardSummary {
   cars_embargoes_unknown: number
   stale: boolean
   oldest_fetched_at: string | null
+  // Feature 002: a nivel CNPJ, idénticos a la ficha pública
+  cnpj_status: Status
+  cnpj_score: Score
+}
+
+// Feature 002 (contracts/openapi.yaml)
+export type StatusLevel = 'gold' | 'silver' | 'bronze' | 'sem_dados'
+export type StatusReason = 'not_registered' | 'no_properties' | 'data_unavailable'
+
+export interface Status {
+  level: StatusLevel
+  reason: StatusReason | null
+  partial: boolean
+  basis: 'provisional' | 'score'
+}
+
+export interface Score {
+  state: 'em_calculo' | 'nao_calculavel' | 'disponivel'
+  value: number | null
+  computed_at: string | null
+  method_version: string | null
+}
+
+export interface PublicCnpjReport {
+  cnpj: string
+  cnpj_formatted: string
+  registered: boolean
+  status: Status
+  score: Score
+  cars_count: number
+  cars_with_data: number
+  stale: boolean
+  data_as_of: string | null
 }
 
 export interface ApiValidationError {
