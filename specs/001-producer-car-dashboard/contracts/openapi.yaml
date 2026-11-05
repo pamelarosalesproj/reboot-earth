@@ -1,0 +1,238 @@
+openapi: 3.1.0
+info:
+  title: RebootEarth – Panel del productor
+  version: 0.1.0
+  description: >
+    API REST entre el frontend y el backend. Autenticación con cookie de sesión
+    HttpOnly `session` (se establece en register/login). Todos los /api/cars/*
+    requieren sesión y solo operan sobre CARs del productor autenticado (FR-006).
+servers:
+  - url: http://localhost:8000
+security:
+  - session: []
+
+paths:
+  /api/auth/register:
+    post:
+      summary: Registro de productor solo con email, contraseña y CNPJ (US1); los CARs se añaden con POST /api/cars
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+      responses:
+        '201':
+          description: Cuenta creada; se establece la cookie de sesión
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Me' }
+        '409': { description: Email ya registrado, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '422': { description: Validación fallida (indica el campo), content: { application/json: { schema: { $ref: '#/components/schemas/ValidationError' } } } }
+
+  /api/auth/login:
+    post:
+      summary: Inicio de sesión
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200': { description: OK; cookie establecida, content: { application/json: { schema: { $ref: '#/components/schemas/Me' } } } }
+        '401': { description: Credenciales inválidas (mensaje genérico), content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+
+  /api/auth/logout:
+    post:
+      summary: Cierra la sesión (revoca el token)
+      responses:
+        '204': { description: Sesión cerrada }
+
+  /api/auth/me:
+    get:
+      summary: Productor autenticado
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Me' } } } }
+        '401': { description: Sin sesión }
+
+  /api/dashboard:
+    get:
+      summary: Totales del inicio del panel (US6); alertas y embargos únicos entre todos los CARs
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/DashboardSummary' } } } }
+        '401': { description: Sin sesión }
+
+  /api/cars:
+    get:
+      summary: CARs del productor (solo códigos; los datos se piden por tarjeta)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/ProducerCar' }
+    post:
+      summary: Añadir un CAR (US4)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [car_code]
+              properties:
+                car_code: { type: string, example: PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0 }
+      responses:
+        '201': { description: Añadido, content: { application/json: { schema: { $ref: '#/components/schemas/ProducerCar' } } } }
+        '409': { description: Ya asociado a esta cuenta }
+        '422': { description: Formato inválido, content: { application/json: { schema: { $ref: '#/components/schemas/ValidationError' } } } }
+        '503': { description: MapBiomas no disponible }
+
+  /api/cars/{car_code}:
+    parameters:
+      - $ref: '#/components/parameters/CarCode'
+    delete:
+      summary: Quitar un CAR (US4)
+      responses:
+        '204': { description: Eliminado }
+        '404': { description: El CAR no pertenece al productor }
+
+  /api/cars/{car_code}/summary:
+    parameters:
+      - $ref: '#/components/parameters/CarCode'
+      - $ref: '#/components/parameters/Refresh'
+    get:
+      summary: Datos de la tarjeta (US2); una llamada por tarjeta (FR-012)
+      responses:
+        '200': { description: OK (puede venir con stale=true), content: { application/json: { schema: { $ref: '#/components/schemas/CarSummary' } } } }
+        '404': { description: El CAR no pertenece al productor }
+        '503': { description: MapBiomas no disponible y sin caché, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+
+  /api/cars/{car_code}/detail:
+    parameters:
+      - $ref: '#/components/parameters/CarCode'
+      - $ref: '#/components/parameters/Refresh'
+    get:
+      summary: Detalle de alertas y embargos (US3)
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/CarDetail' } } } }
+        '404': { description: El CAR no pertenece al productor }
+        '503': { description: MapBiomas no disponible y sin caché }
+
+components:
+  securitySchemes:
+    session:
+      type: apiKey
+      in: cookie
+      name: session
+
+  parameters:
+    CarCode:
+      name: car_code
+      in: path
+      required: true
+      schema: { type: string, pattern: '^[A-Z]{2}-\d{7}-[0-9A-Fa-f]{32}$' }
+    Refresh:
+      name: refresh
+      in: query
+      required: false
+      description: true para ignorar la caché de 24 h (FR-018)
+      schema: { type: boolean, default: false }
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password, cnpj]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+        cnpj: { type: string, description: 'Con o sin máscara 00.000.000/0000-00', example: 04.654.691/0001-06 }
+
+    Me:
+      type: object
+      properties:
+        email: { type: string }
+        cnpj: { type: string, description: Normalizado a 14 dígitos }
+        cars: { type: array, items: { $ref: '#/components/schemas/ProducerCar' } }
+
+    ProducerCar:
+      type: object
+      properties:
+        car_code: { type: string }
+        mapbiomas_status: { type: string, enum: [found, not_in_mapbiomas] }
+        added_at: { type: string, format: date-time }
+
+    CarSummary:
+      type: object
+      required: [car_code, alerts_count, embargoes_count, embargoes_status, fetched_at, stale]
+      properties:
+        car_code: { type: string }
+        state: { type: [string, 'null'], example: PE }
+        area_ha: { type: [number, 'null'] }
+        car_type: { type: [string, 'null'] }
+        geometry:
+          description: GeoJSON Geometry (MultiPolygon/Polygon, lon/lat), null si no está disponible
+          type: [object, 'null']
+        alerts_count: { type: [integer, 'null'] }
+        embargoes_count: { type: [integer, 'null'], description: 'Embargos distintos (órgano + proceso); null si no es determinable' }
+        embargoes_status: { type: string, enum: [ok, not_determinable, unavailable] }
+        fetched_at: { type: string, format: date-time }
+        stale: { type: boolean, description: true si MapBiomas falló y se sirve una caché antigua }
+
+    Alert:
+      type: object
+      properties:
+        alert_code: { type: integer }
+        detected_at: { type: string, format: date }
+        area_ha: { type: number }
+        area_in_car_ha: { type: number }
+        embargoes_count: { type: [integer, 'null'], description: Embargos superpuestos a la alerta (research R5) }
+
+    Embargo:
+      type: object
+      properties:
+        source: { type: string, example: IBAMA }
+        process_code: { type: [string, 'null'] }
+        area_ha: { type: [number, 'null'] }
+        registered_at: { type: [string, 'null'], format: date }
+        expired_at: { type: [string, 'null'], format: date }
+        descriptions: { type: array, items: { type: string } }
+
+    CarDetail:
+      type: object
+      properties:
+        summary: { $ref: '#/components/schemas/CarSummary' }
+        alerts: { type: array, items: { $ref: '#/components/schemas/Alert' } }
+        embargoes: { type: array, items: { $ref: '#/components/schemas/Embargo' } }
+
+    DashboardSummary:
+      type: object
+      properties:
+        cars_count: { type: integer }
+        alerts_count: { type: [integer, 'null'], description: null si ningún CAR tiene datos }
+        embargoes_count: { type: [integer, 'null'], description: null si ningún CAR tiene embargos determinables }
+        cars_with_data: { type: integer }
+        cars_unavailable: { type: integer }
+        cars_embargoes_unknown: { type: integer }
+        stale: { type: boolean }
+        oldest_fetched_at: { type: [string, 'null'], format: date-time }
+
+    Error:
+      type: object
+      properties:
+        detail: { type: string }
+
+    ValidationError:
+      type: object
+      properties:
+        detail: { type: string }
+        field: { type: string, example: cnpj }
+        invalid_values: { type: array, items: { type: string }, description: 'P. ej. los CARs concretos que fallaron' }
