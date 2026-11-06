@@ -44,6 +44,8 @@ class CarSummary(BaseModel):
     embargoes_status: Literal["ok", "not_determinable", "unavailable"]
     fetched_at: datetime
     stale: bool = False
+    # Nível do CAR: a mesma regra do CNPJ aplicada só a este imóvel (o painel o preenche; nunca é público).
+    status: "Status | None" = None
 
 
 class Alert(BaseModel):
@@ -81,6 +83,9 @@ class Status(BaseModel):
     # Conteos que usó la regla (agregados, públicos): permiten explicar el nivel con números.
     alerts_count: int | None = None
     embargoes_count: int | None = None
+
+
+CarSummary.model_rebuild()  # resolve a referência a Status (definido depois)
 
 
 class Score(BaseModel):

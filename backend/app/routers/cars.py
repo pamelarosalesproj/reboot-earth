@@ -15,7 +15,8 @@ from app.schemas import (
     ValidationErrorOut,
 )
 from app.services.car_indicators import get_indicators
-from app.services.car_service import get_detail, get_summary, verify_car_exists
+from app.services.car_service import get_detail, verify_car_exists
+from app.services.cnpj_report import car_status
 from app.validators import normalize_car
 
 router = APIRouter(prefix="/cars", tags=["cars"])
@@ -80,7 +81,8 @@ async def car_summary(
     client: MapBiomasClient = Depends(get_mapbiomas_client),
 ):
     car = own_car(db, producer, car_code)
-    return await get_summary(db, client, car.car_code, refresh)
+    detail = await get_detail(db, client, car.car_code, refresh)
+    return detail.summary.model_copy(update={"status": car_status(detail)})
 
 
 @router.get("/{car_code}/detail", response_model=CarDetail)
@@ -92,7 +94,8 @@ async def car_detail(
     client: MapBiomasClient = Depends(get_mapbiomas_client),
 ):
     car = own_car(db, producer, car_code)
-    return await get_detail(db, client, car.car_code, refresh)
+    detail = await get_detail(db, client, car.car_code, refresh)
+    return detail.model_copy(update={"summary": detail.summary.model_copy(update={"status": car_status(detail)})})
 
 
 @router.get("/{car_code}/indicators", response_model=CarIndicators)

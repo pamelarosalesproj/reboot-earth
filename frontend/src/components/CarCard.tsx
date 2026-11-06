@@ -4,6 +4,7 @@ import { getSummary } from '../api/client'
 import { fmtDateTime, t } from '../i18n/pt-BR'
 import type { CarSummary, ProducerCar } from '../types'
 import CarMap from './CarMap'
+import StatusBadge from './StatusBadge'
 
 type State = { kind: 'loading' } | { kind: 'ok'; data: CarSummary } | { kind: 'unavailable' }
 
@@ -45,6 +46,7 @@ export default function CarCard({ car, onRemove }: Props) {
         <h3 className="car-code" title={car.car_code}>
           {car.car_code}
         </h3>
+        {s?.status && <StatusBadge status={s.status} compact scope="car" />}
         {s && (
           <span className="muted small">
             {[s.state, s.area_ha != null ? t.panel.area(s.area_ha) : null].filter(Boolean).join(' · ')}

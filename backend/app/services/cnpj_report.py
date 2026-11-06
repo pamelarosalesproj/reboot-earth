@@ -71,6 +71,11 @@ def compute_status(agg: CarsAggregate | None, registered: bool) -> Status:
     return status("gold")
 
 
+def car_status(detail: CarDetail) -> Status:
+    """Nível de um único CAR: `compute_status` sobre o agregado de um imóvel (mesma regra do CNPJ)."""
+    return compute_status(aggregate_cars([detail], 1), registered=True)
+
+
 def get_score(status: Status) -> Score:
     """Score del CNPJ. Aún no existe método de cálculo: devuelve solo el estado.
 

@@ -265,12 +265,14 @@ export const t = {
       sem_dados: 'Não há dados suficientes para avaliar.',
     },
     provisional: 'Nível provisório: considera apenas alertas e embargos do MapBiomas Alerta.',
+    carTitle: 'Nível do imóvel',
     because: {
-      embargoes: (n: number) =>
-        `Porque há ${n} ${n === 1 ? 'embargo registrado' : 'embargos registrados'} nos imóveis do CNPJ.`,
-      embargoesGeneric: 'Porque há embargos registrados nos imóveis do CNPJ.',
-      alerts: (n: number) =>
-        `Porque há ${n} ${n === 1 ? 'alerta' : 'alertas'} de desmatamento nos imóveis do CNPJ.`,
+      embargoes: (n: number, where = 'nos imóveis do CNPJ') =>
+        `Porque há ${n} ${n === 1 ? 'embargo registrado' : 'embargos registrados'} ${where}.`,
+      embargoesGeneric: (where = 'nos imóveis do CNPJ') => `Porque há embargos registrados ${where}.`,
+      alerts: (n: number, where = 'nos imóveis do CNPJ') =>
+        `Porque há ${n} ${n === 1 ? 'alerta' : 'alertas'} de desmatamento ${where}.`,
+      inCar: 'neste imóvel',
       partial: 'Porque parte dos dados não pôde ser verificada.',
       partialToo: 'Parte dos dados não pôde ser verificada.',
     },

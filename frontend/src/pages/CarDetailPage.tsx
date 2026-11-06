@@ -4,6 +4,7 @@ import { ApiError, getDetail, getIndicators } from '../api/client'
 import { EmbargoesValue } from '../components/CarCard'
 import { IndicatorsView } from '../components/CarIndicators'
 import CarMap from '../components/CarMap'
+import StatusBadge from '../components/StatusBadge'
 import { fmtDate, fmtDateTime, fmtNum, t } from '../i18n/pt-BR'
 import type { AlertIndicator, CarDetail, CarIndicators } from '../types'
 
@@ -68,6 +69,12 @@ export default function CarDetailPage() {
       {detail && s && (
         <>
           {s.stale && <p className="notice">{t.panel.stale}</p>}
+          {s.status && (
+            <section className="card car-status" aria-labelledby="car-status-title">
+              <h2 id="car-status-title">{t.status.carTitle}</h2>
+              <StatusBadge status={s.status} scope="car" />
+            </section>
+          )}
           <div className="detail-head card">
             <CarMap geometry={s.geometry} height={340} />
             <div className="stats">

@@ -52,3 +52,16 @@ describe('StatusBadge (FR-111/112)', () => {
     expect(screen.getByText(text)).toBeInTheDocument()
   })
 })
+
+describe('StatusBadge do CAR', () => {
+  it('explica o nível falando do imóvel, não do CNPJ', () => {
+    render(
+      <StatusBadge
+        scope="car"
+        status={{ level: 'bronze', reason: null, partial: false, basis: 'provisional', alerts_count: 2, embargoes_count: 1 }}
+      />,
+    )
+    expect(screen.getByText('Porque há 1 embargo registrado neste imóvel.')).toBeInTheDocument()
+    expect(screen.getByLabelText('Nível do imóvel: Bronze')).toBeInTheDocument()
+  })
+})

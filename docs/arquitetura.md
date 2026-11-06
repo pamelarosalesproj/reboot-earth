@@ -75,6 +75,7 @@ mudança de esquema numa tabela existente exige migração.
 | Deduplicação | `services/car_service.py` · `services/cnpj_report.py` | Alertas únicas por código; embargos únicos por (órgão, processo) |
 | Agregação por CNPJ | `services/cnpj_report.py` (`aggregate_cars`, `cnpj_aggregate`) | CARs sem repetição de todas as contas com o mesmo CNPJ |
 | Nível (provisório, FR-111a) | `services/cnpj_report.py` (`compute_status`) | Sem dados → Bronze (embargo) → Silver (alerta ou dados parciais) → Gold |
+| Nível do CAR | `services/cnpj_report.py` (`car_status`) | A mesma regra sobre um único imóvel; vai em `CarSummary.status` (`/summary` e `/detail`), só no painel |
 | Score | `services/cnpj_report.py` (`get_score`) | Hoje só o estado (`em_calculo` / `nao_calculavel`); ponto de substituição do método |
 | Situação de cada alerta | `services/car_indicators.py` (`classify_alert`) | Suspensa judicial > embargo vigente > autorizada > embargo levantado > com fiscalização > pendente |
 | Indicadores do CAR | `services/car_indicators.py` (`build_indicators`, `get_indicators`) | Uma fonte por bloco; cache de 24 h; SINAFLOR é sempre lido na hora |

@@ -27,6 +27,8 @@ export interface CarSummary {
   embargoes_status: EmbargoesStatus
   fetched_at: string
   stale: boolean
+  /** Nível deste CAR (mesma regra do CNPJ, só este imóvel). */
+  status?: Status | null
 }
 
 export interface Alert {
