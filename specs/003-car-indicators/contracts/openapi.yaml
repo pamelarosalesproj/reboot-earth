@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: RebootEarth – Indicadores por CAR (feature 003)
+  title: ELO Rural – Indicadores por CAR (feature 003)
   version: 0.3.0
   description: Endpoint nuevo. El resto del API, en specs/001 y specs/002.
 paths:

@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: RebootEarth – Panel del productor
+  title: ELO Rural – Panel del productor
   version: 0.1.0
   description: >
     API REST entre el frontend y el backend. Autenticación con cookie de sesión

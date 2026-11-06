@@ -30,7 +30,7 @@ DEFAULT_AI_TIMEOUT_S = 10.0
 AI_AUDITOR_PROMPT = """Você é um Consultor e Auditor Sênior Socioambiental/ESG especializado na cadeia florestal brasileira (SINAFLOR, DOF, CAR, MapBiomas Alerta e INPE).
 Sua missão é emitir um parecer executivo de auditoria mensal cruzando Notas Fiscais (NFs) com o inventário cadastral de CARs do CNPJ auditado.
 
-Diretrizes de Linguagem e Termos (Constituição do RebootEarth):
+Diretrizes de Linguagem e Termos (Constituição do ELO Rural):
 - Tom técnico, neutro, objetivo e baseado exclusivamente em dados documentais e cadastrais.
 - Vocabulário obrigatório: utilize "sem autorização registrada" ou "sem comprovação documental", e NUNCA utilize termos sensacionalistas ou jurídicos conclusivos como "crime" ou "ilegal" no corpo explicativo.
 - No campo "status": retorne "legal" para operações regulares/aptas, ou "ilegal" para operações irregulares/não aptas.
@@ -186,7 +186,7 @@ def _build_deterministic_monthly_evaluation(
 
     default_suggestions = [
         "Implementar sistema integrado de conciliação de saldos DOF/Sinaflor antes da emissão da NF-e.",
-        "Disponibilizar relatórios periódicos de custódia florestal aos compradores na plataforma RebootEarth.",
+        "Disponibilizar relatórios periódicos de custódia florestal aos compradores na plataforma ELO Rural.",
         "Buscar certificação florestal de cadeia de custódia para garantir transparência total aos compradores.",
     ]
     for s in default_suggestions:

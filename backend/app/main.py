@@ -22,7 +22,7 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="RebootEarth – Panel del productor", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="ELO Rural – Panel del productor", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

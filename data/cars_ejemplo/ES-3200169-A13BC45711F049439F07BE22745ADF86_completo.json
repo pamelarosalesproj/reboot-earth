@@ -1,0 +1,1816 @@
+{
+  "areaHa": 347.37906,
+  "boundingBox": [
+    -40.93037702392171,
+    -18.664477418857153,
+    -40.90204765836471,
+    -18.636148053300154
+  ],
+  "carType": "SICAR_IRU",
+  "carUpdatedAt": "2026-06-14",
+  "enabled": true,
+  "geomRuralProperty": "SRID=4674;MULTIPOLYGON(((-40.9140650622861 -18.6606325064145,-40.9142099693336 -18.6601650216983,-40.9143800952558 -18.6596035098821,-40.914566753038 -18.6588779305272,-40.9149936814038 -18.6587597589065,-40.9153144508405 -18.6586689099628,-40.9153328247654 -18.6586629399412,-40.9153957996061 -18.6586424771801,-40.9154157600035 -18.6586359913928,-40.9160243238682 -18.6584475038187,-40.9164772650495 -18.6583079503222,-40.9166976481377 -18.6582355065982,-40.9165592451289 -18.6579419056652,-40.9165394657698 -18.6578938661006,-40.9165969987502 -18.657650265261,-40.9167630663306 -18.6573252990737,-40.9168130386532 -18.6572144391785,-40.9169225465092 -18.6569699736036,-40.9171091458552 -18.6565314936303,-40.9170839169509 -18.6558827327814,-40.9170861471748 -18.6557530635375,-40.9171687770881 -18.6553366305566,-40.9173047380754 -18.654766744279,-40.9173426437562 -18.6546321939216,-40.9176823822814 -18.6535462488992,-40.9179475926655 -18.6536501422355,-40.9182400449685 -18.6537661335337,-40.9184034585996 -18.6538270701989,-40.9186462306115 -18.6539161048966,-40.9193345184415 -18.6541632895464,-40.9197847026077 -18.6543235591483,-40.921067542428 -18.6547748801368,-40.9212021467469 -18.6548190346524,-40.9217484862167 -18.6549921377433,-40.9218249587388 -18.6550163794223,-40.9218971616262 -18.6550385612348,-40.9219287537161 -18.6550482667888,-40.9219603556221 -18.6550579753519,-40.9219729414915 -18.6550618419114,-40.9221074799334 -18.6551085259186,-40.9222924461979 -18.6551726713378,-40.9225193646048 -18.6552506608381,-40.9229325408559 -18.6553980212619,-40.9237601568115 -18.6556869445395,-40.9243081434931 -18.6558796265043,-40.9247368994851 -18.6560719927703,-40.9250354439219 -18.6562736423568,-40.9250705073295 -18.6559036144065,-40.9256250629699 -18.6555779483229,-40.925972972105 -18.6553836751828,-40.9268042455749 -18.6550727846556,-40.9275610887224 -18.6548097211905,-40.9276936427664 -18.6547561448858,-40.9283750789622 -18.6544795785527,-40.9286644318118 -18.6543541983638,-40.9291672312997 -18.6541462240016,-40.9297317903993 -18.6539186427494,-40.9297704087387 -18.6532184788561,-40.9298068434682 -18.6526018107611,-40.9298259055119 -18.6522927453153,-40.9302630712921 -18.6515026648323,-40.9303443876509 -18.6512848346962,-40.9303770239217 -18.6509274790059,-40.9300493395777 -18.6506628091574,-40.9298039805723 -18.6504790500584,-40.9292488769742 -18.6500999057534,-40.9284684057107 -18.6495863895481,-40.9283356195722 -18.6495099702689,-40.9279427855216 -18.6492830942836,-40.9278053136992 -18.6492029284172,-40.9277022151237 -18.649153757529,-40.9276630052798 -18.6491392538101,-40.9274686174423 -18.6491131524432,-40.9270875548807 -18.6491565393232,-40.9268089930385 -18.6491961641841,-40.9261398794776 -18.6493201946599,-40.9253944257175 -18.6494652411389,-40.9249736754407 -18.6495695579157,-40.9248620055513 -18.649592293064,-40.9246567284553 -18.649634325927,-40.9245097918329 -18.6496644685951,-40.9244712420549 -18.6496766598064,-40.9244302544901 -18.6496896182757,-40.9243892656926 -18.6497025919371,-40.9243757874478 -18.6497068552035,-40.9242028757539 -18.6497447618463,-40.9234972348736 -18.6498993306702,-40.9228737133457 -18.6500497139802,-40.9224054417971 -18.6501676107911,-40.9221369697755 -18.6502282651411,-40.9219146683731 -18.6502735408221,-40.921757230031 -18.6503138165262,-40.9214915167465 -18.6503754355062,-40.921055023387 -18.6504792724807,-40.920988265142 -18.6506190779751,-40.9209005575701 -18.650817456998,-40.9207537031778 -18.6511414706396,-40.9206932216554 -18.6512663962017,-40.9204392543832 -18.6514119095649,-40.9203190105512 -18.651481435356,-40.920148340801 -18.6515756874611,-40.920050228103 -18.6516242991416,-40.9193881333492 -18.651927288059,-40.9191628499372 -18.6520363709509,-40.9188838926827 -18.6521679543488,-40.9187165864738 -18.6521990234952,-40.918441748831 -18.6522671457687,-40.9182508222639 -18.6523131810776,-40.9181704611881 -18.6523307144273,-40.9180582372642 -18.6523465855776,-40.9179439014912 -18.6523516374608,-40.9178416365584 -18.6523513263501,-40.9178203997929 -18.6519710685223,-40.9178121996396 -18.6517970947528,-40.9178080329566 -18.6517096613647,-40.9179325497106 -18.6512957276191,-40.9180373477845 -18.6509184381558,-40.9180350743417 -18.6508518990833,-40.9177638845906 -18.6498255445801,-40.9176849964458 -18.649400370908,-40.9175642470855 -18.6487911777505,-40.9174224966604 -18.6482291844077,-40.9172866600782 -18.6476856682293,-40.9170917231532 -18.6467444016277,-40.9170546056495 -18.6464805726104,-40.9170439886406 -18.6463376730672,-40.9171111327292 -18.6457551096559,-40.9178897606417 -18.6456076171683,-40.9182918222409 -18.6455230479241,-40.9184415174008 -18.6454863957602,-40.9186019138077 -18.6448299038057,-40.9187319028253 -18.6445930972282,-40.9189674774178 -18.6441667819651,-40.9191426109447 -18.6439179236361,-40.9192228222807 -18.6438452573928,-40.9197647865149 -18.6434124516846,-40.9174485223369 -18.6425633421695,-40.9164365450445 -18.6418912633615,-40.91581124712 -18.641485200257,-40.9156064798673 -18.6413487542342,-40.9154488622529 -18.64124372621,-40.9152122616015 -18.6410860668074,-40.9147851637657 -18.6409434802008,-40.9145378904694 -18.6408898165541,-40.9142073083168 -18.6408532079579,-40.9140101093734 -18.6410616066876,-40.9136733652023 -18.6414130971182,-40.9128736605008 -18.6419663758155,-40.9127351389086 -18.6420452430106,-40.912213028291 -18.6423194163624,-40.9119794082479 -18.642492508524,-40.9118424938425 -18.6422155184653,-40.9115953632778 -18.6417183161317,-40.911410741501 -18.6413522025233,-40.9112863274121 -18.6411097934177,-40.9108024910451 -18.6401942916739,-40.9103606152676 -18.6393501098889,-40.9101183958105 -18.6387912609975,-40.9100376875133 -18.638512830677,-40.9095683256379 -18.637463184825,-40.9090529329696 -18.6376059982075,-40.9084539452163 -18.6377402815675,-40.9075184483221 -18.637956799688,-40.9068820051445 -18.6381003567837,-40.9064837421437 -18.6381567753814,-40.9063228889893 -18.6381843251956,-40.9055936447761 -18.6382757893244,-40.9060277219358 -18.6399640677463,-40.9061431937309 -18.6404020319303,-40.9061927875526 -18.6406034485665,-40.9062397149941 -18.6407748269748,-40.9063269550174 -18.6411387813997,-40.9061088152522 -18.6418791729847,-40.9060470128609 -18.6419875575849,-40.9059482670648 -18.6421636744948,-40.9057089474743 -18.6425935371053,-40.9057215131386 -18.643336639131,-40.9062814580931 -18.6442967069052,-40.9066554882204 -18.6449299648643,-40.906249875215 -18.6456189849344,-40.9058017938901 -18.6464219565836,-40.9058035985916 -18.6465828071468,-40.9059296732421 -18.6471618741597,-40.9058709209306 -18.6474995204102,-40.9058542286581 -18.64771152851,-40.9058669022284 -18.6478917551976,-40.9058724045725 -18.6480068741427,-40.9058944215258 -18.6481886863813,-40.9059842233249 -18.6483742015923,-40.9060592344422 -18.6484810449412,-40.9061293354811 -18.6486158170489,-40.9061674872765 -18.6487428187491,-40.9062704011391 -18.6488395950816,-40.9063544888299 -18.6489037236894,-40.9064352250795 -18.6489596743344,-40.9065068559831 -18.6490378958436,-40.906567551838 -18.6491977422248,-40.9065832385466 -18.6493184130496,-40.9065782139304 -18.6494506588238,-40.9067516952385 -18.6495320384901,-40.9067931273401 -18.649658229785,-40.9069471272961 -18.6497738832554,-40.9070402954783 -18.6499296868676,-40.907011189843 -18.6500339818704,-40.9069505044224 -18.6501746521443,-40.9070207741296 -18.6503218438458,-40.907046698744 -18.6503917750155,-40.9071003213116 -18.6506063848467,-40.9071596501989 -18.6507218064812,-40.907233314199 -18.6508181834143,-40.9073161527679 -18.6510053583877,-40.9072826374693 -18.6511433408563,-40.9072387669817 -18.651219726126,-40.9071440061513 -18.6514618420286,-40.907060496302 -18.6516175598241,-40.907067569927 -18.6518282606088,-40.9070710361639 -18.6520341828762,-40.9071093506736 -18.6522061358279,-40.907195221316 -18.6524949758936,-40.9072600485979 -18.6526986671416,-40.9072753858121 -18.6528490361511,-40.9073153778574 -18.6530090741917,-40.9073943296606 -18.6532189367283,-40.9074405660437 -18.6533457564995,-40.9075197450848 -18.6535665929679,-40.9076337100077 -18.6539301658319,-40.907650428296 -18.6539589861995,-40.9077297898304 -18.6541859186253,-40.9078039707166 -18.6545810355472,-40.9078959291791 -18.6550920498068,-40.9078884904922 -18.6552439237927,-40.9078720544189 -18.655334475976,-40.9078045115975 -18.6554705185134,-40.9076420495308 -18.6556116083848,-40.9075981861303 -18.6557005690528,-40.9075965468547 -18.6557658925484,-40.9075959647392 -18.6558503303037,-40.9074109240858 -18.6559098102178,-40.9071216575195 -18.6560066287722,-40.9066819136213 -18.6561501264012,-40.9062581811282 -18.6563678375999,-40.9058109852422 -18.6566173598726,-40.9049176893439 -18.6567233292729,-40.9043903541596 -18.6567824379827,-40.9039098852331 -18.6570929477931,-40.9034607844179 -18.6574135187115,-40.9023884649756 -18.6580048822251,-40.9020476583647 -18.6581890866985,-40.9021261820159 -18.6583752868531,-40.9025236040306 -18.6593041965279,-40.9027755310867 -18.6599004376237,-40.902981665652 -18.6600185105963,-40.9032644609147 -18.660145346359,-40.903605911233 -18.660375442241,-40.9040666321736 -18.661081920651,-40.9045119500737 -18.6617607561249,-40.9045812873054 -18.6618588940837,-40.9049439423572 -18.6623009448724,-40.905347370969 -18.6627868567758,-40.9056416408025 -18.6631622873323,-40.9060166507285 -18.6627541704621,-40.9061815829776 -18.662587894852,-40.9063478020091 -18.6624454522244,-40.907081408999 -18.6618929041206,-40.9077662819671 -18.6618129737045,-40.9082237235506 -18.6617345290166,-40.9091313288138 -18.6615572167576,-40.9091908358002 -18.6615417446982,-40.9094392114056 -18.6614771014958,-40.9112013488584 -18.6607345842481,-40.9119579647051 -18.6604236741543,-40.9122616570187 -18.6603023606492,-40.9125340113907 -18.660342565524,-40.9135925871181 -18.6605456625794,-40.9140650622861 -18.6606325064145)))",
+  "imageContext": {
+    "imageAllContext": "https://image.alerta.mapbiomas.org/image/rural_property/15950092/all_alerts.png",
+    "imageStateContext": "https://image.alerta.mapbiomas.org/image/rural_property/15950092/location.png"
+  },
+  "insertedAt": "2026-06-14T17:16:44Z",
+  "propertyCode": "ES-3200169-A13BC45711F049439F07BE22745ADF86",
+  "propertyType": "SICAR_IRU",
+  "state": "ES",
+  "stateAcronym": "ES",
+  "version": 1,
+  "alerts": [
+    {
+      "actionsList": null,
+      "actionsTypeIds": null,
+      "alertCode": 1672753,
+      "alertGeometryId": 2670157,
+      "alertImageBbox": "BOX(-40.915595109399014 -18.645702814033946,-40.90550739207452 -18.63561509670945)",
+      "alertIntersections": [
+        {
+          "category": "special_territory",
+          "codes": [
+            30623
+          ],
+          "name": "SOS Mata Atlântica",
+          "names": [
+            "Lei da Mata Atlântica"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "ATLANTIC_FOREST_LAW"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            36685
+          ],
+          "name": "IBGE",
+          "names": [
+            "Mata Atlântica"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "BIOME"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14678
+          ],
+          "name": "ANA",
+          "names": [
+            "Litoral do Espírito Santo e Bahia"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14626
+          ],
+          "name": "ANA",
+          "names": [
+            "ATLÂNTICO LESTE"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            17439
+          ],
+          "name": "IBGE",
+          "names": [
+            "Água Doce do Norte"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "MUNICIPALITY"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            18359
+          ],
+          "name": "IBGE",
+          "names": [
+            "ESPÍRITO SANTO"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "STATE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            30630
+          ],
+          "name": "CNUC/MMA",
+          "names": [
+            "Mata Atlântica"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "BIOSPHERE_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            32856
+          ],
+          "name": "ANA",
+          "names": [
+            "LITORAL BA ES"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "PNRH_LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            33007
+          ],
+          "name": "ANA",
+          "names": [
+            "SÃO MATEUS"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278018,
+          "type": "PNRH_LEVEL_2_BASIN"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            15950092
+          ],
+          "name": "SICAR",
+          "names": [
+            "ES-3200169-A13BC45711F049439F07BE22745ADF86"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.9278,
+          "type": "SICAR_IRU"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            1862717
+          ],
+          "name": "SICAR",
+          "names": [
+            "ES-3200169-A13BC45711F049439F07BE22745ADF86"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.927802,
+          "type": "LEGAL_RESERVE"
+        }
+      ],
+      "areaHa": 0.9278,
+      "bbox": "-40.919020063777864,-18.64930020309562,-40.9020580339883,-18.632338173306053",
+      "boundingBox": {
+        "neLat": -40.9020580339883,
+        "neLng": -18.632338173306053,
+        "simplified": [
+          -40.919020063777864,
+          -18.64930020309562,
+          -40.9020580339883,
+          -18.632338173306053
+        ],
+        "swLat": -40.919020063777864,
+        "swLng": -18.64930020309562
+      },
+      "categories": [
+        "refined_biome",
+        "biome_legacy_do_not_use",
+        "city",
+        "state",
+        "special_territory",
+        "biosphere_reserve"
+      ],
+      "classesLabels": [
+        {
+          "colors": [
+            "#1f8d49",
+            "#7dbe75",
+            "#04381d",
+            "#007785",
+            "#02d659"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.forest_options.forest_formation",
+              "color": "#1f8d49"
+            },
+            {
+              "label": "classes_labels.forest_options.savanna_formation",
+              "color": "#7dbe75"
+            },
+            {
+              "label": "classes_labels.forest_options.mangrove",
+              "color": "#04381d"
+            },
+            {
+              "label": "classes_labels.forest_options.flooded_forest",
+              "color": "#007785"
+            },
+            {
+              "label": "classes_labels.forest_options.arboreal_restinga",
+              "color": "#02d659"
+            }
+          ],
+          "name": "classes_labels.forest"
+        },
+        {
+          "colors": [
+            "#7a8894",
+            "#d6bc74",
+            "#fc8114",
+            "#ffaa5f",
+            "#ad5100",
+            "#d89f5c"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_forest_options.flooded_field",
+              "color": "#7a8894"
+            },
+            {
+              "label": "classes_labels.non_forest_options.grassland_formation",
+              "color": "#d6bc74"
+            },
+            {
+              "label": "classes_labels.non_forest_options.apicum",
+              "color": "#fc8114"
+            },
+            {
+              "label": "classes_labels.non_forest_options.rocky_outcrop",
+              "color": "#ffaa5f"
+            },
+            {
+              "label": "classes_labels.non_forest_options.herbaceous_restinga",
+              "color": "#ad5100"
+            },
+            {
+              "label": "classes_labels.non_forest_options.other",
+              "color": "#d89f5c"
+            }
+          ],
+          "name": "classes_labels.non_forest"
+        },
+        {
+          "colors": [
+            "#edde8e",
+            "#e974ed",
+            "#7a5900",
+            "#ffefc3"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.agriculture_options.pasture",
+              "color": "#edde8e"
+            },
+            {
+              "label": "classes_labels.agriculture_options.agriculture",
+              "color": "#e974ed"
+            },
+            {
+              "label": "classes_labels.agriculture_options.forestry",
+              "color": "#7a5900"
+            },
+            {
+              "label": "classes_labels.agriculture_options.mosaic",
+              "color": "#ffefc3"
+            }
+          ],
+          "name": "classes_labels.agriculture"
+        },
+        {
+          "colors": [
+            "#ffa07a",
+            "#d4271e",
+            "#9c0027",
+            "#db4d4f"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_vegetated_options.beach",
+              "color": "#ffa07a"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.urbanized",
+              "color": "#d4271e"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.mining",
+              "color": "#9c0027"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.other",
+              "color": "#db4d4f"
+            }
+          ],
+          "name": "classes_labels.non_vegetated"
+        },
+        {
+          "colors": [
+            "#2532e4",
+            "#091077"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.water_body_options.river_lake_ocean",
+              "color": "#2532e4"
+            },
+            {
+              "label": "classes_labels.water_body_options.aquaculture",
+              "color": "#091077"
+            }
+          ],
+          "name": "classes_labels.water_body"
+        }
+      ],
+      "codes": null,
+      "coordenates": {
+        "latitude": -18.640875023792844,
+        "longitude": -40.910533968980104
+      },
+      "crossedBiomes": [
+        "Mata Atlântica"
+      ],
+      "crossedBiomesArea": 0.9278018,
+      "crossedBiomesIds": [
+        36685
+      ],
+      "crossedBiomesList": [
+        {
+          "name": "Mata Atlântica",
+          "source": "Bioma Refinado",
+          "area_ha": 0.9278018
+        }
+      ],
+      "crossedBiosphereReserves": [
+        "Mata Atlântica"
+      ],
+      "crossedBiosphereReservesArea": 0.9278018,
+      "crossedBiosphereReservesIds": [
+        30630
+      ],
+      "crossedCities": [
+        "Água Doce do Norte"
+      ],
+      "crossedCitiesArea": 0.9278018,
+      "crossedCitiesIds": [
+        17439
+      ],
+      "crossedCitiesList": [
+        {
+          "name": "Água Doce do Norte",
+          "source": "Município",
+          "area_ha": 0.9278018
+        }
+      ],
+      "crossedConservationUnits": null,
+      "crossedConservationUnitsArea": null,
+      "crossedConservationUnitsIds": null,
+      "crossedConservationUnitsList": null,
+      "crossedDeforestationAuthorizationRuralPropertiesArea": null,
+      "crossedDeforestationAuthorizationRuralPropertiesList": null,
+      "crossedDeforestationAuthorizationsActivities": null,
+      "crossedDeforestationAuthorizationsArea": null,
+      "crossedDeforestationAuthorizationsAreasIds": null,
+      "crossedDeforestationAuthorizationsCategories": null,
+      "crossedDeforestationAuthorizationsList": null,
+      "crossedEmbargoesArea": null,
+      "crossedEmbargoesIds": null,
+      "crossedEmbargoesList": null,
+      "crossedEmbargoesRuralPropertiesArea": null,
+      "crossedEmbargoesRuralPropertiesIds": null,
+      "crossedEmbargoesRuralPropertiesList": null,
+      "crossedEmbargoesRuralPropertiesTotal": 0,
+      "crossedEmbargoesTotal": 0,
+      "crossedFederalProtectedAreaIntegralProtections": null,
+      "crossedFederalProtectedAreaIntegralProtectionsArea": null,
+      "crossedFederalProtectedAreaSustainableUses": null,
+      "crossedFederalProtectedAreaSustainableUsesArea": null,
+      "crossedForestManagementRuralPropertiesArea": null,
+      "crossedForestManagementRuralPropertiesList": null,
+      "crossedForestManagementsActivities": null,
+      "crossedForestManagementsArea": null,
+      "crossedForestManagementsCategories": null,
+      "crossedForestManagementsList": null,
+      "crossedGeoparks": null,
+      "crossedGeoparksArea": null,
+      "crossedGeoparksIds": null,
+      "crossedIndigenousLands": null,
+      "crossedIndigenousLandsArea": 0.0,
+      "crossedIndigenousLandsIds": null,
+      "crossedIndigenousLandsList": null,
+      "crossedLegalReserveRuralPropertiesArea": 0.927802,
+      "crossedLegalReserveRuralPropertiesList": [
+        {
+          "rural_property_id": 15950092,
+          "legal_reserve_id": 1862717,
+          "legal_reserve_version": 1,
+          "intersection_area": 0.927802,
+          "rural_property_code": "ES-3200169-A13BC45711F049439F07BE22745ADF86"
+        }
+      ],
+      "crossedLegalReserveRuralPropertiesTotal": 1,
+      "crossedLegalReserves": [
+        {
+          "legalReserveId": 1862717,
+          "legalReserveVersion": 1,
+          "ruralPropertyId": 15950092,
+          "totalAreaHa": null
+        }
+      ],
+      "crossedLegalReservesArea": 0.927802,
+      "crossedLegalReservesList": [
+        {
+          "legal_reserve_id": 1862717,
+          "legal_reserve_version": 1,
+          "intersection_area": 0.927802,
+          "rural_property_code": "ES-3200169-A13BC45711F049439F07BE22745ADF86"
+        }
+      ],
+      "crossedLegalReservesTotal": 1,
+      "crossedMunicipalityProtectedAreaIntegralProtections": null,
+      "crossedMunicipalityProtectedAreaIntegralProtectionsArea": null,
+      "crossedMunicipalityProtectedAreaSustainableUses": null,
+      "crossedMunicipalityProtectedAreaSustainableUsesArea": null,
+      "crossedPermanentProtectedArea": null,
+      "crossedPermanentProtectedAreaList": null,
+      "crossedPermanentProtectedAreaTotal": null,
+      "crossedPermanentProtectedList": null,
+      "crossedPermanentProtectedRuralPropertiesArea": null,
+      "crossedPermanentProtectedRuralPropertiesList": null,
+      "crossedPermanentProtectedRuralPropertiesTotal": null,
+      "crossedQuilombos": null,
+      "crossedQuilombosArea": 0.0,
+      "crossedQuilombosIds": null,
+      "crossedQuilombosList": null,
+      "crossedRiverSourcesArea": null,
+      "crossedRuralProperties": [
+        {
+          "afterDeforestationSimplifiedImage": "https://image.alerta.mapbiomas.org/image/alert/1678079/after_deforestation_simplified.png",
+          "alertAreaInCar": 0.9278,
+          "alertGeometryCode": "2670157",
+          "alertInPropertyImage": "https://image.alerta.mapbiomas.org/image/alert/1678079/rural_property/15950092/alert_context.png",
+          "areaHa": 347.37906,
+          "code": "ES-3200169-A13BC45711F049439F07BE22745ADF86",
+          "id": 15950092,
+          "insertedAt": null,
+          "layerImage": "https://image.alerta.mapbiomas.org/image/alert/1678079/all.png",
+          "propertyInStateImage": "https://image.alerta.mapbiomas.org/image/alert/1678079/location.png",
+          "type": "SICAR_IRU",
+          "updatedAt": null,
+          "version": 1
+        }
+      ],
+      "crossedSettlements": null,
+      "crossedSettlementsArea": null,
+      "crossedSettlementsIds": null,
+      "crossedSettlementsList": null,
+      "crossedSettlementsRuralPropertiesArea": null,
+      "crossedSettlementsRuralPropertiesList": null,
+      "crossedSettlementsRuralPropertiesTotal": 0,
+      "crossedSpecialTerritories": [
+        "Lei da Mata Atlântica"
+      ],
+      "crossedSpecialTerritoriesArea": 0.9278018,
+      "crossedSpecialTerritoriesIds": [
+        30623
+      ],
+      "crossedSpecialTerritoryAmacroArea": null,
+      "crossedSpecialTerritoryAmazoniaLegalArea": null,
+      "crossedSpecialTerritoryLeiDaMataAtlanticaArea": 0.9278018,
+      "crossedSpecialTerritoryMatopibaArea": null,
+      "crossedSpecialTerritorySemiaridoArea": null,
+      "crossedStateProtectedAreaIntegralProtections": null,
+      "crossedStateProtectedAreaIntegralProtectionsArea": null,
+      "crossedStateProtectedAreaSustainableUses": null,
+      "crossedStateProtectedAreaSustainableUsesArea": null,
+      "crossedStates": [
+        "ESPÍRITO SANTO"
+      ],
+      "crossedStatesArea": 0.9278018,
+      "crossedStatesIds": [
+        18359
+      ],
+      "crossedStatesList": [
+        {
+          "name": "ESPÍRITO SANTO",
+          "source": "Estado",
+          "area_ha": 0.9278018
+        }
+      ],
+      "crossedTerritoriesIds": [
+        30623,
+        14626,
+        32856,
+        36685,
+        14678,
+        17439,
+        18359,
+        30630,
+        18427,
+        33007
+      ],
+      "crossedWatersheds": [
+        "ATLÂNTICO LESTE"
+      ],
+      "crossedWatershedsArea": 0.9278018,
+      "crossedWatershedsIds": [
+        14626
+      ],
+      "crossedWatershedsList": [
+        {
+          "name": "ATLÂNTICO LESTE",
+          "source": "Bacia Nível 1",
+          "area_ha": 0.9278018
+        }
+      ],
+      "datum": "SIRGAS 2000, EPSG 4674",
+      "deforestationClasses": [
+        "agriculture"
+      ],
+      "deforestationSpeed": null,
+      "detectedAt": "2026-09-30",
+      "embargoedAreasIds": null,
+      "exclusionCategories": null,
+      "geometryWkt": "MULTIPOLYGON(((-40.910706360104754 -18.640320623218148,-40.910706360104754 -18.640410454746558,-40.91075576744538 -18.640455370510765,-40.91085458212663 -18.640455370510765,-40.910903989467265 -18.640522744157074,-40.910903989467265 -18.64065749144969,-40.91095115101968 -18.640724865096,-40.91104547412451 -18.640724865096,-40.91109263567693 -18.64081469662441,-40.91109263567693 -18.640994359681237,-40.910975854689994 -18.641131352762063,-40.91074229271612 -18.641225675866895,-40.91062551172919 -18.641295295301415,-40.91062551172919 -18.64134021106562,-40.91048402707194 -18.641362668947725,-40.91020105775744 -18.641362668947725,-40.91003486942988 -18.64122792165511,-40.909985462089246 -18.64095842706987,-40.91003037785345 -18.640823679777252,-40.91016961672249 -18.640823679777252,-40.9102145324867 -18.640778764013046,-40.91016512514607 -18.640688932484636,-40.910189828816385 -18.64064401672043,-40.91028864349764 -18.64064401672043,-40.91033580505005 -18.640551939403807,-40.910331313473634 -18.640367784770564,-40.91042339079026 -18.64027570745394,-40.91061203699992 -18.64027570745394,-40.910706360104754 -18.640320623218148)))",
+      "id": 0,
+      "imageAcquiredAfterAt": null,
+      "imageAcquiredAfterList": null,
+      "imageAcquiredBeboreList": null,
+      "imageAcquiredBeforeAt": null,
+      "imageContext": {
+        "imageAllContext": "https://image.alerta.mapbiomas.org/image/alert/1678079/all.png",
+        "imageStateContext": "https://image.alerta.mapbiomas.org/image/alert/1678079/location.png"
+      },
+      "imagesLabels": [
+        {
+          "name": "APPs",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_apps_map"
+        },
+        {
+          "name": "Reservas Legais",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_legal_reserves_map"
+        },
+        {
+          "name": "Nascentes",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_river_sources_map"
+        },
+        {
+          "name": "Embargos",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:embargos_map"
+        },
+        {
+          "name": "Plano de Manejo Florestal",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:forest_managements"
+        },
+        {
+          "name": "Estados",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:states"
+        },
+        {
+          "name": "Limite da Propriedade",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_properties_map"
+        },
+        {
+          "name": "Alerta",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:MapAlerta_imovel"
+        },
+        {
+          "name": "Aut. de Supressão de Vegetação",
+          "thumbnailUrl": "http://plataforma.alerta.mapbiomas.org/assets/green-line-40dc5b0308872d402596e00ff9594101b0773fa7abff1f14bd54fdda275bb609.jpg"
+        }
+      ],
+      "legendLclu": [
+        {
+          "color": "#1F8D49",
+          "key": "forest-formation-bj6c2q",
+          "name": {
+            "en-US": "Forest Formation",
+            "es-ES": "Bosque",
+            "pt-BR": "Floresta"
+          },
+          "order": 0
+        },
+        {
+          "color": "#D6BC74",
+          "key": "herbaceous-and-shrubby-vegetation-se12jb",
+          "name": {
+            "en-US": "Herbaceous and Shrubby Vegetation",
+            "es-ES": "Vegetación Herbácea y Arbustiva",
+            "pt-BR": "Vegetação Herbácea e Arbustiva"
+          },
+          "order": 1
+        },
+        {
+          "color": "#FFEFC3",
+          "key": "agriculture-and-livestock-tum0ga",
+          "name": {
+            "en-US": "Agriculture and Livestock",
+            "es-ES": "Agropecuaria",
+            "pt-BR": "Agropecuária"
+          },
+          "order": 2
+        },
+        {
+          "color": "#D4271E",
+          "key": "non-vegetated-area-fa31yo",
+          "name": {
+            "en-US": "Non-vegetated Area",
+            "es-ES": "Área no Vegetada",
+            "pt-BR": "Área não vegetada"
+          },
+          "order": 3
+        },
+        {
+          "color": "#2532E4",
+          "key": "water-body-fyr9an",
+          "name": {
+            "en-US": "Water Body",
+            "es-ES": "Cuerpo de Agua",
+            "pt-BR": "Corpo D'água"
+          },
+          "order": 4
+        }
+      ],
+      "publicationCycles": 1,
+      "publicationCyclesList": [
+        {
+          "cycle": 1,
+          "alert_geometry_id": 2670157
+        }
+      ],
+      "publishedAt": "2026-10-29",
+      "publishedImages": [],
+      "republished": false,
+      "ruralProperties": [
+        {
+          "areaHa": 347.37906,
+          "carCode": "ES-3200169-A13BC45711F049439F07BE22745ADF86",
+          "carModule": 1.0,
+          "carType": "SICAR_IRU",
+          "embargoedAreasCount": 0,
+          "insertedAt": "2026-06-14T17:16:44Z",
+          "stateAcronym": "ES",
+          "version": 1
+        }
+      ],
+      "ruralPropertiesCodes": [
+        "ES-3200169-A13BC45711F049439F07BE22745ADF86"
+      ],
+      "ruralPropertiesList": [
+        {
+          "id": 15950092,
+          "code": "ES-3200169-A13BC45711F049439F07BE22745ADF86",
+          "version": 1,
+          "type": "SICAR_IRU",
+          "area": 347.37906,
+          "intersection_area": 0.9278,
+          "alert_id": 1678079,
+          "alert_code": 1672753,
+          "alert_geometry_id": 2670157
+        }
+      ],
+      "ruralPropertiesTotal": 1,
+      "sources": [
+        "SAD-MATA-ATLANTICA"
+      ],
+      "statusAt": "2026-10-29",
+      "statusName": "published",
+      "supportCasesIds": null,
+      "warnings": {
+        "en": "Information based on available sources, subject to interpretation, its use is at the discretion of the user.",
+        "pt": "Informações baseadas nas fontes disponíveis, sujeitas a interpretação, seu uso fica a juízo do usuário."
+      }
+    }
+  ],
+  "_embargos": {
+    "carCode": "ES-3200169-A13BC45711F049439F07BE22745ADF86",
+    "via": "alertas",
+    "totalEmbargos": 0,
+    "areaEmbargadaHa": 0,
+    "embargos": []
+  },
+  "_descargadoEn": "2026-11-05T18:55:31-0300",
+  "_geojson": {
+    "type": "MultiPolygon",
+    "coordinates": [
+      [
+        [
+          [
+            -40.9140650622861,
+            -18.6606325064145
+          ],
+          [
+            -40.9142099693336,
+            -18.6601650216983
+          ],
+          [
+            -40.9143800952558,
+            -18.6596035098821
+          ],
+          [
+            -40.914566753038,
+            -18.6588779305272
+          ],
+          [
+            -40.9149936814038,
+            -18.6587597589065
+          ],
+          [
+            -40.9153144508405,
+            -18.6586689099628
+          ],
+          [
+            -40.9153328247654,
+            -18.6586629399412
+          ],
+          [
+            -40.9153957996061,
+            -18.6586424771801
+          ],
+          [
+            -40.9154157600035,
+            -18.6586359913928
+          ],
+          [
+            -40.9160243238682,
+            -18.6584475038187
+          ],
+          [
+            -40.9164772650495,
+            -18.6583079503222
+          ],
+          [
+            -40.9166976481377,
+            -18.6582355065982
+          ],
+          [
+            -40.9165592451289,
+            -18.6579419056652
+          ],
+          [
+            -40.9165394657698,
+            -18.6578938661006
+          ],
+          [
+            -40.9165969987502,
+            -18.657650265261
+          ],
+          [
+            -40.9167630663306,
+            -18.6573252990737
+          ],
+          [
+            -40.9168130386532,
+            -18.6572144391785
+          ],
+          [
+            -40.9169225465092,
+            -18.6569699736036
+          ],
+          [
+            -40.9171091458552,
+            -18.6565314936303
+          ],
+          [
+            -40.9170839169509,
+            -18.6558827327814
+          ],
+          [
+            -40.9170861471748,
+            -18.6557530635375
+          ],
+          [
+            -40.9171687770881,
+            -18.6553366305566
+          ],
+          [
+            -40.9173047380754,
+            -18.654766744279
+          ],
+          [
+            -40.9173426437562,
+            -18.6546321939216
+          ],
+          [
+            -40.9176823822814,
+            -18.6535462488992
+          ],
+          [
+            -40.9179475926655,
+            -18.6536501422355
+          ],
+          [
+            -40.9182400449685,
+            -18.6537661335337
+          ],
+          [
+            -40.9184034585996,
+            -18.6538270701989
+          ],
+          [
+            -40.9186462306115,
+            -18.6539161048966
+          ],
+          [
+            -40.9193345184415,
+            -18.6541632895464
+          ],
+          [
+            -40.9197847026077,
+            -18.6543235591483
+          ],
+          [
+            -40.921067542428,
+            -18.6547748801368
+          ],
+          [
+            -40.9212021467469,
+            -18.6548190346524
+          ],
+          [
+            -40.9217484862167,
+            -18.6549921377433
+          ],
+          [
+            -40.9218249587388,
+            -18.6550163794223
+          ],
+          [
+            -40.9218971616262,
+            -18.6550385612348
+          ],
+          [
+            -40.9219287537161,
+            -18.6550482667888
+          ],
+          [
+            -40.9219603556221,
+            -18.6550579753519
+          ],
+          [
+            -40.9219729414915,
+            -18.6550618419114
+          ],
+          [
+            -40.9221074799334,
+            -18.6551085259186
+          ],
+          [
+            -40.9222924461979,
+            -18.6551726713378
+          ],
+          [
+            -40.9225193646048,
+            -18.6552506608381
+          ],
+          [
+            -40.9229325408559,
+            -18.6553980212619
+          ],
+          [
+            -40.9237601568115,
+            -18.6556869445395
+          ],
+          [
+            -40.9243081434931,
+            -18.6558796265043
+          ],
+          [
+            -40.9247368994851,
+            -18.6560719927703
+          ],
+          [
+            -40.9250354439219,
+            -18.6562736423568
+          ],
+          [
+            -40.9250705073295,
+            -18.6559036144065
+          ],
+          [
+            -40.9256250629699,
+            -18.6555779483229
+          ],
+          [
+            -40.925972972105,
+            -18.6553836751828
+          ],
+          [
+            -40.9268042455749,
+            -18.6550727846556
+          ],
+          [
+            -40.9275610887224,
+            -18.6548097211905
+          ],
+          [
+            -40.9276936427664,
+            -18.6547561448858
+          ],
+          [
+            -40.9283750789622,
+            -18.6544795785527
+          ],
+          [
+            -40.9286644318118,
+            -18.6543541983638
+          ],
+          [
+            -40.9291672312997,
+            -18.6541462240016
+          ],
+          [
+            -40.9297317903993,
+            -18.6539186427494
+          ],
+          [
+            -40.9297704087387,
+            -18.6532184788561
+          ],
+          [
+            -40.9298068434682,
+            -18.6526018107611
+          ],
+          [
+            -40.9298259055119,
+            -18.6522927453153
+          ],
+          [
+            -40.9302630712921,
+            -18.6515026648323
+          ],
+          [
+            -40.9303443876509,
+            -18.6512848346962
+          ],
+          [
+            -40.9303770239217,
+            -18.6509274790059
+          ],
+          [
+            -40.9300493395777,
+            -18.6506628091574
+          ],
+          [
+            -40.9298039805723,
+            -18.6504790500584
+          ],
+          [
+            -40.9292488769742,
+            -18.6500999057534
+          ],
+          [
+            -40.9284684057107,
+            -18.6495863895481
+          ],
+          [
+            -40.9283356195722,
+            -18.6495099702689
+          ],
+          [
+            -40.9279427855216,
+            -18.6492830942836
+          ],
+          [
+            -40.9278053136992,
+            -18.6492029284172
+          ],
+          [
+            -40.9277022151237,
+            -18.649153757529
+          ],
+          [
+            -40.9276630052798,
+            -18.6491392538101
+          ],
+          [
+            -40.9274686174423,
+            -18.6491131524432
+          ],
+          [
+            -40.9270875548807,
+            -18.6491565393232
+          ],
+          [
+            -40.9268089930385,
+            -18.6491961641841
+          ],
+          [
+            -40.9261398794776,
+            -18.6493201946599
+          ],
+          [
+            -40.9253944257175,
+            -18.6494652411389
+          ],
+          [
+            -40.9249736754407,
+            -18.6495695579157
+          ],
+          [
+            -40.9248620055513,
+            -18.649592293064
+          ],
+          [
+            -40.9246567284553,
+            -18.649634325927
+          ],
+          [
+            -40.9245097918329,
+            -18.6496644685951
+          ],
+          [
+            -40.9244712420549,
+            -18.6496766598064
+          ],
+          [
+            -40.9244302544901,
+            -18.6496896182757
+          ],
+          [
+            -40.9243892656926,
+            -18.6497025919371
+          ],
+          [
+            -40.9243757874478,
+            -18.6497068552035
+          ],
+          [
+            -40.9242028757539,
+            -18.6497447618463
+          ],
+          [
+            -40.9234972348736,
+            -18.6498993306702
+          ],
+          [
+            -40.9228737133457,
+            -18.6500497139802
+          ],
+          [
+            -40.9224054417971,
+            -18.6501676107911
+          ],
+          [
+            -40.9221369697755,
+            -18.6502282651411
+          ],
+          [
+            -40.9219146683731,
+            -18.6502735408221
+          ],
+          [
+            -40.921757230031,
+            -18.6503138165262
+          ],
+          [
+            -40.9214915167465,
+            -18.6503754355062
+          ],
+          [
+            -40.921055023387,
+            -18.6504792724807
+          ],
+          [
+            -40.920988265142,
+            -18.6506190779751
+          ],
+          [
+            -40.9209005575701,
+            -18.650817456998
+          ],
+          [
+            -40.9207537031778,
+            -18.6511414706396
+          ],
+          [
+            -40.9206932216554,
+            -18.6512663962017
+          ],
+          [
+            -40.9204392543832,
+            -18.6514119095649
+          ],
+          [
+            -40.9203190105512,
+            -18.651481435356
+          ],
+          [
+            -40.920148340801,
+            -18.6515756874611
+          ],
+          [
+            -40.920050228103,
+            -18.6516242991416
+          ],
+          [
+            -40.9193881333492,
+            -18.651927288059
+          ],
+          [
+            -40.9191628499372,
+            -18.6520363709509
+          ],
+          [
+            -40.9188838926827,
+            -18.6521679543488
+          ],
+          [
+            -40.9187165864738,
+            -18.6521990234952
+          ],
+          [
+            -40.918441748831,
+            -18.6522671457687
+          ],
+          [
+            -40.9182508222639,
+            -18.6523131810776
+          ],
+          [
+            -40.9181704611881,
+            -18.6523307144273
+          ],
+          [
+            -40.9180582372642,
+            -18.6523465855776
+          ],
+          [
+            -40.9179439014912,
+            -18.6523516374608
+          ],
+          [
+            -40.9178416365584,
+            -18.6523513263501
+          ],
+          [
+            -40.9178203997929,
+            -18.6519710685223
+          ],
+          [
+            -40.9178121996396,
+            -18.6517970947528
+          ],
+          [
+            -40.9178080329566,
+            -18.6517096613647
+          ],
+          [
+            -40.9179325497106,
+            -18.6512957276191
+          ],
+          [
+            -40.9180373477845,
+            -18.6509184381558
+          ],
+          [
+            -40.9180350743417,
+            -18.6508518990833
+          ],
+          [
+            -40.9177638845906,
+            -18.6498255445801
+          ],
+          [
+            -40.9176849964458,
+            -18.649400370908
+          ],
+          [
+            -40.9175642470855,
+            -18.6487911777505
+          ],
+          [
+            -40.9174224966604,
+            -18.6482291844077
+          ],
+          [
+            -40.9172866600782,
+            -18.6476856682293
+          ],
+          [
+            -40.9170917231532,
+            -18.6467444016277
+          ],
+          [
+            -40.9170546056495,
+            -18.6464805726104
+          ],
+          [
+            -40.9170439886406,
+            -18.6463376730672
+          ],
+          [
+            -40.9171111327292,
+            -18.6457551096559
+          ],
+          [
+            -40.9178897606417,
+            -18.6456076171683
+          ],
+          [
+            -40.9182918222409,
+            -18.6455230479241
+          ],
+          [
+            -40.9184415174008,
+            -18.6454863957602
+          ],
+          [
+            -40.9186019138077,
+            -18.6448299038057
+          ],
+          [
+            -40.9187319028253,
+            -18.6445930972282
+          ],
+          [
+            -40.9189674774178,
+            -18.6441667819651
+          ],
+          [
+            -40.9191426109447,
+            -18.6439179236361
+          ],
+          [
+            -40.9192228222807,
+            -18.6438452573928
+          ],
+          [
+            -40.9197647865149,
+            -18.6434124516846
+          ],
+          [
+            -40.9174485223369,
+            -18.6425633421695
+          ],
+          [
+            -40.9164365450445,
+            -18.6418912633615
+          ],
+          [
+            -40.91581124712,
+            -18.641485200257
+          ],
+          [
+            -40.9156064798673,
+            -18.6413487542342
+          ],
+          [
+            -40.9154488622529,
+            -18.64124372621
+          ],
+          [
+            -40.9152122616015,
+            -18.6410860668074
+          ],
+          [
+            -40.9147851637657,
+            -18.6409434802008
+          ],
+          [
+            -40.9145378904694,
+            -18.6408898165541
+          ],
+          [
+            -40.9142073083168,
+            -18.6408532079579
+          ],
+          [
+            -40.9140101093734,
+            -18.6410616066876
+          ],
+          [
+            -40.9136733652023,
+            -18.6414130971182
+          ],
+          [
+            -40.9128736605008,
+            -18.6419663758155
+          ],
+          [
+            -40.9127351389086,
+            -18.6420452430106
+          ],
+          [
+            -40.912213028291,
+            -18.6423194163624
+          ],
+          [
+            -40.9119794082479,
+            -18.642492508524
+          ],
+          [
+            -40.9118424938425,
+            -18.6422155184653
+          ],
+          [
+            -40.9115953632778,
+            -18.6417183161317
+          ],
+          [
+            -40.911410741501,
+            -18.6413522025233
+          ],
+          [
+            -40.9112863274121,
+            -18.6411097934177
+          ],
+          [
+            -40.9108024910451,
+            -18.6401942916739
+          ],
+          [
+            -40.9103606152676,
+            -18.6393501098889
+          ],
+          [
+            -40.9101183958105,
+            -18.6387912609975
+          ],
+          [
+            -40.9100376875133,
+            -18.638512830677
+          ],
+          [
+            -40.9095683256379,
+            -18.637463184825
+          ],
+          [
+            -40.9090529329696,
+            -18.6376059982075
+          ],
+          [
+            -40.9084539452163,
+            -18.6377402815675
+          ],
+          [
+            -40.9075184483221,
+            -18.637956799688
+          ],
+          [
+            -40.9068820051445,
+            -18.6381003567837
+          ],
+          [
+            -40.9064837421437,
+            -18.6381567753814
+          ],
+          [
+            -40.9063228889893,
+            -18.6381843251956
+          ],
+          [
+            -40.9055936447761,
+            -18.6382757893244
+          ],
+          [
+            -40.9060277219358,
+            -18.6399640677463
+          ],
+          [
+            -40.9061431937309,
+            -18.6404020319303
+          ],
+          [
+            -40.9061927875526,
+            -18.6406034485665
+          ],
+          [
+            -40.9062397149941,
+            -18.6407748269748
+          ],
+          [
+            -40.9063269550174,
+            -18.6411387813997
+          ],
+          [
+            -40.9061088152522,
+            -18.6418791729847
+          ],
+          [
+            -40.9060470128609,
+            -18.6419875575849
+          ],
+          [
+            -40.9059482670648,
+            -18.6421636744948
+          ],
+          [
+            -40.9057089474743,
+            -18.6425935371053
+          ],
+          [
+            -40.9057215131386,
+            -18.643336639131
+          ],
+          [
+            -40.9062814580931,
+            -18.6442967069052
+          ],
+          [
+            -40.9066554882204,
+            -18.6449299648643
+          ],
+          [
+            -40.906249875215,
+            -18.6456189849344
+          ],
+          [
+            -40.9058017938901,
+            -18.6464219565836
+          ],
+          [
+            -40.9058035985916,
+            -18.6465828071468
+          ],
+          [
+            -40.9059296732421,
+            -18.6471618741597
+          ],
+          [
+            -40.9058709209306,
+            -18.6474995204102
+          ],
+          [
+            -40.9058542286581,
+            -18.64771152851
+          ],
+          [
+            -40.9058669022284,
+            -18.6478917551976
+          ],
+          [
+            -40.9058724045725,
+            -18.6480068741427
+          ],
+          [
+            -40.9058944215258,
+            -18.6481886863813
+          ],
+          [
+            -40.9059842233249,
+            -18.6483742015923
+          ],
+          [
+            -40.9060592344422,
+            -18.6484810449412
+          ],
+          [
+            -40.9061293354811,
+            -18.6486158170489
+          ],
+          [
+            -40.9061674872765,
+            -18.6487428187491
+          ],
+          [
+            -40.9062704011391,
+            -18.6488395950816
+          ],
+          [
+            -40.9063544888299,
+            -18.6489037236894
+          ],
+          [
+            -40.9064352250795,
+            -18.6489596743344
+          ],
+          [
+            -40.9065068559831,
+            -18.6490378958436
+          ],
+          [
+            -40.906567551838,
+            -18.6491977422248
+          ],
+          [
+            -40.9065832385466,
+            -18.6493184130496
+          ],
+          [
+            -40.9065782139304,
+            -18.6494506588238
+          ],
+          [
+            -40.9067516952385,
+            -18.6495320384901
+          ],
+          [
+            -40.9067931273401,
+            -18.649658229785
+          ],
+          [
+            -40.9069471272961,
+            -18.6497738832554
+          ],
+          [
+            -40.9070402954783,
+            -18.6499296868676
+          ],
+          [
+            -40.907011189843,
+            -18.6500339818704
+          ],
+          [
+            -40.9069505044224,
+            -18.6501746521443
+          ],
+          [
+            -40.9070207741296,
+            -18.6503218438458
+          ],
+          [
+            -40.907046698744,
+            -18.6503917750155
+          ],
+          [
+            -40.9071003213116,
+            -18.6506063848467
+          ],
+          [
+            -40.9071596501989,
+            -18.6507218064812
+          ],
+          [
+            -40.907233314199,
+            -18.6508181834143
+          ],
+          [
+            -40.9073161527679,
+            -18.6510053583877
+          ],
+          [
+            -40.9072826374693,
+            -18.6511433408563
+          ],
+          [
+            -40.9072387669817,
+            -18.651219726126
+          ],
+          [
+            -40.9071440061513,
+            -18.6514618420286
+          ],
+          [
+            -40.907060496302,
+            -18.6516175598241
+          ],
+          [
+            -40.907067569927,
+            -18.6518282606088
+          ],
+          [
+            -40.9070710361639,
+            -18.6520341828762
+          ],
+          [
+            -40.9071093506736,
+            -18.6522061358279
+          ],
+          [
+            -40.907195221316,
+            -18.6524949758936
+          ],
+          [
+            -40.9072600485979,
+            -18.6526986671416
+          ],
+          [
+            -40.9072753858121,
+            -18.6528490361511
+          ],
+          [
+            -40.9073153778574,
+            -18.6530090741917
+          ],
+          [
+            -40.9073943296606,
+            -18.6532189367283
+          ],
+          [
+            -40.9074405660437,
+            -18.6533457564995
+          ],
+          [
+            -40.9075197450848,
+            -18.6535665929679
+          ],
+          [
+            -40.9076337100077,
+            -18.6539301658319
+          ],
+          [
+            -40.907650428296,
+            -18.6539589861995
+          ],
+          [
+            -40.9077297898304,
+            -18.6541859186253
+          ],
+          [
+            -40.9078039707166,
+            -18.6545810355472
+          ],
+          [
+            -40.9078959291791,
+            -18.6550920498068
+          ],
+          [
+            -40.9078884904922,
+            -18.6552439237927
+          ],
+          [
+            -40.9078720544189,
+            -18.655334475976
+          ],
+          [
+            -40.9078045115975,
+            -18.6554705185134
+          ],
+          [
+            -40.9076420495308,
+            -18.6556116083848
+          ],
+          [
+            -40.9075981861303,
+            -18.6557005690528
+          ],
+          [
+            -40.9075965468547,
+            -18.6557658925484
+          ],
+          [
+            -40.9075959647392,
+            -18.6558503303037
+          ],
+          [
+            -40.9074109240858,
+            -18.6559098102178
+          ],
+          [
+            -40.9071216575195,
+            -18.6560066287722
+          ],
+          [
+            -40.9066819136213,
+            -18.6561501264012
+          ],
+          [
+            -40.9062581811282,
+            -18.6563678375999
+          ],
+          [
+            -40.9058109852422,
+            -18.6566173598726
+          ],
+          [
+            -40.9049176893439,
+            -18.6567233292729
+          ],
+          [
+            -40.9043903541596,
+            -18.6567824379827
+          ],
+          [
+            -40.9039098852331,
+            -18.6570929477931
+          ],
+          [
+            -40.9034607844179,
+            -18.6574135187115
+          ],
+          [
+            -40.9023884649756,
+            -18.6580048822251
+          ],
+          [
+            -40.9020476583647,
+            -18.6581890866985
+          ],
+          [
+            -40.9021261820159,
+            -18.6583752868531
+          ],
+          [
+            -40.9025236040306,
+            -18.6593041965279
+          ],
+          [
+            -40.9027755310867,
+            -18.6599004376237
+          ],
+          [
+            -40.902981665652,
+            -18.6600185105963
+          ],
+          [
+            -40.9032644609147,
+            -18.660145346359
+          ],
+          [
+            -40.903605911233,
+            -18.660375442241
+          ],
+          [
+            -40.9040666321736,
+            -18.661081920651
+          ],
+          [
+            -40.9045119500737,
+            -18.6617607561249
+          ],
+          [
+            -40.9045812873054,
+            -18.6618588940837
+          ],
+          [
+            -40.9049439423572,
+            -18.6623009448724
+          ],
+          [
+            -40.905347370969,
+            -18.6627868567758
+          ],
+          [
+            -40.9056416408025,
+            -18.6631622873323
+          ],
+          [
+            -40.9060166507285,
+            -18.6627541704621
+          ],
+          [
+            -40.9061815829776,
+            -18.662587894852
+          ],
+          [
+            -40.9063478020091,
+            -18.6624454522244
+          ],
+          [
+            -40.907081408999,
+            -18.6618929041206
+          ],
+          [
+            -40.9077662819671,
+            -18.6618129737045
+          ],
+          [
+            -40.9082237235506,
+            -18.6617345290166
+          ],
+          [
+            -40.9091313288138,
+            -18.6615572167576
+          ],
+          [
+            -40.9091908358002,
+            -18.6615417446982
+          ],
+          [
+            -40.9094392114056,
+            -18.6614771014958
+          ],
+          [
+            -40.9112013488584,
+            -18.6607345842481
+          ],
+          [
+            -40.9119579647051,
+            -18.6604236741543
+          ],
+          [
+            -40.9122616570187,
+            -18.6603023606492
+          ],
+          [
+            -40.9125340113907,
+            -18.660342565524
+          ],
+          [
+            -40.9135925871181,
+            -18.6605456625794
+          ],
+          [
+            -40.9140650622861,
+            -18.6606325064145
+          ]
+        ]
+      ]
+    ]
+  }
+}

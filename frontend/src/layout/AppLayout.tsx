@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
-import AuditReportModal from '../components/AuditReportModal'
 import { t } from '../i18n/pt-BR'
 import { maskCnpj } from '../lib/car'
 import './AppLayout.css'
@@ -17,7 +15,6 @@ export function initials(email: string) {
 export default function AppLayout() {
   const { producer, signOut } = useAuth()
   const navigate = useNavigate()
-  const [reportModalOpen, setReportModalOpen] = useState(false)
   if (!producer) return null
 
   return (
@@ -43,16 +40,6 @@ export default function AppLayout() {
           <NavLink to="/painel/cars">
             <span aria-hidden>⌖</span> {t.sidebar.cars}
           </NavLink>
-          <NavLink to="/painel/consulta">
-            <span aria-hidden>⌕</span> {t.sidebar.search}
-          </NavLink>
-          <button
-            className="btn btn-ghost"
-            style={{ textAlign: 'left', padding: '10px 14px', width: '100%', color: '#047857', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}
-            onClick={() => setReportModalOpen(true)}
-          >
-            <span aria-hidden>⚡</span> Gerar Relatório ESG
-          </button>
         </nav>
 
         <p className="sidebar-note">{t.home.sidebarNote}</p>
@@ -70,8 +57,6 @@ export default function AppLayout() {
       <div className="app-main">
         <Outlet />
       </div>
-
-      <AuditReportModal isOpen={reportModalOpen} onClose={() => setReportModalOpen(false)} />
     </div>
   )
 }

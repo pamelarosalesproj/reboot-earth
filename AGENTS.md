@@ -7,7 +7,7 @@ operação), leia [`docs/arquitetura.md`](docs/arquitetura.md).
 
 ## O projeto em uma frase
 
-RebootEarth mostra a situação socioambiental de produtores rurais brasileiros por imóvel (CAR) e por
+ELO Rural (antes RebootEarth; repositório `reboot-earth`) mostra a situação socioambiental de produtores rurais brasileiros por imóvel (CAR) e por
 CNPJ — polígono, alertas de desmatamento por situação legal, embargos e indicadores (vegetação
 nativa, DETER, focos de calor, manejo florestal) — com dados do MapBiomas Alerta, do INPE e do IBAMA,
 para o **produtor** (com conta) e para o **comprador** (sem conta, só vê dados agregados).

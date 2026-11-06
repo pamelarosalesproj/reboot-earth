@@ -1,0 +1,79 @@
+[
+  {
+    "carCode": "DF-5300108-3352C42BFAB3424B97B639460B42BD99",
+    "estado": "DF",
+    "areaHa": 414.23382,
+    "totalAlertas": 2,
+    "totalEmbargos": 2
+  },
+  {
+    "carCode": "ES-3200169-A13BC45711F049439F07BE22745ADF86",
+    "estado": "ES",
+    "areaHa": 347.37906,
+    "totalAlertas": 1,
+    "totalEmbargos": 0
+  },
+  {
+    "carCode": "GO-5218508-896FEB6A541D40439898CBCDE140F794",
+    "estado": "GO",
+    "areaHa": 45.45054,
+    "totalAlertas": 1,
+    "totalEmbargos": 0
+  },
+  {
+    "carCode": "MA-2102309-FED8B44BE9584F19AAE87E49968B625E",
+    "estado": "MA",
+    "areaHa": 32.07229,
+    "totalAlertas": 1,
+    "totalEmbargos": 0
+  },
+  {
+    "carCode": "MG-3104452-F98A516E17CD44DBA47151645A4C8319",
+    "estado": "MG",
+    "areaHa": 53.83518,
+    "totalAlertas": 1,
+    "totalEmbargos": 0
+  },
+  {
+    "carCode": "MS-5001102-13F48E2D786D43448C3CD856B4961DD4",
+    "estado": "MS",
+    "areaHa": 8876.77843,
+    "totalAlertas": 3,
+    "totalEmbargos": 2
+  },
+  {
+    "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+    "estado": "MT",
+    "areaHa": 10797.3182,
+    "totalAlertas": 5,
+    "totalEmbargos": 5
+  },
+  {
+    "carCode": "PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
+    "estado": "PE",
+    "areaHa": 264.22897,
+    "totalAlertas": 3,
+    "totalEmbargos": 0
+  },
+  {
+    "carCode": "PI-2208858-C1FBD96AB85A4CCE8407E10EE3FDC27F",
+    "estado": "PI",
+    "areaHa": 17700.45343,
+    "totalAlertas": 111,
+    "totalEmbargos": 41
+  },
+  {
+    "carCode": "SE-2803005-F8A0A4C38E084B849EE35EB2756B4F55",
+    "estado": "SE",
+    "areaHa": 95.83738,
+    "totalAlertas": 1,
+    "totalEmbargos": 0
+  },
+  {
+    "carCode": "TO-1712504-72577A629BF64D78A5DBF5F26734167B",
+    "estado": "TO",
+    "areaHa": 6350.12439,
+    "totalAlertas": 23,
+    "totalEmbargos": 0
+  }
+]

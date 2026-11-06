@@ -1,0 +1,4721 @@
+{
+  "areaHa": 10797.3182,
+  "boundingBox": [
+    -57.63071608805099,
+    -16.67210354610929,
+    -57.45805518555811,
+    -16.49944264361642
+  ],
+  "carType": "SICAR_AST",
+  "carUpdatedAt": "2025-09-26",
+  "enabled": true,
+  "geomRuralProperty": "SRID=4674;MULTIPOLYGON(((-57.53702449317382 -16.51242913287119,-57.534017179343685 -16.513974208046417,-57.53398906197671 -16.51389765766102,-57.5327410291294 -16.514629855572117,-57.532571073623544 -16.520967058276735,-57.532660943254626 -16.526916701142746,-57.52992140580883 -16.531628245711577,-57.52586031415803 -16.53480581504963,-57.5281790279241 -16.538549859745483,-57.52843264620934 -16.53896505382308,-57.528952312865094 -16.53875578743149,-57.540221940929484 -16.557330383597577,-57.53657083847013 -16.558849423575353,-57.531050304206516 -16.558836443627527,-57.53102805479446 -16.560978882514622,-57.53185064776473 -16.563589224622515,-57.52855915094747 -16.566436028920165,-57.526992998633 -16.56956769329764,-57.52273840310655 -16.569876719226784,-57.51328445111557 -16.57478161057503,-57.50783965980748 -16.575224886064568,-57.50180359785116 -16.57623224336472,-57.51040452335534 -16.60372411510532,-57.50790019246749 -16.642709078905977,-57.50957472302586 -16.652192775628276,-57.53368006010446 -16.67210354610929,-57.577517184304696 -16.62986100787639,-57.58390366940229 -16.62387049226911,-57.58685823659273 -16.62109891017274,-57.5868821125017 -16.612726133426246,-57.586886589680304 -16.611144303879485,-57.58690115292097 -16.60741937085245,-57.586927379662335 -16.599043231535475,-57.58693386934857 -16.596949760807103,-57.58694045436335 -16.59485665160647,-57.58694694674793 -16.592763632337896,-57.58695353356158 -16.590670882866608,-57.586960128469975 -16.588580032766018,-57.58695606241656 -16.585384766061704,-57.58696767575793 -16.57097144283701,-57.58694278719469 -16.563806803461812,-57.58539761982282 -16.562142999304196,-57.5833952048789 -16.55998681491911,-57.56185873012283 -16.49944264361642,-57.55905035555964 -16.500918111106966,-57.55226154027718 -16.50448465031424,-57.54664070822246 -16.507436934283415,-57.546227159011856 -16.50765487641124,-57.54283497449613 -16.509436110396653,-57.539395608788034 -16.511222926497336,-57.53702449317382 -16.51242913287119)))",
+  "imageContext": {
+    "imageAllContext": "https://image.alerta.mapbiomas.org/image/rural_property/4712261/all_alerts.png",
+    "imageStateContext": "https://image.alerta.mapbiomas.org/image/rural_property/4712261/location.png"
+  },
+  "insertedAt": "2025-09-26T20:14:22Z",
+  "propertyCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+  "propertyType": "SICAR_AST",
+  "state": "MT",
+  "stateAcronym": "MT",
+  "version": 4,
+  "alerts": [
+    {
+      "actionsList": null,
+      "actionsTypeIds": null,
+      "alertCode": 9804,
+      "alertGeometryId": 1459158,
+      "alertImageBbox": "BOX(-57.54491518448701 -16.58784636222419,-57.52791518356314 -16.57084636130032)",
+      "alertIntersections": [
+        {
+          "category": "special_territory",
+          "codes": [
+            32833
+          ],
+          "name": "TerraBrasilis",
+          "names": [
+            "Amazônia Legal"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "LEGAL_AMAZON"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            36687
+          ],
+          "name": "IBGE",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.8942389,
+          "type": "BIOME"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            84979
+          ],
+          "name": "INCRA",
+          "names": [
+            "PA LARANJEIRA I"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "SETTLEMENT"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14672
+          ],
+          "name": "ANA",
+          "names": [
+            "Médio Paraguai"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14627
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            16479
+          ],
+          "name": "IBGE",
+          "names": [
+            "Cáceres"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "MUNICIPALITY"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            18397
+          ],
+          "name": "IBGE",
+          "names": [
+            "MATO GROSSO"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "STATE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            30626
+          ],
+          "name": "CNUC/MMA",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "BIOSPHERE_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            32887
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI 03"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "PNRH_LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            33102
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI PANT 01"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "PNRH_LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            54512
+          ],
+          "name": "MMA",
+          "names": [
+            "PA LARANJEIRA I (FPA-5102504-008-FH-190)"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.894238,
+          "type": "PUBLIC_FOREST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            3612844
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-D5AAA6EEB5FD436AB0A891E6F1C767EA"
+          ],
+          "total": 1,
+          "totalAreaHa": 4.97947,
+          "type": "SICAR_IRU"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            4712261
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 5.89424,
+          "type": "SICAR_AST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            41568
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 4.93157,
+          "type": "LEGAL_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            869603
+          ],
+          "name": "SEMA-MT",
+          "names": [
+            "1975009425"
+          ],
+          "total": 1,
+          "totalAreaHa": 0.10352,
+          "type": "EMBARGOED_AREA"
+        }
+      ],
+      "areaHa": 5.8942,
+      "bbox": "-57.54489619891986,-16.58782737665704,-57.52793416913029,-16.57086534686747",
+      "boundingBox": {
+        "neLat": -57.52793416913029,
+        "neLng": -16.57086534686747,
+        "simplified": [
+          -57.54489619891986,
+          -16.58782737665704,
+          -57.52793416913029,
+          -16.57086534686747
+        ],
+        "swLat": -57.54489619891986,
+        "swLng": -16.58782737665704
+      },
+      "categories": [
+        "refined_biome",
+        "biome_legacy_do_not_use",
+        "settlement",
+        "city",
+        "state",
+        "special_territory",
+        "biosphere_reserve",
+        "public_forest"
+      ],
+      "classesLabels": [
+        {
+          "colors": [
+            "#1f8d49",
+            "#7dbe75",
+            "#04381d",
+            "#007785",
+            "#02d659"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.forest_options.forest_formation",
+              "color": "#1f8d49"
+            },
+            {
+              "label": "classes_labels.forest_options.savanna_formation",
+              "color": "#7dbe75"
+            },
+            {
+              "label": "classes_labels.forest_options.mangrove",
+              "color": "#04381d"
+            },
+            {
+              "label": "classes_labels.forest_options.flooded_forest",
+              "color": "#007785"
+            },
+            {
+              "label": "classes_labels.forest_options.arboreal_restinga",
+              "color": "#02d659"
+            }
+          ],
+          "name": "classes_labels.forest"
+        },
+        {
+          "colors": [
+            "#7a8894",
+            "#d6bc74",
+            "#fc8114",
+            "#ffaa5f",
+            "#ad5100",
+            "#d89f5c"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_forest_options.flooded_field",
+              "color": "#7a8894"
+            },
+            {
+              "label": "classes_labels.non_forest_options.grassland_formation",
+              "color": "#d6bc74"
+            },
+            {
+              "label": "classes_labels.non_forest_options.apicum",
+              "color": "#fc8114"
+            },
+            {
+              "label": "classes_labels.non_forest_options.rocky_outcrop",
+              "color": "#ffaa5f"
+            },
+            {
+              "label": "classes_labels.non_forest_options.herbaceous_restinga",
+              "color": "#ad5100"
+            },
+            {
+              "label": "classes_labels.non_forest_options.other",
+              "color": "#d89f5c"
+            }
+          ],
+          "name": "classes_labels.non_forest"
+        },
+        {
+          "colors": [
+            "#edde8e",
+            "#e974ed",
+            "#7a5900",
+            "#ffefc3"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.agriculture_options.pasture",
+              "color": "#edde8e"
+            },
+            {
+              "label": "classes_labels.agriculture_options.agriculture",
+              "color": "#e974ed"
+            },
+            {
+              "label": "classes_labels.agriculture_options.forestry",
+              "color": "#7a5900"
+            },
+            {
+              "label": "classes_labels.agriculture_options.mosaic",
+              "color": "#ffefc3"
+            }
+          ],
+          "name": "classes_labels.agriculture"
+        },
+        {
+          "colors": [
+            "#ffa07a",
+            "#d4271e",
+            "#9c0027",
+            "#db4d4f"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_vegetated_options.beach",
+              "color": "#ffa07a"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.urbanized",
+              "color": "#d4271e"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.mining",
+              "color": "#9c0027"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.other",
+              "color": "#db4d4f"
+            }
+          ],
+          "name": "classes_labels.non_vegetated"
+        },
+        {
+          "colors": [
+            "#2532e4",
+            "#091077"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.water_body_options.river_lake_ocean",
+              "color": "#2532e4"
+            },
+            {
+              "label": "classes_labels.water_body_options.aquaculture",
+              "color": "#091077"
+            }
+          ],
+          "name": "classes_labels.water_body"
+        }
+      ],
+      "codes": null,
+      "coordenates": {
+        "latitude": -16.57940513838707,
+        "longitude": -57.53650828447937
+      },
+      "crossedBiomes": [
+        "Pantanal"
+      ],
+      "crossedBiomesArea": 5.8942389,
+      "crossedBiomesIds": [
+        36687
+      ],
+      "crossedBiomesList": [
+        {
+          "name": "Pantanal",
+          "source": "Bioma Refinado",
+          "area_ha": 5.8942389
+        }
+      ],
+      "crossedBiosphereReserves": [
+        "Pantanal"
+      ],
+      "crossedBiosphereReservesArea": 5.894238,
+      "crossedBiosphereReservesIds": [
+        30626
+      ],
+      "crossedCities": [
+        "Cáceres"
+      ],
+      "crossedCitiesArea": 5.894238,
+      "crossedCitiesIds": [
+        16479
+      ],
+      "crossedCitiesList": [
+        {
+          "name": "Cáceres",
+          "source": "Município",
+          "area_ha": 5.894238
+        }
+      ],
+      "crossedConservationUnits": null,
+      "crossedConservationUnitsArea": null,
+      "crossedConservationUnitsIds": null,
+      "crossedConservationUnitsList": null,
+      "crossedDeforestationAuthorizationRuralPropertiesArea": null,
+      "crossedDeforestationAuthorizationRuralPropertiesList": null,
+      "crossedDeforestationAuthorizationsActivities": null,
+      "crossedDeforestationAuthorizationsArea": null,
+      "crossedDeforestationAuthorizationsAreasIds": null,
+      "crossedDeforestationAuthorizationsCategories": null,
+      "crossedDeforestationAuthorizationsList": null,
+      "crossedEmbargoesArea": 0.10352,
+      "crossedEmbargoesIds": [
+        869603
+      ],
+      "crossedEmbargoesList": [
+        {
+          "intersection_area": 0.10352,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesArea": 45.92592,
+      "crossedEmbargoesRuralPropertiesIds": [
+        3612844,
+        4712261
+      ],
+      "crossedEmbargoesRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 12.41079,
+          "embargoed_id": 864316,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133537/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 10.17953,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        },
+        {
+          "rural_property_id": 3612844,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-D5AAA6EEB5FD436AB0A891E6F1C767EA",
+          "intersection_area": 10.1795,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 9.21404,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 2.28839,
+          "embargoed_id": 873542,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133590/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 1.65367,
+          "embargoed_id": 865644,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1841001525"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesTotal": 6,
+      "crossedEmbargoesTotal": 1,
+      "crossedFederalProtectedAreaIntegralProtections": null,
+      "crossedFederalProtectedAreaIntegralProtectionsArea": null,
+      "crossedFederalProtectedAreaSustainableUses": null,
+      "crossedFederalProtectedAreaSustainableUsesArea": null,
+      "crossedForestManagementRuralPropertiesArea": null,
+      "crossedForestManagementRuralPropertiesList": null,
+      "crossedForestManagementsActivities": null,
+      "crossedForestManagementsArea": null,
+      "crossedForestManagementsCategories": null,
+      "crossedForestManagementsList": null,
+      "crossedGeoparks": null,
+      "crossedGeoparksArea": null,
+      "crossedGeoparksIds": null,
+      "crossedIndigenousLands": null,
+      "crossedIndigenousLandsArea": 0.0,
+      "crossedIndigenousLandsIds": null,
+      "crossedIndigenousLandsList": null,
+      "crossedLegalReserveRuralPropertiesArea": 4.93157,
+      "crossedLegalReserveRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 4.93157,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        }
+      ],
+      "crossedLegalReserveRuralPropertiesTotal": 1,
+      "crossedLegalReserves": [
+        {
+          "legalReserveId": 41568,
+          "legalReserveVersion": 4,
+          "ruralPropertyId": 4712261,
+          "totalAreaHa": null
+        }
+      ],
+      "crossedLegalReservesArea": 4.93157,
+      "crossedLegalReservesList": [
+        {
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 4.93157,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        }
+      ],
+      "crossedLegalReservesTotal": 1,
+      "crossedMunicipalityProtectedAreaIntegralProtections": null,
+      "crossedMunicipalityProtectedAreaIntegralProtectionsArea": null,
+      "crossedMunicipalityProtectedAreaSustainableUses": null,
+      "crossedMunicipalityProtectedAreaSustainableUsesArea": null,
+      "crossedPermanentProtectedArea": null,
+      "crossedPermanentProtectedAreaList": null,
+      "crossedPermanentProtectedAreaTotal": null,
+      "crossedPermanentProtectedList": null,
+      "crossedPermanentProtectedRuralPropertiesArea": null,
+      "crossedPermanentProtectedRuralPropertiesList": null,
+      "crossedPermanentProtectedRuralPropertiesTotal": null,
+      "crossedQuilombos": null,
+      "crossedQuilombosArea": 0.0,
+      "crossedQuilombosIds": null,
+      "crossedQuilombosList": null,
+      "crossedRiverSourcesArea": null,
+      "crossedRuralProperties": [
+        {
+          "afterDeforestationSimplifiedImage": "https://image.alerta.mapbiomas.org/image/alert/9804/after_deforestation_simplified.png",
+          "alertAreaInCar": 5.89424,
+          "alertGeometryCode": "1459158",
+          "alertInPropertyImage": "https://image.alerta.mapbiomas.org/image/alert/9804/rural_property/4712261/alert_context.png",
+          "areaHa": 10797.3182,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "id": 4712261,
+          "insertedAt": null,
+          "layerImage": "https://image.alerta.mapbiomas.org/image/alert/9804/all.png",
+          "propertyInStateImage": "https://image.alerta.mapbiomas.org/image/alert/9804/location.png",
+          "type": "SICAR_AST",
+          "updatedAt": null,
+          "version": 4
+        }
+      ],
+      "crossedSettlements": [
+        "PA LARANJEIRA I"
+      ],
+      "crossedSettlementsArea": 5.894238,
+      "crossedSettlementsIds": [
+        84979
+      ],
+      "crossedSettlementsList": [
+        {
+          "name": "PA LARANJEIRA I",
+          "source": "Assentamento",
+          "area_ha": 5.894238
+        }
+      ],
+      "crossedSettlementsRuralPropertiesArea": null,
+      "crossedSettlementsRuralPropertiesList": null,
+      "crossedSettlementsRuralPropertiesTotal": 0,
+      "crossedSpecialTerritories": [
+        "Amazônia Legal"
+      ],
+      "crossedSpecialTerritoriesArea": 5.894238,
+      "crossedSpecialTerritoriesIds": [
+        32833
+      ],
+      "crossedSpecialTerritoryAmacroArea": null,
+      "crossedSpecialTerritoryAmazoniaLegalArea": 5.894238,
+      "crossedSpecialTerritoryLeiDaMataAtlanticaArea": null,
+      "crossedSpecialTerritoryMatopibaArea": null,
+      "crossedSpecialTerritorySemiaridoArea": null,
+      "crossedStateProtectedAreaIntegralProtections": null,
+      "crossedStateProtectedAreaIntegralProtectionsArea": null,
+      "crossedStateProtectedAreaSustainableUses": null,
+      "crossedStateProtectedAreaSustainableUsesArea": null,
+      "crossedStates": [
+        "MATO GROSSO"
+      ],
+      "crossedStatesArea": 5.894238,
+      "crossedStatesIds": [
+        18397
+      ],
+      "crossedStatesList": [
+        {
+          "name": "MATO GROSSO",
+          "source": "Estado",
+          "area_ha": 5.894238
+        }
+      ],
+      "crossedTerritoriesIds": [
+        30626,
+        18426,
+        32887,
+        14627,
+        33102,
+        16479,
+        32833,
+        84979,
+        18397,
+        36687,
+        54512,
+        14672
+      ],
+      "crossedWatersheds": [
+        "PARAGUAI"
+      ],
+      "crossedWatershedsArea": 5.894238,
+      "crossedWatershedsIds": [
+        14627
+      ],
+      "crossedWatershedsList": [
+        {
+          "name": "PARAGUAI",
+          "source": "Bacia Nível 1",
+          "area_ha": 5.894238
+        }
+      ],
+      "datum": "SIRGAS 2000, EPSG 4674",
+      "deforestationClasses": [
+        "agriculture"
+      ],
+      "deforestationSpeed": "30",
+      "detectedAt": "2019-06-14",
+      "embargoedAreasIds": [
+        869603
+      ],
+      "exclusionCategories": [
+        "settlement"
+      ],
+      "geometryWkt": "MULTIPOLYGON(((-57.53731443155879 -16.581077868811455,-57.53742235001848 -16.581010020402896,-57.537669524384235 -16.579755268195036,-57.537045357319506 -16.578872116273622,-57.536694392624234 -16.57767881846805,-57.53658551801291 -16.577614854713055,-57.53529304708593 -16.578192932077055,-57.5351608436659 -16.578467758798418,-57.53578027178534 -16.57930188493209,-57.53572415473782 -16.5796656723227,-57.53619566516449 -16.580807331373926,-57.53648795513936 -16.58098448486032,-57.53731443155879 -16.581077868811455,-57.53731443155879 -16.581077868811455)))",
+      "id": 0,
+      "imageAcquiredAfterAt": "2019-06-16",
+      "imageAcquiredAfterList": {
+        "satellite": "2",
+        "acquired_at": "2019-06-16T00:00:00",
+        "constellation": "Sentinel-2"
+      },
+      "imageAcquiredBeboreList": {
+        "satellite": "2",
+        "acquired_at": "2019-05-17T00:00:00",
+        "constellation": "Sentinel-2"
+      },
+      "imageAcquiredBeforeAt": "2019-05-17",
+      "imageContext": {
+        "imageAllContext": "https://image.alerta.mapbiomas.org/image/alert/9804/all.png",
+        "imageStateContext": "https://image.alerta.mapbiomas.org/image/alert/9804/location.png"
+      },
+      "imagesLabels": [
+        {
+          "name": "APPs",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_apps_map"
+        },
+        {
+          "name": "Reservas Legais",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_legal_reserves_map"
+        },
+        {
+          "name": "Nascentes",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_river_sources_map"
+        },
+        {
+          "name": "Embargos",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:embargos_map"
+        },
+        {
+          "name": "Plano de Manejo Florestal",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:forest_managements"
+        },
+        {
+          "name": "Estados",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:states"
+        },
+        {
+          "name": "Limite da Propriedade",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_properties_map"
+        },
+        {
+          "name": "Alerta",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:MapAlerta_imovel"
+        },
+        {
+          "name": "Aut. de Supressão de Vegetação",
+          "thumbnailUrl": "http://plataforma.alerta.mapbiomas.org/assets/green-line-40dc5b0308872d402596e00ff9594101b0773fa7abff1f14bd54fdda275bb609.jpg"
+        }
+      ],
+      "legendLclu": [
+        {
+          "color": "#1F8D49",
+          "key": "forest-formation-bj6c2q",
+          "name": {
+            "en-US": "Forest Formation",
+            "es-ES": "Bosque",
+            "pt-BR": "Floresta"
+          },
+          "order": 0
+        },
+        {
+          "color": "#D6BC74",
+          "key": "herbaceous-and-shrubby-vegetation-se12jb",
+          "name": {
+            "en-US": "Herbaceous and Shrubby Vegetation",
+            "es-ES": "Vegetación Herbácea y Arbustiva",
+            "pt-BR": "Vegetação Herbácea e Arbustiva"
+          },
+          "order": 1
+        },
+        {
+          "color": "#FFEFC3",
+          "key": "agriculture-and-livestock-tum0ga",
+          "name": {
+            "en-US": "Agriculture and Livestock",
+            "es-ES": "Agropecuaria",
+            "pt-BR": "Agropecuária"
+          },
+          "order": 2
+        },
+        {
+          "color": "#D4271E",
+          "key": "non-vegetated-area-fa31yo",
+          "name": {
+            "en-US": "Non-vegetated Area",
+            "es-ES": "Área no Vegetada",
+            "pt-BR": "Área não vegetada"
+          },
+          "order": 3
+        },
+        {
+          "color": "#2532E4",
+          "key": "water-body-fyr9an",
+          "name": {
+            "en-US": "Water Body",
+            "es-ES": "Cuerpo de Agua",
+            "pt-BR": "Corpo D'água"
+          },
+          "order": 4
+        }
+      ],
+      "publicationCycles": 1,
+      "publicationCyclesList": [],
+      "publishedAt": "2020-05-11",
+      "publishedImages": [
+        {
+          "acquiredAt": "2019-05-17T00:00:00Z",
+          "constellation": "Sentinel-2",
+          "fid": 2181702,
+          "location": "9804_before.tif",
+          "reference": "before",
+          "satellite": "2",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/9804/rural_property/4712261/before_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/9804/rural_property/4712261/before_deforestation.png?size=medium"
+        },
+        {
+          "acquiredAt": "2019-06-16T00:00:00Z",
+          "constellation": "Sentinel-2",
+          "fid": 2181703,
+          "location": "9804_after.tif",
+          "reference": "after",
+          "satellite": "2",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/9804/rural_property/4712261/after_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/9804/rural_property/4712261/after_deforestation.png?size=medium"
+        }
+      ],
+      "republished": false,
+      "ruralProperties": [
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 4.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2025-09-26T20:14:22Z",
+          "stateAcronym": "MT",
+          "version": 4
+        },
+        {
+          "areaHa": 10800.83369,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 3.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2024-07-28T02:53:55Z",
+          "stateAcronym": "MT",
+          "version": 3
+        },
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 2.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2023-05-01T18:27:18Z",
+          "stateAcronym": "MT",
+          "version": 2
+        },
+        {
+          "areaHa": 10797.38894,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 1.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2020-02-07T14:51:09Z",
+          "stateAcronym": "MT",
+          "version": 1
+        }
+      ],
+      "ruralPropertiesCodes": [
+        "MT-5102504-D5AAA6EEB5FD436AB0A891E6F1C767EA",
+        "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+      ],
+      "ruralPropertiesList": [
+        {
+          "id": 4712261,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "version": 4,
+          "type": "SICAR_AST",
+          "area": 10797.3182,
+          "intersection_area": 5.89424,
+          "alert_id": 9804,
+          "alert_code": 9804,
+          "alert_geometry_id": 1459158
+        },
+        {
+          "id": 3612844,
+          "code": "MT-5102504-D5AAA6EEB5FD436AB0A891E6F1C767EA",
+          "version": 4,
+          "type": "SICAR_IRU",
+          "area": 46.85899,
+          "intersection_area": 4.97947,
+          "alert_id": 9804,
+          "alert_code": 9804,
+          "alert_geometry_id": 1459158
+        }
+      ],
+      "ruralPropertiesTotal": 2,
+      "sources": [
+        "GLAD"
+      ],
+      "statusAt": "2020-05-11",
+      "statusName": "published",
+      "supportCasesIds": null,
+      "warnings": {
+        "en": "Information based on available sources, subject to interpretation, its use is at the discretion of the user.",
+        "pt": "Informações baseadas nas fontes disponíveis, sujeitas a interpretação, seu uso fica a juízo do usuário."
+      }
+    },
+    {
+      "actionsList": null,
+      "actionsTypeIds": null,
+      "alertCode": 622952,
+      "alertGeometryId": 1473331,
+      "alertImageBbox": "BOX(-57.5553989996273 -16.63729549962729,-57.535958000372716 -16.617854500372705)",
+      "alertIntersections": [
+        {
+          "category": "special_territory",
+          "codes": [
+            32833
+          ],
+          "name": "TerraBrasilis",
+          "names": [
+            "Amazônia Legal"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "LEGAL_AMAZON"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            36687
+          ],
+          "name": "IBGE",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "BIOME"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            84979
+          ],
+          "name": "INCRA",
+          "names": [
+            "PA LARANJEIRA I"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "SETTLEMENT"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14672
+          ],
+          "name": "ANA",
+          "names": [
+            "Médio Paraguai"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14627
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            16479
+          ],
+          "name": "IBGE",
+          "names": [
+            "Cáceres"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "MUNICIPALITY"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            18397
+          ],
+          "name": "IBGE",
+          "names": [
+            "MATO GROSSO"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "STATE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            30626
+          ],
+          "name": "CNUC/MMA",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "BIOSPHERE_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            32887
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI 03"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "PNRH_LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            33102
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI PANT 01"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "PNRH_LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            54512
+          ],
+          "name": "MMA",
+          "names": [
+            "PA LARANJEIRA I (FPA-5102504-008-FH-190)"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.6975178,
+          "type": "PUBLIC_FOREST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            8138417
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-A74326D9D8714574A656136D3F0262F8"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.60914,
+          "type": "SICAR_IRU"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            4712261
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.69752,
+          "type": "SICAR_AST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            41568
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 8.697518,
+          "type": "LEGAL_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            874506
+          ],
+          "name": "SEMA-MT",
+          "names": [
+            "27680/2022"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.28021,
+          "type": "EMBARGOED_AREA"
+        }
+      ],
+      "areaHa": 8.6975,
+      "bbox": "-57.55243796391761,-16.63497606961967,-57.53717200365949,-16.61971010936154",
+      "boundingBox": {
+        "neLat": -57.53717200365949,
+        "neLng": -16.61971010936154,
+        "simplified": [
+          -57.55243796391761,
+          -16.63497606961967,
+          -57.53717200365949,
+          -16.61971010936154
+        ],
+        "swLat": -57.55243796391761,
+        "swLng": -16.63497606961967
+      },
+      "categories": [
+        "refined_biome",
+        "biome_legacy_do_not_use",
+        "settlement",
+        "city",
+        "state",
+        "special_territory",
+        "biosphere_reserve",
+        "public_forest"
+      ],
+      "classesLabels": [
+        {
+          "colors": [
+            "#1f8d49",
+            "#7dbe75",
+            "#04381d",
+            "#007785",
+            "#02d659"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.forest_options.forest_formation",
+              "color": "#1f8d49"
+            },
+            {
+              "label": "classes_labels.forest_options.savanna_formation",
+              "color": "#7dbe75"
+            },
+            {
+              "label": "classes_labels.forest_options.mangrove",
+              "color": "#04381d"
+            },
+            {
+              "label": "classes_labels.forest_options.flooded_forest",
+              "color": "#007785"
+            },
+            {
+              "label": "classes_labels.forest_options.arboreal_restinga",
+              "color": "#02d659"
+            }
+          ],
+          "name": "classes_labels.forest"
+        },
+        {
+          "colors": [
+            "#7a8894",
+            "#d6bc74",
+            "#fc8114",
+            "#ffaa5f",
+            "#ad5100",
+            "#d89f5c"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_forest_options.flooded_field",
+              "color": "#7a8894"
+            },
+            {
+              "label": "classes_labels.non_forest_options.grassland_formation",
+              "color": "#d6bc74"
+            },
+            {
+              "label": "classes_labels.non_forest_options.apicum",
+              "color": "#fc8114"
+            },
+            {
+              "label": "classes_labels.non_forest_options.rocky_outcrop",
+              "color": "#ffaa5f"
+            },
+            {
+              "label": "classes_labels.non_forest_options.herbaceous_restinga",
+              "color": "#ad5100"
+            },
+            {
+              "label": "classes_labels.non_forest_options.other",
+              "color": "#d89f5c"
+            }
+          ],
+          "name": "classes_labels.non_forest"
+        },
+        {
+          "colors": [
+            "#edde8e",
+            "#e974ed",
+            "#7a5900",
+            "#ffefc3"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.agriculture_options.pasture",
+              "color": "#edde8e"
+            },
+            {
+              "label": "classes_labels.agriculture_options.agriculture",
+              "color": "#e974ed"
+            },
+            {
+              "label": "classes_labels.agriculture_options.forestry",
+              "color": "#7a5900"
+            },
+            {
+              "label": "classes_labels.agriculture_options.mosaic",
+              "color": "#ffefc3"
+            }
+          ],
+          "name": "classes_labels.agriculture"
+        },
+        {
+          "colors": [
+            "#ffa07a",
+            "#d4271e",
+            "#9c0027",
+            "#db4d4f"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_vegetated_options.beach",
+              "color": "#ffa07a"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.urbanized",
+              "color": "#d4271e"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.mining",
+              "color": "#9c0027"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.other",
+              "color": "#db4d4f"
+            }
+          ],
+          "name": "classes_labels.non_vegetated"
+        },
+        {
+          "colors": [
+            "#2532e4",
+            "#091077"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.water_body_options.river_lake_ocean",
+              "color": "#2532e4"
+            },
+            {
+              "label": "classes_labels.water_body_options.aquaculture",
+              "color": "#091077"
+            }
+          ],
+          "name": "classes_labels.water_body"
+        }
+      ],
+      "codes": null,
+      "coordenates": {
+        "latitude": -16.628001708794926,
+        "longitude": -57.5412221868471
+      },
+      "crossedBiomes": [
+        "Pantanal"
+      ],
+      "crossedBiomesArea": 8.6975178,
+      "crossedBiomesIds": [
+        36687
+      ],
+      "crossedBiomesList": [
+        {
+          "name": "Pantanal",
+          "source": "Bioma Refinado",
+          "area_ha": 8.6975178
+        }
+      ],
+      "crossedBiosphereReserves": [
+        "Pantanal"
+      ],
+      "crossedBiosphereReservesArea": 8.6975178,
+      "crossedBiosphereReservesIds": [
+        30626
+      ],
+      "crossedCities": [
+        "Cáceres"
+      ],
+      "crossedCitiesArea": 8.6975178,
+      "crossedCitiesIds": [
+        16479
+      ],
+      "crossedCitiesList": [
+        {
+          "name": "Cáceres",
+          "source": "Município",
+          "area_ha": 8.6975178
+        }
+      ],
+      "crossedConservationUnits": null,
+      "crossedConservationUnitsArea": null,
+      "crossedConservationUnitsIds": null,
+      "crossedConservationUnitsList": null,
+      "crossedDeforestationAuthorizationRuralPropertiesArea": null,
+      "crossedDeforestationAuthorizationRuralPropertiesList": null,
+      "crossedDeforestationAuthorizationsActivities": null,
+      "crossedDeforestationAuthorizationsArea": null,
+      "crossedDeforestationAuthorizationsAreasIds": null,
+      "crossedDeforestationAuthorizationsCategories": null,
+      "crossedDeforestationAuthorizationsList": null,
+      "crossedEmbargoesArea": 7.28021,
+      "crossedEmbargoesIds": [
+        874506
+      ],
+      "crossedEmbargoesList": [
+        {
+          "intersection_area": 7.28021,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesArea": 44.94331,
+      "crossedEmbargoesRuralPropertiesIds": [
+        4712261,
+        8138417
+      ],
+      "crossedEmbargoesRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 12.41079,
+          "embargoed_id": 864316,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133537/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 10.17953,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 9.21404,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        },
+        {
+          "rural_property_id": 8138417,
+          "rural_property_version": 3,
+          "rural_property_code": "MT-5102504-A74326D9D8714574A656136D3F0262F8",
+          "intersection_area": 9.19689,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 2.28839,
+          "embargoed_id": 873542,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133590/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 1.65367,
+          "embargoed_id": 865644,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1841001525"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesTotal": 6,
+      "crossedEmbargoesTotal": 1,
+      "crossedFederalProtectedAreaIntegralProtections": null,
+      "crossedFederalProtectedAreaIntegralProtectionsArea": null,
+      "crossedFederalProtectedAreaSustainableUses": null,
+      "crossedFederalProtectedAreaSustainableUsesArea": null,
+      "crossedForestManagementRuralPropertiesArea": null,
+      "crossedForestManagementRuralPropertiesList": null,
+      "crossedForestManagementsActivities": null,
+      "crossedForestManagementsArea": null,
+      "crossedForestManagementsCategories": null,
+      "crossedForestManagementsList": null,
+      "crossedGeoparks": null,
+      "crossedGeoparksArea": null,
+      "crossedGeoparksIds": null,
+      "crossedIndigenousLands": null,
+      "crossedIndigenousLandsArea": 0.0,
+      "crossedIndigenousLandsIds": null,
+      "crossedIndigenousLandsList": null,
+      "crossedLegalReserveRuralPropertiesArea": 8.697518,
+      "crossedLegalReserveRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 8.697518,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        }
+      ],
+      "crossedLegalReserveRuralPropertiesTotal": 1,
+      "crossedLegalReserves": [
+        {
+          "legalReserveId": 41568,
+          "legalReserveVersion": 4,
+          "ruralPropertyId": 4712261,
+          "totalAreaHa": null
+        }
+      ],
+      "crossedLegalReservesArea": 8.697518,
+      "crossedLegalReservesList": [
+        {
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 8.697518,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        }
+      ],
+      "crossedLegalReservesTotal": 1,
+      "crossedMunicipalityProtectedAreaIntegralProtections": null,
+      "crossedMunicipalityProtectedAreaIntegralProtectionsArea": null,
+      "crossedMunicipalityProtectedAreaSustainableUses": null,
+      "crossedMunicipalityProtectedAreaSustainableUsesArea": null,
+      "crossedPermanentProtectedArea": null,
+      "crossedPermanentProtectedAreaList": null,
+      "crossedPermanentProtectedAreaTotal": null,
+      "crossedPermanentProtectedList": null,
+      "crossedPermanentProtectedRuralPropertiesArea": null,
+      "crossedPermanentProtectedRuralPropertiesList": null,
+      "crossedPermanentProtectedRuralPropertiesTotal": null,
+      "crossedQuilombos": null,
+      "crossedQuilombosArea": 0.0,
+      "crossedQuilombosIds": null,
+      "crossedQuilombosList": null,
+      "crossedRiverSourcesArea": null,
+      "crossedRuralProperties": [
+        {
+          "afterDeforestationSimplifiedImage": "https://image.alerta.mapbiomas.org/image/alert/624440/after_deforestation_simplified.png",
+          "alertAreaInCar": 8.69752,
+          "alertGeometryCode": "1473331",
+          "alertInPropertyImage": "https://image.alerta.mapbiomas.org/image/alert/624440/rural_property/4712261/alert_context.png",
+          "areaHa": 10797.3182,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "id": 4712261,
+          "insertedAt": null,
+          "layerImage": "https://image.alerta.mapbiomas.org/image/alert/624440/all.png",
+          "propertyInStateImage": "https://image.alerta.mapbiomas.org/image/alert/624440/location.png",
+          "type": "SICAR_AST",
+          "updatedAt": null,
+          "version": 4
+        }
+      ],
+      "crossedSettlements": [
+        "PA LARANJEIRA I"
+      ],
+      "crossedSettlementsArea": 8.6975178,
+      "crossedSettlementsIds": [
+        84979
+      ],
+      "crossedSettlementsList": [
+        {
+          "name": "PA LARANJEIRA I",
+          "source": "Assentamento",
+          "area_ha": 8.6975178
+        }
+      ],
+      "crossedSettlementsRuralPropertiesArea": null,
+      "crossedSettlementsRuralPropertiesList": null,
+      "crossedSettlementsRuralPropertiesTotal": 0,
+      "crossedSpecialTerritories": [
+        "Amazônia Legal"
+      ],
+      "crossedSpecialTerritoriesArea": 8.6975178,
+      "crossedSpecialTerritoriesIds": [
+        32833
+      ],
+      "crossedSpecialTerritoryAmacroArea": null,
+      "crossedSpecialTerritoryAmazoniaLegalArea": 8.6975178,
+      "crossedSpecialTerritoryLeiDaMataAtlanticaArea": null,
+      "crossedSpecialTerritoryMatopibaArea": null,
+      "crossedSpecialTerritorySemiaridoArea": null,
+      "crossedStateProtectedAreaIntegralProtections": null,
+      "crossedStateProtectedAreaIntegralProtectionsArea": null,
+      "crossedStateProtectedAreaSustainableUses": null,
+      "crossedStateProtectedAreaSustainableUsesArea": null,
+      "crossedStates": [
+        "MATO GROSSO"
+      ],
+      "crossedStatesArea": 8.6975178,
+      "crossedStatesIds": [
+        18397
+      ],
+      "crossedStatesList": [
+        {
+          "name": "MATO GROSSO",
+          "source": "Estado",
+          "area_ha": 8.6975178
+        }
+      ],
+      "crossedTerritoriesIds": [
+        14627,
+        33102,
+        18397,
+        36687,
+        14672,
+        32833,
+        54512,
+        32887,
+        30626,
+        18426,
+        16479,
+        84979
+      ],
+      "crossedWatersheds": [
+        "PARAGUAI"
+      ],
+      "crossedWatershedsArea": 8.6975178,
+      "crossedWatershedsIds": [
+        14627
+      ],
+      "crossedWatershedsList": [
+        {
+          "name": "PARAGUAI",
+          "source": "Bacia Nível 1",
+          "area_ha": 8.6975178
+        }
+      ],
+      "datum": "SIRGAS 2000, EPSG 4674",
+      "deforestationClasses": [
+        "agriculture"
+      ],
+      "deforestationSpeed": "109",
+      "detectedAt": "2022-08-31",
+      "embargoedAreasIds": [
+        874506
+      ],
+      "exclusionCategories": [
+        "settlement"
+      ],
+      "geometryWkt": "MULTIPOLYGON(((-57.53765630758656 -16.62751674085601,-57.53717200365949 -16.628664208702265,-57.53721321954083 -16.628768634942507,-57.53794552786171 -16.629017837177457,-57.539202210416946 -16.629176143121178,-57.53954466477953 -16.629379693099953,-57.53993387654976 -16.62933273971621,-57.541210984174846 -16.62955131231574,-57.541311003270046 -16.6295143971348,-57.541131943278465 -16.627807764564913,-57.54071065267859 -16.627641495545888,-57.539672358110835 -16.62785424811162,-57.53880673468268 -16.62780423436349,-57.538248331318435 -16.627464197764088,-57.5379971948443 -16.627595524989204,-57.53778115198865 -16.627462665912553,-57.53765630758656 -16.62751674085601)),((-57.538787374734184 -16.626634357185125,-57.538933229346426 -16.626832541311117,-57.53908689324931 -16.626677676189242,-57.538909699389755 -16.62650488091591,-57.538787374734184 -16.626634357185125)),((-57.55151497547279 -16.62726873710302,-57.551602969634516 -16.627316213303097,-57.55189046638305 -16.627235054883513,-57.55189407264961 -16.62699545865133,-57.552050585788116 -16.62683700666684,-57.552043916079946 -16.62662968079321,-57.55235406822864 -16.62617775643011,-57.55225858862737 -16.625941083777168,-57.55243796391762 -16.62559730270037,-57.55233218844152 -16.62538415411012,-57.55184072085179 -16.625346350158114,-57.55165047711701 -16.625134866665466,-57.551537922622686 -16.62520645910354,-57.551583336508344 -16.625486296016298,-57.55178395893045 -16.625522152225503,-57.55186504874867 -16.62572460094126,-57.55165118318147 -16.625923358493008,-57.55166584010613 -16.626609605853513,-57.55142988453808 -16.627003577709456,-57.55151497547279 -16.62726873710302)),((-57.53873906261622 -16.625905734562775,-57.53896556075904 -16.62601254159684,-57.539060166586204 -16.62597697735286,-57.53923571371924 -16.625631217380995,-57.539136767195956 -16.625365128442336,-57.53878303764009 -16.625235280921103,-57.538692118436146 -16.625283885113614,-57.5385548106544 -16.625571362545156,-57.53873906261622 -16.625905734562775)))",
+      "id": 0,
+      "imageAcquiredAfterAt": "2022-08-13",
+      "imageAcquiredAfterList": {
+        "satellite": "2492",
+        "acquired_at": "2022-08-13T13:41:37",
+        "constellation": "PlanetScope"
+      },
+      "imageAcquiredBeboreList": {
+        "satellite": "247d",
+        "acquired_at": "2022-04-26T13:40:10",
+        "constellation": "PlanetScope"
+      },
+      "imageAcquiredBeforeAt": "2022-04-26",
+      "imageContext": {
+        "imageAllContext": "https://image.alerta.mapbiomas.org/image/alert/624440/all.png",
+        "imageStateContext": "https://image.alerta.mapbiomas.org/image/alert/624440/location.png"
+      },
+      "imagesLabels": [
+        {
+          "name": "APPs",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_apps_map"
+        },
+        {
+          "name": "Reservas Legais",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_legal_reserves_map"
+        },
+        {
+          "name": "Nascentes",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_river_sources_map"
+        },
+        {
+          "name": "Embargos",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:embargos_map"
+        },
+        {
+          "name": "Plano de Manejo Florestal",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:forest_managements"
+        },
+        {
+          "name": "Estados",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:states"
+        },
+        {
+          "name": "Limite da Propriedade",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_properties_map"
+        },
+        {
+          "name": "Alerta",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:MapAlerta_imovel"
+        },
+        {
+          "name": "Aut. de Supressão de Vegetação",
+          "thumbnailUrl": "http://plataforma.alerta.mapbiomas.org/assets/green-line-40dc5b0308872d402596e00ff9594101b0773fa7abff1f14bd54fdda275bb609.jpg"
+        }
+      ],
+      "legendLclu": [
+        {
+          "color": "#1F8D49",
+          "key": "forest-formation-bj6c2q",
+          "name": {
+            "en-US": "Forest Formation",
+            "es-ES": "Bosque",
+            "pt-BR": "Floresta"
+          },
+          "order": 0
+        },
+        {
+          "color": "#D6BC74",
+          "key": "herbaceous-and-shrubby-vegetation-se12jb",
+          "name": {
+            "en-US": "Herbaceous and Shrubby Vegetation",
+            "es-ES": "Vegetación Herbácea y Arbustiva",
+            "pt-BR": "Vegetação Herbácea e Arbustiva"
+          },
+          "order": 1
+        },
+        {
+          "color": "#FFEFC3",
+          "key": "agriculture-and-livestock-tum0ga",
+          "name": {
+            "en-US": "Agriculture and Livestock",
+            "es-ES": "Agropecuaria",
+            "pt-BR": "Agropecuária"
+          },
+          "order": 2
+        },
+        {
+          "color": "#D4271E",
+          "key": "non-vegetated-area-fa31yo",
+          "name": {
+            "en-US": "Non-vegetated Area",
+            "es-ES": "Área no Vegetada",
+            "pt-BR": "Área não vegetada"
+          },
+          "order": 3
+        },
+        {
+          "color": "#2532E4",
+          "key": "water-body-fyr9an",
+          "name": {
+            "en-US": "Water Body",
+            "es-ES": "Cuerpo de Agua",
+            "pt-BR": "Corpo D'água"
+          },
+          "order": 4
+        }
+      ],
+      "publicationCycles": 1,
+      "publicationCyclesList": [],
+      "publishedAt": "2022-10-28",
+      "publishedImages": [
+        {
+          "acquiredAt": "2022-04-26T13:40:10Z",
+          "constellation": "PlanetScope",
+          "fid": 1654150,
+          "location": "624440_before.tif",
+          "reference": "before",
+          "satellite": "247d",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/624440/rural_property/4712261/before_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/624440/rural_property/4712261/before_deforestation.png?size=medium"
+        },
+        {
+          "acquiredAt": "2022-08-13T13:41:37Z",
+          "constellation": "PlanetScope",
+          "fid": 1654157,
+          "location": "624440_after.tif",
+          "reference": "after",
+          "satellite": "2492",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/624440/rural_property/4712261/after_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/624440/rural_property/4712261/after_deforestation.png?size=medium"
+        }
+      ],
+      "republished": false,
+      "ruralProperties": [
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 4.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2025-09-26T20:14:22Z",
+          "stateAcronym": "MT",
+          "version": 4
+        },
+        {
+          "areaHa": 10800.83369,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 3.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2024-07-28T02:53:55Z",
+          "stateAcronym": "MT",
+          "version": 3
+        },
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 2.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2023-05-01T18:27:18Z",
+          "stateAcronym": "MT",
+          "version": 2
+        },
+        {
+          "areaHa": 10797.38894,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 1.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2020-02-07T14:51:09Z",
+          "stateAcronym": "MT",
+          "version": 1
+        }
+      ],
+      "ruralPropertiesCodes": [
+        "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+        "MT-5102504-A74326D9D8714574A656136D3F0262F8"
+      ],
+      "ruralPropertiesList": [
+        {
+          "id": 4712261,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "version": 4,
+          "type": "SICAR_AST",
+          "area": 10797.3182,
+          "intersection_area": 8.69752,
+          "alert_id": 624440,
+          "alert_code": 622952,
+          "alert_geometry_id": 1473331
+        },
+        {
+          "id": 8138417,
+          "code": "MT-5102504-A74326D9D8714574A656136D3F0262F8",
+          "version": 3,
+          "type": "SICAR_IRU",
+          "area": 105.42088,
+          "intersection_area": 8.60914,
+          "alert_id": 624440,
+          "alert_code": 622952,
+          "alert_geometry_id": 1473331
+        }
+      ],
+      "ruralPropertiesTotal": 2,
+      "sources": [
+        "SAD-PANTANAL"
+      ],
+      "statusAt": "2022-10-28",
+      "statusName": "published",
+      "supportCasesIds": null,
+      "warnings": {
+        "en": "Information based on available sources, subject to interpretation, its use is at the discretion of the user.",
+        "pt": "Informações baseadas nas fontes disponíveis, sujeitas a interpretação, seu uso fica a juízo do usuário."
+      }
+    },
+    {
+      "actionsList": null,
+      "actionsTypeIds": null,
+      "alertCode": 747059,
+      "alertGeometryId": 1150066,
+      "alertImageBbox": "BOX(-57.53559399995387 -16.570873999953864,-57.526066000046136 -16.561346000046132)",
+      "alertIntersections": [
+        {
+          "category": "special_territory",
+          "codes": [
+            32833
+          ],
+          "name": "TerraBrasilis",
+          "names": [
+            "Amazônia Legal"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "LEGAL_AMAZON"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            36687
+          ],
+          "name": "IBGE",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "BIOME"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            84979
+          ],
+          "name": "INCRA",
+          "names": [
+            "PA LARANJEIRA I"
+          ],
+          "total": 1,
+          "totalAreaHa": 4.2091871,
+          "type": "SETTLEMENT"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14672
+          ],
+          "name": "ANA",
+          "names": [
+            "Médio Paraguai"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14627
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            16479
+          ],
+          "name": "IBGE",
+          "names": [
+            "Cáceres"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "MUNICIPALITY"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            18397
+          ],
+          "name": "IBGE",
+          "names": [
+            "MATO GROSSO"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "STATE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            30626
+          ],
+          "name": "CNUC/MMA",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "BIOSPHERE_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            32887
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI 03"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "PNRH_LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            33102
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI PANT 01"
+          ],
+          "total": 1,
+          "totalAreaHa": 7.9642582,
+          "type": "PNRH_LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            54512
+          ],
+          "name": "MMA",
+          "names": [
+            "PA LARANJEIRA I (FPA-5102504-008-FH-190)"
+          ],
+          "total": 1,
+          "totalAreaHa": 4.2091864,
+          "type": "PUBLIC_FOREST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            4712261,
+            4712337
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750",
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 2,
+          "totalAreaHa": 7.75495,
+          "type": "SICAR_AST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            41554,
+            41568,
+            497859,
+            497859,
+            497859
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-6314E599624F4ACAB2D193D286961144",
+            "MT-5102504-6314E599624F4ACAB2D193D286961144",
+            "MT-5102504-6314E599624F4ACAB2D193D286961144",
+            "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750",
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 5,
+          "totalAreaHa": 7.991641,
+          "type": "LEGAL_RESERVE"
+        }
+      ],
+      "areaHa": 7.9643,
+      "bbox": "-57.54009973089478,-16.573859519894782,-57.52313770110521,-16.556897490105214",
+      "boundingBox": {
+        "neLat": -57.52313770110521,
+        "neLng": -16.556897490105214,
+        "simplified": [
+          -57.54009973089478,
+          -16.573859519894782,
+          -57.52313770110521,
+          -16.556897490105214
+        ],
+        "swLat": -57.54009973089478,
+        "swLng": -16.573859519894782
+      },
+      "categories": [
+        "refined_biome",
+        "biome_legacy_do_not_use",
+        "settlement",
+        "city",
+        "state",
+        "special_territory",
+        "biosphere_reserve",
+        "public_forest"
+      ],
+      "classesLabels": [
+        {
+          "colors": [
+            "#1f8d49",
+            "#7dbe75",
+            "#04381d",
+            "#007785",
+            "#02d659"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.forest_options.forest_formation",
+              "color": "#1f8d49"
+            },
+            {
+              "label": "classes_labels.forest_options.savanna_formation",
+              "color": "#7dbe75"
+            },
+            {
+              "label": "classes_labels.forest_options.mangrove",
+              "color": "#04381d"
+            },
+            {
+              "label": "classes_labels.forest_options.flooded_forest",
+              "color": "#007785"
+            },
+            {
+              "label": "classes_labels.forest_options.arboreal_restinga",
+              "color": "#02d659"
+            }
+          ],
+          "name": "classes_labels.forest"
+        },
+        {
+          "colors": [
+            "#7a8894",
+            "#d6bc74",
+            "#fc8114",
+            "#ffaa5f",
+            "#ad5100",
+            "#d89f5c"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_forest_options.flooded_field",
+              "color": "#7a8894"
+            },
+            {
+              "label": "classes_labels.non_forest_options.grassland_formation",
+              "color": "#d6bc74"
+            },
+            {
+              "label": "classes_labels.non_forest_options.apicum",
+              "color": "#fc8114"
+            },
+            {
+              "label": "classes_labels.non_forest_options.rocky_outcrop",
+              "color": "#ffaa5f"
+            },
+            {
+              "label": "classes_labels.non_forest_options.herbaceous_restinga",
+              "color": "#ad5100"
+            },
+            {
+              "label": "classes_labels.non_forest_options.other",
+              "color": "#d89f5c"
+            }
+          ],
+          "name": "classes_labels.non_forest"
+        },
+        {
+          "colors": [
+            "#edde8e",
+            "#e974ed",
+            "#7a5900",
+            "#ffefc3"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.agriculture_options.pasture",
+              "color": "#edde8e"
+            },
+            {
+              "label": "classes_labels.agriculture_options.agriculture",
+              "color": "#e974ed"
+            },
+            {
+              "label": "classes_labels.agriculture_options.forestry",
+              "color": "#7a5900"
+            },
+            {
+              "label": "classes_labels.agriculture_options.mosaic",
+              "color": "#ffefc3"
+            }
+          ],
+          "name": "classes_labels.agriculture"
+        },
+        {
+          "colors": [
+            "#ffa07a",
+            "#d4271e",
+            "#9c0027",
+            "#db4d4f"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_vegetated_options.beach",
+              "color": "#ffa07a"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.urbanized",
+              "color": "#d4271e"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.mining",
+              "color": "#9c0027"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.other",
+              "color": "#db4d4f"
+            }
+          ],
+          "name": "classes_labels.non_vegetated"
+        },
+        {
+          "colors": [
+            "#2532e4",
+            "#091077"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.water_body_options.river_lake_ocean",
+              "color": "#2532e4"
+            },
+            {
+              "label": "classes_labels.water_body_options.aquaculture",
+              "color": "#091077"
+            }
+          ],
+          "name": "classes_labels.water_body"
+        }
+      ],
+      "codes": null,
+      "coordenates": {
+        "latitude": -16.565282456288955,
+        "longitude": -57.531290747467196
+      },
+      "crossedBiomes": [
+        "Pantanal"
+      ],
+      "crossedBiomesArea": 7.9642582,
+      "crossedBiomesIds": [
+        36687
+      ],
+      "crossedBiomesList": [
+        {
+          "name": "Pantanal",
+          "source": "Bioma Refinado",
+          "area_ha": 7.9642582
+        }
+      ],
+      "crossedBiosphereReserves": [
+        "Pantanal"
+      ],
+      "crossedBiosphereReservesArea": 7.9642582,
+      "crossedBiosphereReservesIds": [
+        30626
+      ],
+      "crossedCities": [
+        "Cáceres"
+      ],
+      "crossedCitiesArea": 7.9642582,
+      "crossedCitiesIds": [
+        16479
+      ],
+      "crossedCitiesList": [
+        {
+          "name": "Cáceres",
+          "source": "Município",
+          "area_ha": 7.9642582
+        }
+      ],
+      "crossedConservationUnits": null,
+      "crossedConservationUnitsArea": null,
+      "crossedConservationUnitsIds": null,
+      "crossedConservationUnitsList": null,
+      "crossedDeforestationAuthorizationRuralPropertiesArea": null,
+      "crossedDeforestationAuthorizationRuralPropertiesList": null,
+      "crossedDeforestationAuthorizationsActivities": null,
+      "crossedDeforestationAuthorizationsArea": null,
+      "crossedDeforestationAuthorizationsAreasIds": null,
+      "crossedDeforestationAuthorizationsCategories": null,
+      "crossedDeforestationAuthorizationsList": null,
+      "crossedEmbargoesArea": null,
+      "crossedEmbargoesIds": null,
+      "crossedEmbargoesList": null,
+      "crossedEmbargoesRuralPropertiesArea": 46.34347,
+      "crossedEmbargoesRuralPropertiesIds": [
+        4712261,
+        4712337
+      ],
+      "crossedEmbargoesRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 12.41079,
+          "embargoed_id": 864316,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133537/2021"
+        },
+        {
+          "rural_property_id": 4712337,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750",
+          "intersection_area": 10.59705,
+          "embargoed_id": 868249,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "28124/2022"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 10.17953,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 9.21404,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 2.28839,
+          "embargoed_id": 873542,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133590/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 1.65367,
+          "embargoed_id": 865644,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1841001525"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesTotal": 6,
+      "crossedEmbargoesTotal": 0,
+      "crossedFederalProtectedAreaIntegralProtections": null,
+      "crossedFederalProtectedAreaIntegralProtectionsArea": null,
+      "crossedFederalProtectedAreaSustainableUses": null,
+      "crossedFederalProtectedAreaSustainableUsesArea": null,
+      "crossedForestManagementRuralPropertiesArea": null,
+      "crossedForestManagementRuralPropertiesList": null,
+      "crossedForestManagementsActivities": null,
+      "crossedForestManagementsArea": null,
+      "crossedForestManagementsCategories": null,
+      "crossedForestManagementsList": null,
+      "crossedGeoparks": null,
+      "crossedGeoparksArea": null,
+      "crossedGeoparksIds": null,
+      "crossedIndigenousLands": null,
+      "crossedIndigenousLandsArea": 0.0,
+      "crossedIndigenousLandsIds": null,
+      "crossedIndigenousLandsList": null,
+      "crossedLegalReserveRuralPropertiesArea": 7.694167,
+      "crossedLegalReserveRuralPropertiesList": [
+        {
+          "rural_property_id": 4712337,
+          "legal_reserve_id": 41554,
+          "legal_reserve_version": 4,
+          "intersection_area": 1.099929,
+          "rural_property_code": "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750"
+        },
+        {
+          "rural_property_id": 4712261,
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 6.438396,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        },
+        {
+          "rural_property_id": 8155183,
+          "legal_reserve_id": 497859,
+          "legal_reserve_version": 3,
+          "intersection_area": 0.155842,
+          "rural_property_code": "MT-5102504-6314E599624F4ACAB2D193D286961144"
+        }
+      ],
+      "crossedLegalReserveRuralPropertiesTotal": 3,
+      "crossedLegalReserves": [
+        {
+          "legalReserveId": 41554,
+          "legalReserveVersion": 4,
+          "ruralPropertyId": 4712337,
+          "totalAreaHa": null
+        },
+        {
+          "legalReserveId": 41568,
+          "legalReserveVersion": 4,
+          "ruralPropertyId": 4712261,
+          "totalAreaHa": null
+        },
+        {
+          "legalReserveId": 497859,
+          "legalReserveVersion": 3,
+          "ruralPropertyId": 8155183,
+          "totalAreaHa": null
+        }
+      ],
+      "crossedLegalReservesArea": 7.694167,
+      "crossedLegalReservesList": [
+        {
+          "legal_reserve_id": 41554,
+          "legal_reserve_version": 4,
+          "intersection_area": 1.099929,
+          "rural_property_code": "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750"
+        },
+        {
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 6.438396,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        },
+        {
+          "legal_reserve_id": 497859,
+          "legal_reserve_version": 3,
+          "intersection_area": 0.155842,
+          "rural_property_code": "MT-5102504-6314E599624F4ACAB2D193D286961144"
+        }
+      ],
+      "crossedLegalReservesTotal": 3,
+      "crossedMunicipalityProtectedAreaIntegralProtections": null,
+      "crossedMunicipalityProtectedAreaIntegralProtectionsArea": null,
+      "crossedMunicipalityProtectedAreaSustainableUses": null,
+      "crossedMunicipalityProtectedAreaSustainableUsesArea": null,
+      "crossedPermanentProtectedArea": null,
+      "crossedPermanentProtectedAreaList": null,
+      "crossedPermanentProtectedAreaTotal": null,
+      "crossedPermanentProtectedList": null,
+      "crossedPermanentProtectedRuralPropertiesArea": null,
+      "crossedPermanentProtectedRuralPropertiesList": null,
+      "crossedPermanentProtectedRuralPropertiesTotal": null,
+      "crossedQuilombos": null,
+      "crossedQuilombosArea": 0.0,
+      "crossedQuilombosIds": null,
+      "crossedQuilombosList": null,
+      "crossedRiverSourcesArea": null,
+      "crossedRuralProperties": [
+        {
+          "afterDeforestationSimplifiedImage": "https://image.alerta.mapbiomas.org/image/alert/748547/after_deforestation_simplified.png",
+          "alertAreaInCar": 6.55121,
+          "alertGeometryCode": "1150066",
+          "alertInPropertyImage": "https://image.alerta.mapbiomas.org/image/alert/748547/rural_property/4712261/alert_context.png",
+          "areaHa": 10797.3182,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "id": 4712261,
+          "insertedAt": null,
+          "layerImage": "https://image.alerta.mapbiomas.org/image/alert/748547/all.png",
+          "propertyInStateImage": "https://image.alerta.mapbiomas.org/image/alert/748547/location.png",
+          "type": "SICAR_AST",
+          "updatedAt": null,
+          "version": 4
+        }
+      ],
+      "crossedSettlements": [
+        "PA LARANJEIRA I"
+      ],
+      "crossedSettlementsArea": 4.2091871,
+      "crossedSettlementsIds": [
+        84979
+      ],
+      "crossedSettlementsList": [
+        {
+          "name": "PA LARANJEIRA I",
+          "source": "Assentamento",
+          "area_ha": 4.2091871
+        }
+      ],
+      "crossedSettlementsRuralPropertiesArea": null,
+      "crossedSettlementsRuralPropertiesList": null,
+      "crossedSettlementsRuralPropertiesTotal": 0,
+      "crossedSpecialTerritories": [
+        "Amazônia Legal"
+      ],
+      "crossedSpecialTerritoriesArea": 7.9642582,
+      "crossedSpecialTerritoriesIds": [
+        32833
+      ],
+      "crossedSpecialTerritoryAmacroArea": null,
+      "crossedSpecialTerritoryAmazoniaLegalArea": 7.9642582,
+      "crossedSpecialTerritoryLeiDaMataAtlanticaArea": null,
+      "crossedSpecialTerritoryMatopibaArea": null,
+      "crossedSpecialTerritorySemiaridoArea": null,
+      "crossedStateProtectedAreaIntegralProtections": null,
+      "crossedStateProtectedAreaIntegralProtectionsArea": null,
+      "crossedStateProtectedAreaSustainableUses": null,
+      "crossedStateProtectedAreaSustainableUsesArea": null,
+      "crossedStates": [
+        "MATO GROSSO"
+      ],
+      "crossedStatesArea": 7.9642582,
+      "crossedStatesIds": [
+        18397
+      ],
+      "crossedStatesList": [
+        {
+          "name": "MATO GROSSO",
+          "source": "Estado",
+          "area_ha": 7.9642582
+        }
+      ],
+      "crossedTerritoriesIds": [
+        33102,
+        16479,
+        84979,
+        32833,
+        14627,
+        30626,
+        18426,
+        32887,
+        36687,
+        18397,
+        14672,
+        54512
+      ],
+      "crossedWatersheds": [
+        "PARAGUAI"
+      ],
+      "crossedWatershedsArea": 7.9642582,
+      "crossedWatershedsIds": [
+        14627
+      ],
+      "crossedWatershedsList": [
+        {
+          "name": "PARAGUAI",
+          "source": "Bacia Nível 1",
+          "area_ha": 7.9642582
+        }
+      ],
+      "datum": "SIRGAS 2000, EPSG 4674",
+      "deforestationClasses": [
+        "agriculture"
+      ],
+      "deforestationSpeed": "78",
+      "detectedAt": "2022-11-01",
+      "embargoedAreasIds": null,
+      "exclusionCategories": [
+        "settlement"
+      ],
+      "geometryWkt": "MULTIPOLYGON(((-57.533321024 -16.568419302,-57.533006613 -16.568392353,-57.532925765 -16.568500151,-57.533060512 -16.56855405,-57.533177293 -16.568877443,-57.533967811 -16.568580999,-57.533904929 -16.567961162,-57.533545602 -16.568203707,-57.533536619 -16.567961162,-57.533374923 -16.568015061,-57.533347973 -16.567853364,-57.533033563 -16.568230656,-57.533177293 -16.568365404,-57.533347973 -16.568311505,-57.533321024 -16.568419302)),((-57.529089959 -16.565796222,-57.528955211 -16.565823171,-57.528811481 -16.566155548,-57.528955211 -16.566182497,-57.528955211 -16.566398093,-57.529152841 -16.566505891,-57.529063009 -16.56655979,-57.529152841 -16.566721487,-57.529512167 -16.566883183,-57.529826577 -16.566802335,-57.529772678 -16.566694537,-57.529934375 -16.566640638,-57.530024207 -16.566721487,-57.530078105 -16.56655979,-57.53037455 -16.566416059,-57.530554213 -16.566469958,-57.530608112 -16.566335211,-57.531120151 -16.566065716,-57.531281848 -16.566200464,-57.531254899 -16.566119615,-57.531398629 -16.566092666,-57.531371679 -16.565957919,-57.531281848 -16.566038767,-57.531371679 -16.56587707,-57.531569309 -16.565850121,-57.531623208 -16.566011818,-57.532943731 -16.565409946,-57.53302458 -16.56524825,-57.532800001 -16.565275199,-57.532746102 -16.565167401,-57.53302458 -16.564978755,-57.53282695 -16.565005704,-57.532746102 -16.564897907,-57.532629321 -16.565032654,-57.532521523 -16.564924856,-57.532323894 -16.565005704,-57.532602371 -16.56473621,-57.532521523 -16.564574513,-57.532296944 -16.564574513,-57.532575422 -16.564322985,-57.532350843 -16.564412816,-57.532404742 -16.563972642,-57.532153214 -16.564242136,-57.532180163 -16.564520614,-57.532045416 -16.564682311,-57.531731006 -16.564763159,-57.531901686 -16.564844008,-57.531901686 -16.565113502,-57.531677107 -16.565113502,-57.531560326 -16.564924856,-57.531613408165285 -16.564790109,-57.531452528 -16.564790109,-57.531308797 -16.564978755,-57.53117405 -16.565365031,-57.530976421 -16.565472828,-57.53100337 -16.565850121,-57.530751842 -16.565796222,-57.530554213 -16.565984868,-57.530105055 -16.566092666,-57.530248785 -16.565957919,-57.530212853 -16.565850121,-57.530356583 -16.565796222,-57.530248785 -16.565715373,-57.530024207 -16.565823171,-57.529853527 -16.565580626,-57.529961324 -16.565472828,-57.529880476 -16.565365031,-57.530015223 -16.565445879,-57.530239802 -16.565418929,-57.530275735 -16.565311132,-57.530464381 -16.56539198,-57.530500314 -16.565203334,-57.530581162 -16.565311132,-57.530913539 -16.565194351,-57.531084219 -16.565284182,-57.53100337 -16.565059603,-57.531452528 -16.564763159,-57.531362696 -16.56470926,-57.531425578 -16.564547564,-57.531650157 -16.564574513,-57.531784905 -16.564412816,-57.531982534 -16.563864844,-57.531811854 -16.563891793,-57.531838803 -16.563622299,-57.531560326 -16.563757046,-57.531479477 -16.5635684,-57.531668124 -16.563460602,-57.531811854 -16.5635684,-57.531928635 -16.563433653,-57.532036433 -16.5635684,-57.532009483 -16.563137209,-57.531865753 -16.563110259,-57.531865753 -16.562975512,-57.530293701 -16.564305018,-57.530105055 -16.56470926,-57.529844544 -16.564763159,-57.529736746 -16.565257233,-57.529682847 -16.564987738,-57.529566066 -16.564987738,-57.529395386 -16.565230283,-57.529655897 -16.565203334,-57.529682847 -16.565445879,-57.529314537 -16.56539198,-57.529287588 -16.565688424,-57.529404369 -16.565715373,-57.529089959 -16.565796222),(-57.530105055 -16.566092666,-57.530185903 -16.566254363,-57.530383533 -16.566254363,-57.530356583 -16.56636216,-57.529907426 -16.566290295,-57.529853527 -16.566505891,-57.529709796 -16.566478941,-57.529826577 -16.566425043,-57.529763695 -16.566236396,-57.529853527 -16.566011818,-57.530105055 -16.566092666),(-57.530239802 -16.56473621,-57.530293701 -16.564493665,-57.530437432 -16.564439766,-57.530437432 -16.564574513,-57.530581162 -16.564278069,-57.53085964 -16.564197221,-57.53066201 -16.564628412,-57.530491331 -16.564547564,-57.530437432 -16.564763159,-57.530239802 -16.56473621),(-57.529512167 -16.566236396,-57.529709796 -16.566317245,-57.529628948 -16.56655979,-57.529736746 -16.566640638,-57.529404369 -16.566398093,-57.529287588 -16.566425043,-57.529314537 -16.566263346,-57.529512167 -16.566236396)),((-57.531613408165285 -16.564790109,-57.531650157 -16.564790109,-57.531677107 -16.564628412,-57.531613408165285 -16.564790109)),((-57.532117281 -16.562454489,-57.532458641 -16.562589236,-57.532539489 -16.56240059,-57.53268322 -16.562508388,-57.532934748 -16.562373641,-57.532961698 -16.562508388,-57.532988647 -16.562373641,-57.532764068 -16.562211944,-57.53268322 -16.562319742,-57.532395759 -16.562211944,-57.532261012 -16.56242754,-57.532117281 -16.562454489)),((-57.534425951 -16.561879567,-57.534057642 -16.562041264,-57.533725266 -16.561987365,-57.533725266 -16.562158045,-57.533437805 -16.562373641,-57.533356956 -16.562292792,-57.533554586 -16.562131095,-57.533330007 -16.562158045,-57.533078479 -16.562562287,-57.534282221 -16.562095163,-57.534425951 -16.561879567)))",
+      "id": 0,
+      "imageAcquiredAfterAt": "2022-10-29",
+      "imageAcquiredAfterList": {
+        "satellite": "2474",
+        "acquired_at": "2022-10-29T13:42:31",
+        "constellation": "PlanetScope"
+      },
+      "imageAcquiredBeboreList": {
+        "satellite": "2486",
+        "acquired_at": "2022-08-12T13:39:54",
+        "constellation": "PlanetScope"
+      },
+      "imageAcquiredBeforeAt": "2022-08-12",
+      "imageContext": {
+        "imageAllContext": "https://image.alerta.mapbiomas.org/image/alert/748547/all.png",
+        "imageStateContext": "https://image.alerta.mapbiomas.org/image/alert/748547/location.png"
+      },
+      "imagesLabels": [
+        {
+          "name": "APPs",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_apps_map"
+        },
+        {
+          "name": "Reservas Legais",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_legal_reserves_map"
+        },
+        {
+          "name": "Nascentes",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_river_sources_map"
+        },
+        {
+          "name": "Embargos",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:embargos_map"
+        },
+        {
+          "name": "Plano de Manejo Florestal",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:forest_managements"
+        },
+        {
+          "name": "Estados",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:states"
+        },
+        {
+          "name": "Limite da Propriedade",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_properties_map"
+        },
+        {
+          "name": "Alerta",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:MapAlerta_imovel"
+        },
+        {
+          "name": "Aut. de Supressão de Vegetação",
+          "thumbnailUrl": "http://plataforma.alerta.mapbiomas.org/assets/green-line-40dc5b0308872d402596e00ff9594101b0773fa7abff1f14bd54fdda275bb609.jpg"
+        }
+      ],
+      "legendLclu": [
+        {
+          "color": "#1F8D49",
+          "key": "forest-formation-bj6c2q",
+          "name": {
+            "en-US": "Forest Formation",
+            "es-ES": "Bosque",
+            "pt-BR": "Floresta"
+          },
+          "order": 0
+        },
+        {
+          "color": "#D6BC74",
+          "key": "herbaceous-and-shrubby-vegetation-se12jb",
+          "name": {
+            "en-US": "Herbaceous and Shrubby Vegetation",
+            "es-ES": "Vegetación Herbácea y Arbustiva",
+            "pt-BR": "Vegetação Herbácea e Arbustiva"
+          },
+          "order": 1
+        },
+        {
+          "color": "#FFEFC3",
+          "key": "agriculture-and-livestock-tum0ga",
+          "name": {
+            "en-US": "Agriculture and Livestock",
+            "es-ES": "Agropecuaria",
+            "pt-BR": "Agropecuária"
+          },
+          "order": 2
+        },
+        {
+          "color": "#D4271E",
+          "key": "non-vegetated-area-fa31yo",
+          "name": {
+            "en-US": "Non-vegetated Area",
+            "es-ES": "Área no Vegetada",
+            "pt-BR": "Área não vegetada"
+          },
+          "order": 3
+        },
+        {
+          "color": "#2532E4",
+          "key": "water-body-fyr9an",
+          "name": {
+            "en-US": "Water Body",
+            "es-ES": "Cuerpo de Agua",
+            "pt-BR": "Corpo D'água"
+          },
+          "order": 4
+        }
+      ],
+      "publicationCycles": 1,
+      "publicationCyclesList": [
+        {
+          "cycle": 1,
+          "alert_geometry_id": 1150066
+        }
+      ],
+      "publishedAt": "2023-01-03",
+      "publishedImages": [
+        {
+          "acquiredAt": "2022-08-12T13:39:54Z",
+          "constellation": "PlanetScope",
+          "fid": 1641898,
+          "location": "748547_before.tif",
+          "reference": "before",
+          "satellite": "2486",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/748547/rural_property/4712261/before_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/748547/rural_property/4712261/before_deforestation.png?size=medium"
+        },
+        {
+          "acquiredAt": "2022-10-29T13:42:31Z",
+          "constellation": "PlanetScope",
+          "fid": 1641899,
+          "location": "748547_after.tif",
+          "reference": "after",
+          "satellite": "2474",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/748547/rural_property/4712261/after_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/748547/rural_property/4712261/after_deforestation.png?size=medium"
+        }
+      ],
+      "republished": false,
+      "ruralProperties": [
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 4.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2025-09-26T20:14:22Z",
+          "stateAcronym": "MT",
+          "version": 4
+        },
+        {
+          "areaHa": 10800.83369,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 3.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2024-07-28T02:53:55Z",
+          "stateAcronym": "MT",
+          "version": 3
+        },
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 2.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2023-05-01T18:27:18Z",
+          "stateAcronym": "MT",
+          "version": 2
+        },
+        {
+          "areaHa": 10797.38894,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 1.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2020-02-07T14:51:09Z",
+          "stateAcronym": "MT",
+          "version": 1
+        }
+      ],
+      "ruralPropertiesCodes": [
+        "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+        "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750"
+      ],
+      "ruralPropertiesList": [
+        {
+          "id": 4712261,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "version": 4,
+          "type": "SICAR_AST",
+          "area": 10797.3182,
+          "intersection_area": 6.55121,
+          "alert_id": 748547,
+          "alert_code": 747059,
+          "alert_geometry_id": 1150066
+        },
+        {
+          "id": 4712337,
+          "code": "MT-5102504-A05CD1CB283F46D7A718B2DA74E6C750",
+          "version": 4,
+          "type": "SICAR_AST",
+          "area": 1243.42927,
+          "intersection_area": 1.20374,
+          "alert_id": 748547,
+          "alert_code": 747059,
+          "alert_geometry_id": 1150066
+        }
+      ],
+      "ruralPropertiesTotal": 2,
+      "sources": [
+        "SAD"
+      ],
+      "statusAt": "2023-01-03",
+      "statusName": "published",
+      "supportCasesIds": null,
+      "warnings": {
+        "en": "Information based on available sources, subject to interpretation, its use is at the discretion of the user.",
+        "pt": "Informações baseadas nas fontes disponíveis, sujeitas a interpretação, seu uso fica a juízo do usuário."
+      }
+    },
+    {
+      "actionsList": null,
+      "actionsTypeIds": null,
+      "alertCode": 1012149,
+      "alertGeometryId": 2545426,
+      "alertImageBbox": "BOX(-57.565284986310864 -16.512067994238144,-57.55238793444004 -16.49917094236732)",
+      "alertIntersections": [
+        {
+          "category": "special_territory",
+          "codes": [
+            32833
+          ],
+          "name": "TerraBrasilis",
+          "names": [
+            "Amazônia Legal"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "LEGAL_AMAZON"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            36684
+          ],
+          "name": "IBGE",
+          "names": [
+            "Cerrado"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "BIOME"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            84979
+          ],
+          "name": "INCRA",
+          "names": [
+            "PA LARANJEIRA I"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "SETTLEMENT"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14672
+          ],
+          "name": "ANA",
+          "names": [
+            "Médio Paraguai"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14627
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            16479
+          ],
+          "name": "IBGE",
+          "names": [
+            "Cáceres"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "MUNICIPALITY"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            18397
+          ],
+          "name": "IBGE",
+          "names": [
+            "MATO GROSSO"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "STATE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            30626
+          ],
+          "name": "CNUC/MMA",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "BIOSPHERE_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            32887
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI 03"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "PNRH_LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            33102
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI PANT 01"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "PNRH_LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            54511
+          ],
+          "name": "MMA",
+          "names": [
+            "PA LARANJEIRA I (FPA-5102504-008-FH-190)"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.8680757,
+          "type": "PUBLIC_FOREST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            4712261
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.86808,
+          "type": "SICAR_AST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            41568
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 12.868076,
+          "type": "LEGAL_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            864316
+          ],
+          "name": "SEMA-MT",
+          "names": [
+            "133537/2021"
+          ],
+          "total": 1,
+          "totalAreaHa": 10.56717,
+          "type": "EMBARGOED_AREA"
+        }
+      ],
+      "areaHa": 12.8681,
+      "bbox": "-57.56769401489479,-16.51427901489478,-57.55073198510522,-16.49731698510521",
+      "boundingBox": {
+        "neLat": -57.55073198510522,
+        "neLng": -16.49731698510521,
+        "simplified": [
+          -57.56769401489479,
+          -16.51427901489478,
+          -57.55073198510522,
+          -16.49731698510521
+        ],
+        "swLat": -57.56769401489479,
+        "swLng": -16.51427901489478
+      },
+      "categories": [
+        "refined_biome",
+        "biome_legacy_do_not_use",
+        "settlement",
+        "city",
+        "state",
+        "special_territory",
+        "biosphere_reserve",
+        "public_forest"
+      ],
+      "classesLabels": [
+        {
+          "colors": [
+            "#1f8d49",
+            "#7dbe75",
+            "#04381d",
+            "#007785",
+            "#02d659"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.forest_options.forest_formation",
+              "color": "#1f8d49"
+            },
+            {
+              "label": "classes_labels.forest_options.savanna_formation",
+              "color": "#7dbe75"
+            },
+            {
+              "label": "classes_labels.forest_options.mangrove",
+              "color": "#04381d"
+            },
+            {
+              "label": "classes_labels.forest_options.flooded_forest",
+              "color": "#007785"
+            },
+            {
+              "label": "classes_labels.forest_options.arboreal_restinga",
+              "color": "#02d659"
+            }
+          ],
+          "name": "classes_labels.forest"
+        },
+        {
+          "colors": [
+            "#7a8894",
+            "#d6bc74",
+            "#fc8114",
+            "#ffaa5f",
+            "#ad5100",
+            "#d89f5c"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_forest_options.flooded_field",
+              "color": "#7a8894"
+            },
+            {
+              "label": "classes_labels.non_forest_options.grassland_formation",
+              "color": "#d6bc74"
+            },
+            {
+              "label": "classes_labels.non_forest_options.apicum",
+              "color": "#fc8114"
+            },
+            {
+              "label": "classes_labels.non_forest_options.rocky_outcrop",
+              "color": "#ffaa5f"
+            },
+            {
+              "label": "classes_labels.non_forest_options.herbaceous_restinga",
+              "color": "#ad5100"
+            },
+            {
+              "label": "classes_labels.non_forest_options.other",
+              "color": "#d89f5c"
+            }
+          ],
+          "name": "classes_labels.non_forest"
+        },
+        {
+          "colors": [
+            "#edde8e",
+            "#e974ed",
+            "#7a5900",
+            "#ffefc3"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.agriculture_options.pasture",
+              "color": "#edde8e"
+            },
+            {
+              "label": "classes_labels.agriculture_options.agriculture",
+              "color": "#e974ed"
+            },
+            {
+              "label": "classes_labels.agriculture_options.forestry",
+              "color": "#7a5900"
+            },
+            {
+              "label": "classes_labels.agriculture_options.mosaic",
+              "color": "#ffefc3"
+            }
+          ],
+          "name": "classes_labels.agriculture"
+        },
+        {
+          "colors": [
+            "#ffa07a",
+            "#d4271e",
+            "#9c0027",
+            "#db4d4f"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_vegetated_options.beach",
+              "color": "#ffa07a"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.urbanized",
+              "color": "#d4271e"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.mining",
+              "color": "#9c0027"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.other",
+              "color": "#db4d4f"
+            }
+          ],
+          "name": "classes_labels.non_vegetated"
+        },
+        {
+          "colors": [
+            "#2532e4",
+            "#091077"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.water_body_options.river_lake_ocean",
+              "color": "#2532e4"
+            },
+            {
+              "label": "classes_labels.water_body_options.aquaculture",
+              "color": "#091077"
+            }
+          ],
+          "name": "classes_labels.water_body"
+        }
+      ],
+      "codes": null,
+      "coordenates": {
+        "latitude": -16.505756684179243,
+        "longitude": -57.55915385282321
+      },
+      "crossedBiomes": [
+        "Cerrado"
+      ],
+      "crossedBiomesArea": 12.8680757,
+      "crossedBiomesIds": [
+        36684
+      ],
+      "crossedBiomesList": [
+        {
+          "name": "Cerrado",
+          "source": "Bioma Refinado",
+          "area_ha": 12.8680757
+        }
+      ],
+      "crossedBiosphereReserves": [
+        "Pantanal"
+      ],
+      "crossedBiosphereReservesArea": 12.8680757,
+      "crossedBiosphereReservesIds": [
+        30626
+      ],
+      "crossedCities": [
+        "Cáceres"
+      ],
+      "crossedCitiesArea": 12.8680757,
+      "crossedCitiesIds": [
+        16479
+      ],
+      "crossedCitiesList": [
+        {
+          "name": "Cáceres",
+          "source": "Município",
+          "area_ha": 12.8680757
+        }
+      ],
+      "crossedConservationUnits": null,
+      "crossedConservationUnitsArea": null,
+      "crossedConservationUnitsIds": null,
+      "crossedConservationUnitsList": null,
+      "crossedDeforestationAuthorizationRuralPropertiesArea": null,
+      "crossedDeforestationAuthorizationRuralPropertiesList": null,
+      "crossedDeforestationAuthorizationsActivities": null,
+      "crossedDeforestationAuthorizationsArea": null,
+      "crossedDeforestationAuthorizationsAreasIds": null,
+      "crossedDeforestationAuthorizationsCategories": null,
+      "crossedDeforestationAuthorizationsList": null,
+      "crossedEmbargoesArea": 10.56717,
+      "crossedEmbargoesIds": [
+        864316
+      ],
+      "crossedEmbargoesList": [
+        {
+          "intersection_area": 10.56717,
+          "embargoed_id": 864316,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133537/2021"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesArea": 35.74642,
+      "crossedEmbargoesRuralPropertiesIds": [
+        4712261
+      ],
+      "crossedEmbargoesRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 12.41079,
+          "embargoed_id": 864316,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133537/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 10.17953,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 9.21404,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 2.28839,
+          "embargoed_id": 873542,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133590/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 1.65367,
+          "embargoed_id": 865644,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1841001525"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesTotal": 5,
+      "crossedEmbargoesTotal": 1,
+      "crossedFederalProtectedAreaIntegralProtections": null,
+      "crossedFederalProtectedAreaIntegralProtectionsArea": null,
+      "crossedFederalProtectedAreaSustainableUses": null,
+      "crossedFederalProtectedAreaSustainableUsesArea": null,
+      "crossedForestManagementRuralPropertiesArea": null,
+      "crossedForestManagementRuralPropertiesList": null,
+      "crossedForestManagementsActivities": null,
+      "crossedForestManagementsArea": null,
+      "crossedForestManagementsCategories": null,
+      "crossedForestManagementsList": null,
+      "crossedGeoparks": null,
+      "crossedGeoparksArea": null,
+      "crossedGeoparksIds": null,
+      "crossedIndigenousLands": null,
+      "crossedIndigenousLandsArea": 0.0,
+      "crossedIndigenousLandsIds": null,
+      "crossedIndigenousLandsList": null,
+      "crossedLegalReserveRuralPropertiesArea": 12.868076,
+      "crossedLegalReserveRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 12.868076,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        }
+      ],
+      "crossedLegalReserveRuralPropertiesTotal": 1,
+      "crossedLegalReserves": [
+        {
+          "legalReserveId": 41568,
+          "legalReserveVersion": 4,
+          "ruralPropertyId": 4712261,
+          "totalAreaHa": null
+        }
+      ],
+      "crossedLegalReservesArea": 12.868076,
+      "crossedLegalReservesList": [
+        {
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 12.868076,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        }
+      ],
+      "crossedLegalReservesTotal": 1,
+      "crossedMunicipalityProtectedAreaIntegralProtections": null,
+      "crossedMunicipalityProtectedAreaIntegralProtectionsArea": null,
+      "crossedMunicipalityProtectedAreaSustainableUses": null,
+      "crossedMunicipalityProtectedAreaSustainableUsesArea": null,
+      "crossedPermanentProtectedArea": null,
+      "crossedPermanentProtectedAreaList": null,
+      "crossedPermanentProtectedAreaTotal": null,
+      "crossedPermanentProtectedList": null,
+      "crossedPermanentProtectedRuralPropertiesArea": null,
+      "crossedPermanentProtectedRuralPropertiesList": null,
+      "crossedPermanentProtectedRuralPropertiesTotal": null,
+      "crossedQuilombos": null,
+      "crossedQuilombosArea": 0.0,
+      "crossedQuilombosIds": null,
+      "crossedQuilombosList": null,
+      "crossedRiverSourcesArea": null,
+      "crossedRuralProperties": [
+        {
+          "afterDeforestationSimplifiedImage": "https://image.alerta.mapbiomas.org/image/alert/1017434/after_deforestation_simplified.png",
+          "alertAreaInCar": 12.86808,
+          "alertGeometryCode": "2545426",
+          "alertInPropertyImage": "https://image.alerta.mapbiomas.org/image/alert/1017434/rural_property/4712261/alert_context.png",
+          "areaHa": 10797.3182,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "id": 4712261,
+          "insertedAt": null,
+          "layerImage": "https://image.alerta.mapbiomas.org/image/alert/1017434/all.png",
+          "propertyInStateImage": "https://image.alerta.mapbiomas.org/image/alert/1017434/location.png",
+          "type": "SICAR_AST",
+          "updatedAt": null,
+          "version": 4
+        }
+      ],
+      "crossedSettlements": [
+        "PA LARANJEIRA I"
+      ],
+      "crossedSettlementsArea": 12.8680757,
+      "crossedSettlementsIds": [
+        84979
+      ],
+      "crossedSettlementsList": [
+        {
+          "name": "PA LARANJEIRA I",
+          "source": "Assentamento",
+          "area_ha": 12.8680757
+        }
+      ],
+      "crossedSettlementsRuralPropertiesArea": null,
+      "crossedSettlementsRuralPropertiesList": null,
+      "crossedSettlementsRuralPropertiesTotal": 0,
+      "crossedSpecialTerritories": [
+        "Amazônia Legal"
+      ],
+      "crossedSpecialTerritoriesArea": 12.8680757,
+      "crossedSpecialTerritoriesIds": [
+        32833
+      ],
+      "crossedSpecialTerritoryAmacroArea": null,
+      "crossedSpecialTerritoryAmazoniaLegalArea": 12.8680757,
+      "crossedSpecialTerritoryLeiDaMataAtlanticaArea": null,
+      "crossedSpecialTerritoryMatopibaArea": null,
+      "crossedSpecialTerritorySemiaridoArea": null,
+      "crossedStateProtectedAreaIntegralProtections": null,
+      "crossedStateProtectedAreaIntegralProtectionsArea": null,
+      "crossedStateProtectedAreaSustainableUses": null,
+      "crossedStateProtectedAreaSustainableUsesArea": null,
+      "crossedStates": [
+        "MATO GROSSO"
+      ],
+      "crossedStatesArea": 12.8680757,
+      "crossedStatesIds": [
+        18397
+      ],
+      "crossedStatesList": [
+        {
+          "name": "MATO GROSSO",
+          "source": "Estado",
+          "area_ha": 12.8680757
+        }
+      ],
+      "crossedTerritoriesIds": [
+        32887,
+        30626,
+        18426,
+        14627,
+        84979,
+        16479,
+        32833,
+        14672,
+        18397,
+        54511,
+        36684,
+        33102
+      ],
+      "crossedWatersheds": [
+        "PARAGUAI"
+      ],
+      "crossedWatershedsArea": 12.8680757,
+      "crossedWatershedsIds": [
+        14627
+      ],
+      "crossedWatershedsList": [
+        {
+          "name": "PARAGUAI",
+          "source": "Bacia Nível 1",
+          "area_ha": 12.8680757
+        }
+      ],
+      "datum": "SIRGAS 2000, EPSG 4674",
+      "deforestationClasses": [
+        "agriculture"
+      ],
+      "deforestationSpeed": "281",
+      "detectedAt": "2021-08-14",
+      "embargoedAreasIds": [
+        864316
+      ],
+      "exclusionCategories": [
+        "settlement"
+      ],
+      "geometryWkt": "MULTIPOLYGON(((-57.5578 -16.502792,-57.558049 -16.502637,-57.558178 -16.502776,-57.558339 -16.502776,-57.55821 -16.502514,-57.558854 -16.50219,-57.558998 -16.502437,-57.559063 -16.502668,-57.55895 -16.502915,-57.559143 -16.503039,-57.559288 -16.503285,-57.559385 -16.503501,-57.559465 -16.503718,-57.559441 -16.503818,-57.559248 -16.503802,-57.559159 -16.503964,-57.559288 -16.504065,-57.559465 -16.504173,-57.559562 -16.504103,-57.559642 -16.504165,-57.559634 -16.504512,-57.559417 -16.504582,-57.559304 -16.504666,-57.559489 -16.504767,-57.559658 -16.50479,-57.559626 -16.504867,-57.559465 -16.504944,-57.55969 -16.504952,-57.559884 -16.505021,-57.559884 -16.505114,-57.559731 -16.505137,-57.559819 -16.505245,-57.560044 -16.505122,-57.560077 -16.505222,-57.559996 -16.505376,-57.560157 -16.505438,-57.560246 -16.505453,-57.560286 -16.5056,-57.560181 -16.505646,-57.560222 -16.505723,-57.560455 -16.505762,-57.560455 -16.505847,-57.560487 -16.505932,-57.56064 -16.505963,-57.560616 -16.506125,-57.560326 -16.506155,-57.560238 -16.506371,-57.560407 -16.506425,-57.560608 -16.506387,-57.560761 -16.506387,-57.560745 -16.506495,-57.560678 -16.506567,-57.560541 -16.50676,-57.560476 -16.506953,-57.560686 -16.506914,-57.560669 -16.507091,-57.560533 -16.507091,-57.560356 -16.507068,-57.560428 -16.507207,-57.560315 -16.507369,-57.560066 -16.50723,-57.559945 -16.507284,-57.559873 -16.507284,-57.559985 -16.507392,-57.560082 -16.507524,-57.560082 -16.507578,-57.560042 -16.507755,-57.560138 -16.507902,-57.560267 -16.507925,-57.560396 -16.507832,-57.560404 -16.507624,-57.560452 -16.507416,-57.560541 -16.507315,-57.56075 -16.507215,-57.560806 -16.507246,-57.560653 -16.5074,-57.560541 -16.507539,-57.560549 -16.507817,-57.560468 -16.508033,-57.560364 -16.508133,-57.560256 -16.508277,-57.560216 -16.508076,-57.560128 -16.508076,-57.559991 -16.508292,-57.5602 -16.5084,-57.560385 -16.508308,-57.560578 -16.508285,-57.560715 -16.508346,-57.560812 -16.508254,-57.560965 -16.508262,-57.561029 -16.50837,-57.560956 -16.508485,-57.560828 -16.508501,-57.560675 -16.508547,-57.560627 -16.508686,-57.560482 -16.508748,-57.560313 -16.508748,-57.560281 -16.508817,-57.560128 -16.508856,-57.560023 -16.508987,-57.559846 -16.50894,-57.559741 -16.508848,-57.559613 -16.508794,-57.559548 -16.50891,-57.559403 -16.50894,-57.559387 -16.509079,-57.559401 -16.509198,-57.559433 -16.509306,-57.559256 -16.509406,-57.559039 -16.509329,-57.559232 -16.50912,-57.5592 -16.509023,-57.559149 -16.508938,-57.559159 -16.508745,-57.559015 -16.50866,-57.559055 -16.508493,-57.558838 -16.508526,-57.55891 -16.508287,-57.559031 -16.508372,-57.558878 -16.508033,-57.558749 -16.507855,-57.558813 -16.507632,-57.558813 -16.507539,-57.55858 -16.507508,-57.558615 -16.507282,-57.558736 -16.507058,-57.558728 -16.506839,-57.559052 -16.506999,-57.559299 -16.50695,-57.559084 -16.506683,-57.558848 -16.506667,-57.558787 -16.506461,-57.55877 -16.506297,-57.558427 -16.506261,-57.558604 -16.506158,-57.558483 -16.505919,-57.558414 -16.505674,-57.558374 -16.505443,-57.558178 -16.505412,-57.558156 -16.505258,-57.558306 -16.505011,-57.558226 -16.504831,-57.558226 -16.504623,-57.558129 -16.504535,-57.557901 -16.504576,-57.557735 -16.504365,-57.557824 -16.504167,-57.557655 -16.504126,-57.557526 -16.503926,-57.557789 -16.503833,-57.557867 -16.503553,-57.557682 -16.503473,-57.55755 -16.503455,-57.557657 -16.503339,-57.55755 -16.503303,-57.557397 -16.503175,-57.557561 -16.503167,-57.557612 -16.502951,-57.5578 -16.502792)),((-57.557542 -16.505314,-57.557928 -16.505345,-57.558033 -16.50543,-57.55817 -16.505569,-57.558226 -16.505808,-57.558242 -16.506024,-57.558105 -16.506078,-57.557944 -16.506047,-57.557968 -16.505824,-57.558017 -16.505708,-57.557872 -16.505577,-57.557663 -16.505546,-57.557542 -16.505314)),((-57.558137 -16.506611,-57.558137 -16.506271,-57.558331 -16.506271,-57.558443 -16.506425,-57.558427 -16.506557,-57.558274 -16.506634,-57.558137 -16.506611)),((-57.558298 -16.507143,-57.558194 -16.506796,-57.5585 -16.506791,-57.5585 -16.506983,-57.558435 -16.507099,-57.558355 -16.507145,-57.558298 -16.507143)))",
+      "id": 0,
+      "imageAcquiredAfterAt": "2021-02-23",
+      "imageAcquiredAfterList": {
+        "satellite": "2212",
+        "acquired_at": "2021-02-23T13:17:48",
+        "constellation": "PlanetScope"
+      },
+      "imageAcquiredBeboreList": {
+        "satellite": "1069",
+        "acquired_at": "2020-05-18T14:52:14",
+        "constellation": "PlanetScope"
+      },
+      "imageAcquiredBeforeAt": "2020-05-18",
+      "imageContext": {
+        "imageAllContext": "https://image.alerta.mapbiomas.org/image/alert/1017434/all.png",
+        "imageStateContext": "https://image.alerta.mapbiomas.org/image/alert/1017434/location.png"
+      },
+      "imagesLabels": [
+        {
+          "name": "APPs",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_apps_map"
+        },
+        {
+          "name": "Reservas Legais",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_legal_reserves_map"
+        },
+        {
+          "name": "Nascentes",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_river_sources_map"
+        },
+        {
+          "name": "Embargos",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:embargos_map"
+        },
+        {
+          "name": "Plano de Manejo Florestal",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:forest_managements"
+        },
+        {
+          "name": "Estados",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:states"
+        },
+        {
+          "name": "Limite da Propriedade",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_properties_map"
+        },
+        {
+          "name": "Alerta",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:MapAlerta_imovel"
+        },
+        {
+          "name": "Aut. de Supressão de Vegetação",
+          "thumbnailUrl": "http://plataforma.alerta.mapbiomas.org/assets/green-line-40dc5b0308872d402596e00ff9594101b0773fa7abff1f14bd54fdda275bb609.jpg"
+        }
+      ],
+      "legendLclu": [
+        {
+          "color": "#1F8D49",
+          "key": "forest-formation-bj6c2q",
+          "name": {
+            "en-US": "Forest Formation",
+            "es-ES": "Bosque",
+            "pt-BR": "Floresta"
+          },
+          "order": 0
+        },
+        {
+          "color": "#D6BC74",
+          "key": "herbaceous-and-shrubby-vegetation-se12jb",
+          "name": {
+            "en-US": "Herbaceous and Shrubby Vegetation",
+            "es-ES": "Vegetación Herbácea y Arbustiva",
+            "pt-BR": "Vegetação Herbácea e Arbustiva"
+          },
+          "order": 1
+        },
+        {
+          "color": "#FFEFC3",
+          "key": "agriculture-and-livestock-tum0ga",
+          "name": {
+            "en-US": "Agriculture and Livestock",
+            "es-ES": "Agropecuaria",
+            "pt-BR": "Agropecuária"
+          },
+          "order": 2
+        },
+        {
+          "color": "#D4271E",
+          "key": "non-vegetated-area-fa31yo",
+          "name": {
+            "en-US": "Non-vegetated Area",
+            "es-ES": "Área no Vegetada",
+            "pt-BR": "Área não vegetada"
+          },
+          "order": 3
+        },
+        {
+          "color": "#2532E4",
+          "key": "water-body-fyr9an",
+          "name": {
+            "en-US": "Water Body",
+            "es-ES": "Cuerpo de Agua",
+            "pt-BR": "Corpo D'água"
+          },
+          "order": 4
+        }
+      ],
+      "publicationCycles": 1,
+      "publicationCyclesList": [
+        {
+          "cycle": 2,
+          "alert_geometry_id": 2545426
+        }
+      ],
+      "publishedAt": "2026-07-28",
+      "publishedImages": [
+        {
+          "acquiredAt": "2021-02-23T13:17:48Z",
+          "constellation": "PlanetScope",
+          "fid": 2455068,
+          "location": "1017434_after.tif",
+          "reference": "after",
+          "satellite": "2212",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/1017434/rural_property/4712261/after_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/1017434/rural_property/4712261/after_deforestation.png?size=medium"
+        },
+        {
+          "acquiredAt": "2020-05-18T14:52:14Z",
+          "constellation": "PlanetScope",
+          "fid": 2455069,
+          "location": "1017434_before.tif",
+          "reference": "before",
+          "satellite": "1069",
+          "url": "https://image.alerta.mapbiomas.org/image/alert/1017434/rural_property/4712261/before_deforestation.png",
+          "urlMedium": "https://image.alerta.mapbiomas.org/image/alert/1017434/rural_property/4712261/before_deforestation.png?size=medium"
+        }
+      ],
+      "republished": false,
+      "ruralProperties": [
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 4.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2025-09-26T20:14:22Z",
+          "stateAcronym": "MT",
+          "version": 4
+        },
+        {
+          "areaHa": 10800.83369,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 3.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2024-07-28T02:53:55Z",
+          "stateAcronym": "MT",
+          "version": 3
+        },
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 2.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2023-05-01T18:27:18Z",
+          "stateAcronym": "MT",
+          "version": 2
+        },
+        {
+          "areaHa": 10797.38894,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 1.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2020-02-07T14:51:09Z",
+          "stateAcronym": "MT",
+          "version": 1
+        }
+      ],
+      "ruralPropertiesCodes": [
+        "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+      ],
+      "ruralPropertiesList": [
+        {
+          "id": 4712261,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "version": 4,
+          "type": "SICAR_AST",
+          "area": 10797.3182,
+          "intersection_area": 12.86808,
+          "alert_id": 1017434,
+          "alert_code": 1012149,
+          "alert_geometry_id": 2545426
+        }
+      ],
+      "ruralPropertiesTotal": 1,
+      "sources": [
+        "PRODES-CERR"
+      ],
+      "statusAt": "2026-07-28",
+      "statusName": "published",
+      "supportCasesIds": null,
+      "warnings": {
+        "en": "Information based on available sources, subject to interpretation, its use is at the discretion of the user.",
+        "pt": "Informações baseadas nas fontes disponíveis, sujeitas a interpretação, seu uso fica a juízo do usuário."
+      }
+    },
+    {
+      "actionsList": null,
+      "actionsTypeIds": null,
+      "alertCode": 1662802,
+      "alertGeometryId": 2669868,
+      "alertImageBbox": "BOX(-57.592056683509625 -16.635167830643354,-57.56642376190332 -16.609534909037052)",
+      "alertIntersections": [
+        {
+          "category": "special_territory",
+          "codes": [
+            32833
+          ],
+          "name": "TerraBrasilis",
+          "names": [
+            "Amazônia Legal"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "LEGAL_AMAZON"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            36687
+          ],
+          "name": "IBGE",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "BIOME"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            84979
+          ],
+          "name": "INCRA",
+          "names": [
+            "PA LARANJEIRA I"
+          ],
+          "total": 1,
+          "totalAreaHa": 64.5485422,
+          "type": "SETTLEMENT"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14672
+          ],
+          "name": "ANA",
+          "names": [
+            "Médio Paraguai"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            14627
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            16479
+          ],
+          "name": "IBGE",
+          "names": [
+            "Cáceres"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "MUNICIPALITY"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            18397
+          ],
+          "name": "IBGE",
+          "names": [
+            "MATO GROSSO"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "STATE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            30626
+          ],
+          "name": "CNUC/MMA",
+          "names": [
+            "Pantanal"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "BIOSPHERE_RESERVE"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            32887
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI 03"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "PNRH_LEVEL_1_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            33102
+          ],
+          "name": "ANA",
+          "names": [
+            "PARAGUAI PANT 01"
+          ],
+          "total": 1,
+          "totalAreaHa": 67.5787445,
+          "type": "PNRH_LEVEL_2_BASIN"
+        },
+        {
+          "category": "territory",
+          "codes": [
+            54512
+          ],
+          "name": "MMA",
+          "names": [
+            "PA LARANJEIRA I (FPA-5102504-008-FH-190)"
+          ],
+          "total": 1,
+          "totalAreaHa": 64.5485439,
+          "type": "PUBLIC_FOREST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            8150541,
+            9508240,
+            9508292
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-CD83B409671B48FCA5CDE6E5140902BF",
+            "MT-5102504-F7A59C9735C34797BBB8677A0985F5E2",
+            "MT-5102504-FBA09C74C2DA4D37A537292984F679E9"
+          ],
+          "total": 3,
+          "totalAreaHa": 68.85685,
+          "type": "SICAR_IRU"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            4712261
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 1,
+          "totalAreaHa": 60.01613,
+          "type": "SICAR_AST"
+        },
+        {
+          "category": "rural_property",
+          "codes": [
+            41568,
+            41568,
+            3060224
+          ],
+          "name": "SICAR",
+          "names": [
+            "MT-5102504-F7A59C9735C34797BBB8677A0985F5E2",
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+            "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+          ],
+          "total": 3,
+          "totalAreaHa": 77.462199,
+          "type": "LEGAL_RESERVE"
+        }
+      ],
+      "areaHa": 67.5787,
+      "bbox": "-57.585056123768595,-16.632280536014417,-57.571484825613766,-16.61870923785958",
+      "boundingBox": {
+        "neLat": -57.571484825613766,
+        "neLng": -16.61870923785958,
+        "simplified": [
+          -57.585056123768595,
+          -16.632280536014417,
+          -57.571484825613766,
+          -16.61870923785958
+        ],
+        "swLat": -57.585056123768595,
+        "swLng": -16.632280536014417
+      },
+      "categories": [
+        "refined_biome",
+        "biome_legacy_do_not_use",
+        "settlement",
+        "city",
+        "state",
+        "special_territory",
+        "biosphere_reserve",
+        "public_forest"
+      ],
+      "classesLabels": [
+        {
+          "colors": [
+            "#1f8d49",
+            "#7dbe75",
+            "#04381d",
+            "#007785",
+            "#02d659"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.forest_options.forest_formation",
+              "color": "#1f8d49"
+            },
+            {
+              "label": "classes_labels.forest_options.savanna_formation",
+              "color": "#7dbe75"
+            },
+            {
+              "label": "classes_labels.forest_options.mangrove",
+              "color": "#04381d"
+            },
+            {
+              "label": "classes_labels.forest_options.flooded_forest",
+              "color": "#007785"
+            },
+            {
+              "label": "classes_labels.forest_options.arboreal_restinga",
+              "color": "#02d659"
+            }
+          ],
+          "name": "classes_labels.forest"
+        },
+        {
+          "colors": [
+            "#7a8894",
+            "#d6bc74",
+            "#fc8114",
+            "#ffaa5f",
+            "#ad5100",
+            "#d89f5c"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_forest_options.flooded_field",
+              "color": "#7a8894"
+            },
+            {
+              "label": "classes_labels.non_forest_options.grassland_formation",
+              "color": "#d6bc74"
+            },
+            {
+              "label": "classes_labels.non_forest_options.apicum",
+              "color": "#fc8114"
+            },
+            {
+              "label": "classes_labels.non_forest_options.rocky_outcrop",
+              "color": "#ffaa5f"
+            },
+            {
+              "label": "classes_labels.non_forest_options.herbaceous_restinga",
+              "color": "#ad5100"
+            },
+            {
+              "label": "classes_labels.non_forest_options.other",
+              "color": "#d89f5c"
+            }
+          ],
+          "name": "classes_labels.non_forest"
+        },
+        {
+          "colors": [
+            "#edde8e",
+            "#e974ed",
+            "#7a5900",
+            "#ffefc3"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.agriculture_options.pasture",
+              "color": "#edde8e"
+            },
+            {
+              "label": "classes_labels.agriculture_options.agriculture",
+              "color": "#e974ed"
+            },
+            {
+              "label": "classes_labels.agriculture_options.forestry",
+              "color": "#7a5900"
+            },
+            {
+              "label": "classes_labels.agriculture_options.mosaic",
+              "color": "#ffefc3"
+            }
+          ],
+          "name": "classes_labels.agriculture"
+        },
+        {
+          "colors": [
+            "#ffa07a",
+            "#d4271e",
+            "#9c0027",
+            "#db4d4f"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.non_vegetated_options.beach",
+              "color": "#ffa07a"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.urbanized",
+              "color": "#d4271e"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.mining",
+              "color": "#9c0027"
+            },
+            {
+              "label": "classes_labels.non_vegetated_options.other",
+              "color": "#db4d4f"
+            }
+          ],
+          "name": "classes_labels.non_vegetated"
+        },
+        {
+          "colors": [
+            "#2532e4",
+            "#091077"
+          ],
+          "colorsWithLabels": [
+            {
+              "label": "classes_labels.water_body_options.river_lake_ocean",
+              "color": "#2532e4"
+            },
+            {
+              "label": "classes_labels.water_body_options.aquaculture",
+              "color": "#091077"
+            }
+          ],
+          "name": "classes_labels.water_body"
+        }
+      ],
+      "codes": null,
+      "coordenates": {
+        "latitude": -16.625164427358417,
+        "longitude": -57.57839519666907
+      },
+      "crossedBiomes": [
+        "Pantanal"
+      ],
+      "crossedBiomesArea": 67.5787445,
+      "crossedBiomesIds": [
+        36687
+      ],
+      "crossedBiomesList": [
+        {
+          "name": "Pantanal",
+          "source": "Bioma Refinado",
+          "area_ha": 67.5787445
+        }
+      ],
+      "crossedBiosphereReserves": [
+        "Pantanal"
+      ],
+      "crossedBiosphereReservesArea": 67.5787445,
+      "crossedBiosphereReservesIds": [
+        30626
+      ],
+      "crossedCities": [
+        "Cáceres"
+      ],
+      "crossedCitiesArea": 67.5787445,
+      "crossedCitiesIds": [
+        16479
+      ],
+      "crossedCitiesList": [
+        {
+          "name": "Cáceres",
+          "source": "Município",
+          "area_ha": 67.5787445
+        }
+      ],
+      "crossedConservationUnits": null,
+      "crossedConservationUnitsArea": null,
+      "crossedConservationUnitsIds": null,
+      "crossedConservationUnitsList": null,
+      "crossedDeforestationAuthorizationRuralPropertiesArea": null,
+      "crossedDeforestationAuthorizationRuralPropertiesList": null,
+      "crossedDeforestationAuthorizationsActivities": null,
+      "crossedDeforestationAuthorizationsArea": null,
+      "crossedDeforestationAuthorizationsAreasIds": null,
+      "crossedDeforestationAuthorizationsCategories": null,
+      "crossedDeforestationAuthorizationsList": null,
+      "crossedEmbargoesArea": null,
+      "crossedEmbargoesIds": null,
+      "crossedEmbargoesList": null,
+      "crossedEmbargoesRuralPropertiesArea": 36.30314,
+      "crossedEmbargoesRuralPropertiesIds": [
+        4712261,
+        8150541
+      ],
+      "crossedEmbargoesRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 12.41079,
+          "embargoed_id": 864316,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133537/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 10.17953,
+          "embargoed_id": 869603,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1975009425"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 9.21404,
+          "embargoed_id": 874506,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "27680/2022"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 2.28839,
+          "embargoed_id": 873542,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "133590/2021"
+        },
+        {
+          "rural_property_id": 4712261,
+          "rural_property_version": 4,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "intersection_area": 1.65367,
+          "embargoed_id": 865644,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "1841001525"
+        },
+        {
+          "rural_property_id": 8150541,
+          "rural_property_version": 3,
+          "rural_property_code": "MT-5102504-CD83B409671B48FCA5CDE6E5140902BF",
+          "intersection_area": 0.55672,
+          "embargoed_id": 877631,
+          "embargoed_version": 1,
+          "embargoed_source": "SEMA-MT",
+          "embargoed_process_code": "415637/2020"
+        }
+      ],
+      "crossedEmbargoesRuralPropertiesTotal": 6,
+      "crossedEmbargoesTotal": 0,
+      "crossedFederalProtectedAreaIntegralProtections": null,
+      "crossedFederalProtectedAreaIntegralProtectionsArea": null,
+      "crossedFederalProtectedAreaSustainableUses": null,
+      "crossedFederalProtectedAreaSustainableUsesArea": null,
+      "crossedForestManagementRuralPropertiesArea": null,
+      "crossedForestManagementRuralPropertiesList": null,
+      "crossedForestManagementsActivities": null,
+      "crossedForestManagementsArea": null,
+      "crossedForestManagementsCategories": null,
+      "crossedForestManagementsList": null,
+      "crossedGeoparks": null,
+      "crossedGeoparksArea": null,
+      "crossedGeoparksIds": null,
+      "crossedIndigenousLands": null,
+      "crossedIndigenousLandsArea": 0.0,
+      "crossedIndigenousLandsIds": null,
+      "crossedIndigenousLandsList": null,
+      "crossedLegalReserveRuralPropertiesArea": 38.774627,
+      "crossedLegalReserveRuralPropertiesList": [
+        {
+          "rural_property_id": 4712261,
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 38.629005,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        },
+        {
+          "rural_property_id": 9508240,
+          "legal_reserve_id": 3060224,
+          "legal_reserve_version": 1,
+          "intersection_area": 0.145622,
+          "rural_property_code": "MT-5102504-F7A59C9735C34797BBB8677A0985F5E2"
+        }
+      ],
+      "crossedLegalReserveRuralPropertiesTotal": 2,
+      "crossedLegalReserves": [
+        {
+          "legalReserveId": 41568,
+          "legalReserveVersion": 4,
+          "ruralPropertyId": 4712261,
+          "totalAreaHa": null
+        },
+        {
+          "legalReserveId": 3060224,
+          "legalReserveVersion": 1,
+          "ruralPropertyId": 9508240,
+          "totalAreaHa": null
+        }
+      ],
+      "crossedLegalReservesArea": 38.774627,
+      "crossedLegalReservesList": [
+        {
+          "legal_reserve_id": 41568,
+          "legal_reserve_version": 4,
+          "intersection_area": 38.629005,
+          "rural_property_code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E"
+        },
+        {
+          "legal_reserve_id": 3060224,
+          "legal_reserve_version": 1,
+          "intersection_area": 0.145622,
+          "rural_property_code": "MT-5102504-F7A59C9735C34797BBB8677A0985F5E2"
+        }
+      ],
+      "crossedLegalReservesTotal": 2,
+      "crossedMunicipalityProtectedAreaIntegralProtections": null,
+      "crossedMunicipalityProtectedAreaIntegralProtectionsArea": null,
+      "crossedMunicipalityProtectedAreaSustainableUses": null,
+      "crossedMunicipalityProtectedAreaSustainableUsesArea": null,
+      "crossedPermanentProtectedArea": null,
+      "crossedPermanentProtectedAreaList": null,
+      "crossedPermanentProtectedAreaTotal": null,
+      "crossedPermanentProtectedList": null,
+      "crossedPermanentProtectedRuralPropertiesArea": null,
+      "crossedPermanentProtectedRuralPropertiesList": null,
+      "crossedPermanentProtectedRuralPropertiesTotal": null,
+      "crossedQuilombos": null,
+      "crossedQuilombosArea": 0.0,
+      "crossedQuilombosIds": null,
+      "crossedQuilombosList": null,
+      "crossedRiverSourcesArea": null,
+      "crossedRuralProperties": [
+        {
+          "afterDeforestationSimplifiedImage": "https://image.alerta.mapbiomas.org/image/alert/1668087/after_deforestation_simplified.png",
+          "alertAreaInCar": 60.01613,
+          "alertGeometryCode": "2669868",
+          "alertInPropertyImage": "https://image.alerta.mapbiomas.org/image/alert/1668087/rural_property/4712261/alert_context.png",
+          "areaHa": 10797.3182,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "id": 4712261,
+          "insertedAt": null,
+          "layerImage": "https://image.alerta.mapbiomas.org/image/alert/1668087/all.png",
+          "propertyInStateImage": "https://image.alerta.mapbiomas.org/image/alert/1668087/location.png",
+          "type": "SICAR_AST",
+          "updatedAt": null,
+          "version": 4
+        }
+      ],
+      "crossedSettlements": [
+        "PA LARANJEIRA I"
+      ],
+      "crossedSettlementsArea": 64.5485422,
+      "crossedSettlementsIds": [
+        84979
+      ],
+      "crossedSettlementsList": [
+        {
+          "name": "PA LARANJEIRA I",
+          "source": "Assentamento",
+          "area_ha": 64.5485422
+        }
+      ],
+      "crossedSettlementsRuralPropertiesArea": null,
+      "crossedSettlementsRuralPropertiesList": null,
+      "crossedSettlementsRuralPropertiesTotal": 0,
+      "crossedSpecialTerritories": [
+        "Amazônia Legal"
+      ],
+      "crossedSpecialTerritoriesArea": 67.5787445,
+      "crossedSpecialTerritoriesIds": [
+        32833
+      ],
+      "crossedSpecialTerritoryAmacroArea": null,
+      "crossedSpecialTerritoryAmazoniaLegalArea": 67.5787445,
+      "crossedSpecialTerritoryLeiDaMataAtlanticaArea": null,
+      "crossedSpecialTerritoryMatopibaArea": null,
+      "crossedSpecialTerritorySemiaridoArea": null,
+      "crossedStateProtectedAreaIntegralProtections": null,
+      "crossedStateProtectedAreaIntegralProtectionsArea": null,
+      "crossedStateProtectedAreaSustainableUses": null,
+      "crossedStateProtectedAreaSustainableUsesArea": null,
+      "crossedStates": [
+        "MATO GROSSO"
+      ],
+      "crossedStatesArea": 67.5787445,
+      "crossedStatesIds": [
+        18397
+      ],
+      "crossedStatesList": [
+        {
+          "name": "MATO GROSSO",
+          "source": "Estado",
+          "area_ha": 67.5787445
+        }
+      ],
+      "crossedTerritoriesIds": [
+        36687,
+        18397,
+        14672,
+        54512,
+        84979,
+        16479,
+        32833,
+        18426,
+        30626,
+        32887,
+        14627,
+        33102
+      ],
+      "crossedWatersheds": [
+        "PARAGUAI"
+      ],
+      "crossedWatershedsArea": 67.5787445,
+      "crossedWatershedsIds": [
+        14627
+      ],
+      "crossedWatershedsList": [
+        {
+          "name": "PARAGUAI",
+          "source": "Bacia Nível 1",
+          "area_ha": 67.5787445
+        }
+      ],
+      "datum": "SIRGAS 2000, EPSG 4674",
+      "deforestationClasses": [
+        "agriculture"
+      ],
+      "deforestationSpeed": null,
+      "detectedAt": "2026-08-27",
+      "embargoedAreasIds": null,
+      "exclusionCategories": [
+        "settlement"
+      ],
+      "geometryWkt": "MULTIPOLYGON(((-57.58054545814821 -16.619468314274663,-57.58054545814821 -16.620685531484646,-57.58073635014608 -16.621291894301425,-57.58111813414183 -16.621287402725002,-57.581311271927916 -16.62187130765968,-57.58131576350434 -16.623043609105455,-57.58136517084497 -16.623789210791273,-57.5814594939498 -16.62410811271714,-57.58150665550222 -16.62465159346403,-57.58150665550222 -16.62541965303195,-57.5814594939498 -16.625803682815913,-57.58136517084497 -16.625803682815913,-57.58136517084497 -16.625826140698017,-57.5814594939498 -16.625871056462223,-57.58150665550222 -16.626005803754843,-57.58150665550222 -16.62623038257587,-57.5814594939498 -16.62636512986849,-57.58136517084497 -16.626410045632696,-57.58136741663318 -16.62661441235983,-57.58146623131443 -16.6269782300499,-57.58146847710264 -16.627160138894933,-57.58137415399781 -16.627160138894933,-57.58137415399781 -16.627182596777036,-57.58146847710264 -16.627227512541243,-57.58149093498474 -16.627339801951756,-57.58144152764412 -16.627519465008582,-57.58146398552622 -16.627766501711715,-57.58155830863105 -16.628080912061158,-57.58148868919653 -16.628307736670397,-57.58125512722266 -16.628446975539436,-57.581138346235726 -16.628583968620262,-57.581138346235726 -16.628718715912882,-57.581093430471526 -16.628786089559192,-57.58100359894311 -16.628786089559192,-57.5809564373907 -16.628741173794985,-57.58095194581428 -16.628651342266572,-57.58090478426186 -16.628651342266572,-57.58081495273345 -16.628741173794985,-57.58077003696924 -16.628875921087605,-57.58077003696924 -16.629055584144425,-57.580722875416825 -16.629145415672838,-57.58062855231199 -16.629145415672838,-57.58053422920715 -16.62923749298946,-57.58043990610232 -16.629421647622703,-57.58029842144507 -16.629558640703532,-57.58010977523541 -16.629648472231946,-57.58006261368299 -16.62960131067953,-57.58015693678782 -16.629417156046284,-57.58010977523541 -16.62932732451787,-57.57992112902574 -16.629331816094293,-57.57982680592091 -16.629286900330086,-57.57982680592091 -16.629192577225254,-57.57973472860429 -16.62910049990863,-57.57955057397105 -16.62901066838022,-57.57936417354959 -16.62901291416843,-57.57917552733993 -16.629107237273264,-57.579081204235095 -16.629199314589886,-57.579081204235095 -16.629289146118296,-57.578939719577846 -16.629334061882503,-57.57865675026335 -16.629334061882503,-57.5785152656061 -16.62937897764671,-57.5785152656061 -16.62946880917512,-57.57842318828948 -16.629513724939326,-57.57823903365623 -16.629513724939326,-57.5781222526693 -16.62953618282143,-57.57807284532866 -16.629581098585636,-57.57812000688108 -16.62960355646774,-57.57826373732655 -16.62960355646774,-57.578335602549274 -16.629648472231942,-57.578335602549274 -16.629738303760355,-57.57827721205581 -16.629805677406665,-57.578160431068866 -16.62985059317087,-57.578088565846144 -16.62982813528877,-57.578061616387615 -16.629738303760355,-57.57797852222383 -16.62974054954857,-57.577839283354805 -16.6298348726534,-57.57776966392028 -16.629971865734227,-57.57776966392028 -16.630151528791053,-57.577816825472695 -16.630241360319463,-57.57791114857753 -16.630241360319463,-57.577958310129944 -16.630308733965773,-57.577958310129944 -16.63044348125839,-57.57791114857753 -16.630488397022596,-57.577816825472695 -16.630443481258393,-57.57776966392028 -16.630465939140496,-57.57776966392028 -16.630555770668906,-57.577816825472695 -16.630600686433112,-57.57791114857753 -16.630600686433112,-57.577958310129944 -16.63064560219732,-57.577958310129944 -16.63073543372573,-57.57786398702511 -16.630780349489935,-57.577675340815446 -16.630780349489935,-57.577581017710614 -16.63082526525414,-57.577581017710614 -16.63091509678255,-57.5775113982761 -16.63096001254676,-57.57737215940705 -16.63096001254676,-57.577302539972536 -16.63091509678255,-57.577302539972536 -16.63082526525414,-57.57725537842012 -16.630872426806555,-57.57716105531529 -16.6310565814398,-57.577138597433176 -16.631171116638527,-57.57718800477382 -16.631216032402733,-57.57700160435236 -16.63126094816694,-57.57657939616881 -16.631305863931146,-57.57636829207705 -16.631283406049043,-57.57636829207705 -16.63119357452063,-57.57632113052463 -16.631148658756423,-57.5762268074198 -16.631148658756423,-57.57620210374948 -16.631171116638527,-57.5762470195137 -16.631216032402733,-57.5762245616316 -16.63126094816694,-57.57613473010318 -16.631305863931146,-57.57608981433898 -16.63139569545956,-57.57608981433898 -16.63153044275218,-57.57601794911625 -16.63162027428059,-57.57587421867078 -16.631665190044792,-57.57584951500047 -16.631734809479312,-57.5759438381053 -16.631829132584144,-57.57587421867078 -16.63187629413656,-57.57564065669692 -16.63187629413656,-57.57550141782788 -16.63194366778287,-57.57545650206367 -16.632078415075487,-57.57533972107674 -16.632190704486,-57.57515107486707 -16.632280536014413,-57.57503204809193 -16.63203125352307,-57.5749826407513 -16.631442857011972,-57.5750050986334 -16.630924079935394,-57.57509942173823 -16.630474922293335,-57.57512187962034 -16.630250343472305,-57.5750724722797 -16.630250343472305,-57.57511963383212 -16.630113350391476,-57.57526336427759 -16.629839364229817,-57.5753329837121 -16.629295883482925,-57.57532849213568 -16.6284829081508,-57.57537340789989 -16.628076420484735,-57.57546773100472 -16.628076420484735,-57.57551489255714 -16.627986588956325,-57.57551489255714 -16.6278069258995,-57.57570129297859 -16.627669932818673,-57.576074093821504 -16.62757560971384,-57.57621333269054 -16.62750599027932,-57.57611900958571 -16.627461074515114,-57.576071848033294 -16.627348785104598,-57.576071848033294 -16.627169122047775,-57.57602468648088 -16.627101748401465,-57.575930363376045 -16.62714666416567,-57.57588320182363 -16.62712420628357,-57.57588320182363 -16.62703437475516,-57.57583604027121 -16.626989458990952,-57.57574171716638 -16.626989458990952,-57.575694555613964 -16.62703437475516,-57.575694555613964 -16.62712420628357,-57.57564739406155 -16.627034374755155,-57.575553070956715 -16.626764880169922,-57.575553070956715 -16.626630132877303,-57.57564739406155 -16.626630132877303,-57.575694555613964 -16.626562759230993,-57.575694555613964 -16.626428011938373,-57.57574171716638 -16.626360638292066,-57.57583604027121 -16.626360638292066,-57.57588320182363 -16.626428011938373,-57.57588320182363 -16.626562759230993,-57.57597752492846 -16.626585217113096,-57.57616617113813 -16.626495385584683,-57.57626049424296 -16.626405554056273,-57.57626049424296 -16.626315722527863,-57.57621333269054 -16.62629326464576,-57.57611900958571 -16.626338180409963,-57.576094305915404 -16.626291018857547,-57.5761392216796 -16.62615177998851,-57.576069602245084 -16.626106864224305,-57.57588544761184 -16.62615627156493,-57.57586298972973 -16.626133813682827,-57.57600222859878 -16.626039490577995,-57.57597752492846 -16.625947413261372,-57.5757888787188 -16.625857581732962,-57.57574171716638 -16.62567791867614,-57.57583604027121 -16.6254084240909,-57.57583604027121 -16.625228761034077,-57.57574171716638 -16.625138929505667,-57.57576417504849 -16.625049097977254,-57.575903413917516 -16.62495926644884,-57.57595057546993 -16.624936808566737,-57.57590565970574 -16.624981724330944,-57.575952821258156 -16.625071555859357,-57.57609206012718 -16.625206303151973,-57.57613697589139 -16.625161387387767,-57.57608756855076 -16.62493680856674,-57.57599324544593 -16.62480206127412,-57.57585400657689 -16.624757145509914,-57.57580684502447 -16.62455277878278,-57.57585176078868 -16.624188961092706,-57.5759213802232 -16.62398459436557,-57.57601570332803 -16.623939678601367,-57.57606286488045 -16.623712853992124,-57.57606286488045 -16.623304120537853,-57.576038161210136 -16.623099753810713,-57.57598875386951 -16.623099753810713,-57.57601121175161 -16.622987464400197,-57.576105534856445 -16.62276288557917,-57.57613023852676 -16.62262813828655,-57.57608532276255 -16.622583222522344,-57.576179645867384 -16.62249339099393,-57.576413207841256 -16.622358643701315,-57.57652998882819 -16.62233618581921,-57.57652998882819 -16.622426017347625,-57.576624311933024 -16.622493390993935,-57.57681295814269 -16.622538306758138,-57.57718800477381 -16.62255851885203,-57.577749451826385 -16.622554027275612,-57.578052633234776 -16.622484407841092,-57.57809754899898 -16.622349660548476,-57.57821432998592 -16.622282286902166,-57.578402976195584 -16.622282286902166,-57.578402976195584 -16.62221491325586,-57.57821432998592 -16.62208016596324,-57.5781671684335 -16.62201279231693,-57.578261491538335 -16.62201279231693,-57.57830865309075 -16.62194541867062,-57.57830865309075 -16.621810671378,-57.578261491538335 -16.621743297731694,-57.5781671684335 -16.621743297731694,-57.578120006881086 -16.621698381967487,-57.578120006881086 -16.621608550439078,-57.578189626315606 -16.621541176792768,-57.578328865184645 -16.62149626102856,-57.57842318828948 -16.621541176792768,-57.5784725956301 -16.621675924085384,-57.578566918734936 -16.621628762532968,-57.578706157603975 -16.62139969213552,-57.57868145393366 -16.621240241172586,-57.578492807724 -16.621150409644176,-57.57828170363223 -16.621152655432386,-57.57804814165836 -16.62124697853722,-57.57793136067142 -16.62124697853722,-57.57793136067142 -16.621152655432386,-57.57797852222384 -16.62110549387997,-57.57807284532867 -16.62110549387997,-57.578025683776254 -16.621083035997867,-57.57783703756659 -16.62103812023366,-57.577742714461756 -16.621152655432386,-57.577742714461756 -16.62142664159404,-57.57772025657965 -16.621608550439078,-57.577675340815446 -16.621698381967487,-57.57760572138093 -16.621743297731694,-57.577511398276094 -16.621743297731694,-57.57746423672368 -16.621788213495897,-57.57746423672368 -16.62187804502431,-57.577441778841575 -16.621837620836526,-57.57739686307737 -16.621666940932542,-57.577302539972536 -16.621599567286236,-57.57715880952708 -16.621635499897597,-57.57708694430435 -16.62158609255697,-57.57708694430435 -16.621451345264354,-57.57715656373887 -16.621406429500148,-57.57729580260791 -16.621451345264354,-57.57731826049001 -16.62136151373594,-57.57722393738518 -16.621136934914915,-57.57715431795066 -16.621069561268605,-57.57710940218645 -16.62115939279702,-57.576992621199516 -16.62120430856122,-57.57680397498985 -16.62120430856122,-57.57673435555533 -16.621226766443325,-57.57678376289596 -16.62127168220753,-57.576761305013854 -16.621316597971738,-57.57666698190902 -16.62136151373594,-57.576619820356605 -16.621339055853838,-57.576619820356605 -16.621249224325428,-57.57652549725177 -16.62118185067912,-57.57633685104211 -16.62113693491491,-57.576242527937275 -16.620932568187776,-57.576242527937275 -16.620568750497707,-57.57633685104211 -16.620319468006365,-57.57652549725177 -16.62018472071375,-57.57657265880419 -16.620094889185335,-57.576478335699356 -16.62004997342113,-57.57645363202904 -16.619692893095692,-57.57649854779325 -16.61902364820902,-57.57699711277594 -16.618709237859576,-57.5779493269771 -16.618749662047364,-57.57853547769999 -16.61887542618714,-57.5787555649446 -16.61908653027891,-57.579285570962234 -16.619108988161013,-57.58012549575288 -16.61894279983345,-57.58054545814821 -16.619468314274663)))",
+      "id": 0,
+      "imageAcquiredAfterAt": null,
+      "imageAcquiredAfterList": null,
+      "imageAcquiredBeboreList": null,
+      "imageAcquiredBeforeAt": null,
+      "imageContext": {
+        "imageAllContext": "https://image.alerta.mapbiomas.org/image/alert/1668087/all.png",
+        "imageStateContext": "https://image.alerta.mapbiomas.org/image/alert/1668087/location.png"
+      },
+      "imagesLabels": [
+        {
+          "name": "APPs",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_apps_map"
+        },
+        {
+          "name": "Reservas Legais",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_legal_reserves_map"
+        },
+        {
+          "name": "Nascentes",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_river_sources_map"
+        },
+        {
+          "name": "Embargos",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:embargos_map"
+        },
+        {
+          "name": "Plano de Manejo Florestal",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:forest_managements"
+        },
+        {
+          "name": "Estados",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:states"
+        },
+        {
+          "name": "Limite da Propriedade",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:car_properties_map"
+        },
+        {
+          "name": "Alerta",
+          "thumbnailUrl": "http://geoserver-mapbiomas.terras.agr.br/geoserver/alerts-platform/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=50&HEIGHT=50&LAYER=alerts-platform:MapAlerta_imovel"
+        },
+        {
+          "name": "Aut. de Supressão de Vegetação",
+          "thumbnailUrl": "http://plataforma.alerta.mapbiomas.org/assets/green-line-40dc5b0308872d402596e00ff9594101b0773fa7abff1f14bd54fdda275bb609.jpg"
+        }
+      ],
+      "legendLclu": [
+        {
+          "color": "#1F8D49",
+          "key": "forest-formation-bj6c2q",
+          "name": {
+            "en-US": "Forest Formation",
+            "es-ES": "Bosque",
+            "pt-BR": "Floresta"
+          },
+          "order": 0
+        },
+        {
+          "color": "#D6BC74",
+          "key": "herbaceous-and-shrubby-vegetation-se12jb",
+          "name": {
+            "en-US": "Herbaceous and Shrubby Vegetation",
+            "es-ES": "Vegetación Herbácea y Arbustiva",
+            "pt-BR": "Vegetação Herbácea e Arbustiva"
+          },
+          "order": 1
+        },
+        {
+          "color": "#FFEFC3",
+          "key": "agriculture-and-livestock-tum0ga",
+          "name": {
+            "en-US": "Agriculture and Livestock",
+            "es-ES": "Agropecuaria",
+            "pt-BR": "Agropecuária"
+          },
+          "order": 2
+        },
+        {
+          "color": "#D4271E",
+          "key": "non-vegetated-area-fa31yo",
+          "name": {
+            "en-US": "Non-vegetated Area",
+            "es-ES": "Área no Vegetada",
+            "pt-BR": "Área não vegetada"
+          },
+          "order": 3
+        },
+        {
+          "color": "#2532E4",
+          "key": "water-body-fyr9an",
+          "name": {
+            "en-US": "Water Body",
+            "es-ES": "Cuerpo de Agua",
+            "pt-BR": "Corpo D'água"
+          },
+          "order": 4
+        }
+      ],
+      "publicationCycles": 1,
+      "publicationCyclesList": [
+        {
+          "cycle": 1,
+          "alert_geometry_id": 2669868
+        }
+      ],
+      "publishedAt": "2026-10-29",
+      "publishedImages": [],
+      "republished": false,
+      "ruralProperties": [
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 4.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2025-09-26T20:14:22Z",
+          "stateAcronym": "MT",
+          "version": 4
+        },
+        {
+          "areaHa": 10800.83369,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 3.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2024-07-28T02:53:55Z",
+          "stateAcronym": "MT",
+          "version": 3
+        },
+        {
+          "areaHa": 10797.3182,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 2.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2023-05-01T18:27:18Z",
+          "stateAcronym": "MT",
+          "version": 2
+        },
+        {
+          "areaHa": 10797.38894,
+          "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "carModule": 1.0,
+          "carType": "SICAR_AST",
+          "embargoedAreasCount": 96,
+          "insertedAt": "2020-02-07T14:51:09Z",
+          "stateAcronym": "MT",
+          "version": 1
+        }
+      ],
+      "ruralPropertiesCodes": [
+        "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+        "MT-5102504-CD83B409671B48FCA5CDE6E5140902BF",
+        "MT-5102504-F7A59C9735C34797BBB8677A0985F5E2",
+        "MT-5102504-FBA09C74C2DA4D37A537292984F679E9"
+      ],
+      "ruralPropertiesList": [
+        {
+          "id": 4712261,
+          "code": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+          "version": 4,
+          "type": "SICAR_AST",
+          "area": 10797.3182,
+          "intersection_area": 60.01613,
+          "alert_id": 1668087,
+          "alert_code": 1662802,
+          "alert_geometry_id": 2669868
+        },
+        {
+          "id": 9508292,
+          "code": "MT-5102504-FBA09C74C2DA4D37A537292984F679E9",
+          "version": 1,
+          "type": "SICAR_IRU",
+          "area": 298.21169,
+          "intersection_area": 42.69575,
+          "alert_id": 1668087,
+          "alert_code": 1662802,
+          "alert_geometry_id": 2669868
+        },
+        {
+          "id": 9508240,
+          "code": "MT-5102504-F7A59C9735C34797BBB8677A0985F5E2",
+          "version": 1,
+          "type": "SICAR_IRU",
+          "area": 237.33564,
+          "intersection_area": 24.88299,
+          "alert_id": 1668087,
+          "alert_code": 1662802,
+          "alert_geometry_id": 2669868
+        },
+        {
+          "id": 8150541,
+          "code": "MT-5102504-CD83B409671B48FCA5CDE6E5140902BF",
+          "version": 3,
+          "type": "SICAR_IRU",
+          "area": 9321.9993,
+          "intersection_area": 1.27811,
+          "alert_id": 1668087,
+          "alert_code": 1662802,
+          "alert_geometry_id": 2669868
+        }
+      ],
+      "ruralPropertiesTotal": 4,
+      "sources": [
+        "DETER-PANTANAL"
+      ],
+      "statusAt": "2026-10-29",
+      "statusName": "published",
+      "supportCasesIds": null,
+      "warnings": {
+        "en": "Information based on available sources, subject to interpretation, its use is at the discretion of the user.",
+        "pt": "Informações baseadas nas fontes disponíveis, sujeitas a interpretação, seu uso fica a juízo do usuário."
+      }
+    }
+  ],
+  "_embargos": {
+    "carCode": "MT-5102504-FB5206A8AF224FDC8B7E1D19FCF26A8E",
+    "via": "alertas",
+    "totalEmbargos": 5,
+    "areaEmbargadaHa": 35.7464,
+    "embargos": [
+      {
+        "code": "[180935, 6]",
+        "source": "SEMA-MT",
+        "processCode": "133590/2021",
+        "areaHa": 2.28839,
+        "legislation": null,
+        "sourceRegisteredAt": "2021-03-30",
+        "sourceExpiredAt": null,
+        "updatedAt": "2025-08-23T00:14:30Z",
+        "descriptions": [
+          "CORTE RASO EM AREA ESPECIAL"
+        ]
+      },
+      {
+        "code": "[199220, 6]",
+        "source": "SEMA-MT",
+        "processCode": "133537/2021",
+        "areaHa": 12.41079,
+        "legislation": null,
+        "sourceRegisteredAt": "2021-03-30",
+        "sourceExpiredAt": null,
+        "updatedAt": "2025-08-23T00:36:04Z",
+        "descriptions": [
+          "DESMATE CORTE RASO"
+        ]
+      },
+      {
+        "code": "[336396, 6]",
+        "source": "SEMA-MT",
+        "processCode": "27680/2022",
+        "areaHa": 9.21404,
+        "legislation": null,
+        "sourceRegisteredAt": "2022-07-19",
+        "sourceExpiredAt": null,
+        "updatedAt": "2025-08-23T03:47:51Z",
+        "descriptions": [
+          "DESMATE CORTE RASO"
+        ]
+      },
+      {
+        "code": "[329796, 6]",
+        "source": "SEMA-MT",
+        "processCode": "1975009425",
+        "areaHa": 10.17952,
+        "legislation": null,
+        "sourceRegisteredAt": "2025-03-21",
+        "sourceExpiredAt": null,
+        "updatedAt": "2025-08-23T03:38:00Z",
+        "descriptions": [
+          "DESMATE A CORTE RASO DE VEGETARVO NATIVA DE CERRADO (SENDO QUE PARTE DO DESMATE t DENTRO E PARTE FORA DA RESERVA LEGAL) - Art. 51 e Art. 52 do Decreto Federal n. 6.514/2008.CONSIDERANDO QUE A PROPRIEDADE NiO POSSUI A REGULARIZAleO AMBIENTAL NECESSaR",
+          "DESMATE A CORTE RASO DE VEGETARVO NATIVA DE CERRADO (SENDO QUE PARTE DO DESMATE M DENTRO E PARTE FORA DA RESERVA LEGAL) - Art. 51 e Art. 52 do Decreto Federal n. 6.514/2008.\nCONSIDERANDO QUE A PROPRIEDADE NAO POSSUI A REGULARIZAVEO AMBIENTAL NECESSGR",
+          "POR DESMATAR A CORTE RASO    3,07 HA DE VEGETARAO NATIVA, EM  REA DE RESERVA LEGAL, SEM AUTORIZAFOO DO  RGSO AMBIENTAL COMPETENTE\r\n\r\nPOR DESMATAR A CORTE RASO    7,13 HA DE VEGETAERO NATIVA, FORA DA DREA DE RESERVA LEGAL, SEM AUTORIZAIEO DO NRGEO AM"
+        ]
+      },
+      {
+        "code": "[458310, 1]",
+        "source": "SEMA-MT",
+        "processCode": "1841001525",
+        "areaHa": 1.65367,
+        "legislation": null,
+        "sourceRegisteredAt": "2025-04-22",
+        "sourceExpiredAt": null,
+        "updatedAt": "2026-05-06T00:01:18Z",
+        "descriptions": [
+          "DESMATE A CORTE RASO DE VEGETA LO NATIVA EM RREA PASSUVEL DE SUPRESSIO (FORA DA RESERVA LEGAL) - Art. 52 do Decreto Federal n. 6.514/2008.\nArt. 52.  Desmatar, a corte raso, florestas ou demais formaSEes nativas, fora da reserva legal, sem autorizaCOo",
+          "POR TER NO DIA 19/04/2025, DESMATADO, A CORTE RASO, FLORESTAS OU DEMAIS FORMADAES NATIVAS, FORA DA RESERVA LEGAL, SEM AUTORIZA 6O DA AUTORIDADE COMPETENTE."
+        ]
+      }
+    ]
+  },
+  "_descargadoEn": "2026-11-05T18:55:48-0300",
+  "_geojson": {
+    "type": "MultiPolygon",
+    "coordinates": [
+      [
+        [
+          [
+            -57.53702449317382,
+            -16.51242913287119
+          ],
+          [
+            -57.534017179343685,
+            -16.513974208046417
+          ],
+          [
+            -57.53398906197671,
+            -16.51389765766102
+          ],
+          [
+            -57.5327410291294,
+            -16.514629855572117
+          ],
+          [
+            -57.532571073623544,
+            -16.520967058276735
+          ],
+          [
+            -57.532660943254626,
+            -16.526916701142746
+          ],
+          [
+            -57.52992140580883,
+            -16.531628245711577
+          ],
+          [
+            -57.52586031415803,
+            -16.53480581504963
+          ],
+          [
+            -57.5281790279241,
+            -16.538549859745483
+          ],
+          [
+            -57.52843264620934,
+            -16.53896505382308
+          ],
+          [
+            -57.528952312865094,
+            -16.53875578743149
+          ],
+          [
+            -57.540221940929484,
+            -16.557330383597577
+          ],
+          [
+            -57.53657083847013,
+            -16.558849423575353
+          ],
+          [
+            -57.531050304206516,
+            -16.558836443627527
+          ],
+          [
+            -57.53102805479446,
+            -16.560978882514622
+          ],
+          [
+            -57.53185064776473,
+            -16.563589224622515
+          ],
+          [
+            -57.52855915094747,
+            -16.566436028920165
+          ],
+          [
+            -57.526992998633,
+            -16.56956769329764
+          ],
+          [
+            -57.52273840310655,
+            -16.569876719226784
+          ],
+          [
+            -57.51328445111557,
+            -16.57478161057503
+          ],
+          [
+            -57.50783965980748,
+            -16.575224886064568
+          ],
+          [
+            -57.50180359785116,
+            -16.57623224336472
+          ],
+          [
+            -57.51040452335534,
+            -16.60372411510532
+          ],
+          [
+            -57.50790019246749,
+            -16.642709078905977
+          ],
+          [
+            -57.50957472302586,
+            -16.652192775628276
+          ],
+          [
+            -57.53368006010446,
+            -16.67210354610929
+          ],
+          [
+            -57.577517184304696,
+            -16.62986100787639
+          ],
+          [
+            -57.58390366940229,
+            -16.62387049226911
+          ],
+          [
+            -57.58685823659273,
+            -16.62109891017274
+          ],
+          [
+            -57.5868821125017,
+            -16.612726133426246
+          ],
+          [
+            -57.586886589680304,
+            -16.611144303879485
+          ],
+          [
+            -57.58690115292097,
+            -16.60741937085245
+          ],
+          [
+            -57.586927379662335,
+            -16.599043231535475
+          ],
+          [
+            -57.58693386934857,
+            -16.596949760807103
+          ],
+          [
+            -57.58694045436335,
+            -16.59485665160647
+          ],
+          [
+            -57.58694694674793,
+            -16.592763632337896
+          ],
+          [
+            -57.58695353356158,
+            -16.590670882866608
+          ],
+          [
+            -57.586960128469975,
+            -16.588580032766018
+          ],
+          [
+            -57.58695606241656,
+            -16.585384766061704
+          ],
+          [
+            -57.58696767575793,
+            -16.57097144283701
+          ],
+          [
+            -57.58694278719469,
+            -16.563806803461812
+          ],
+          [
+            -57.58539761982282,
+            -16.562142999304196
+          ],
+          [
+            -57.5833952048789,
+            -16.55998681491911
+          ],
+          [
+            -57.56185873012283,
+            -16.49944264361642
+          ],
+          [
+            -57.55905035555964,
+            -16.500918111106966
+          ],
+          [
+            -57.55226154027718,
+            -16.50448465031424
+          ],
+          [
+            -57.54664070822246,
+            -16.507436934283415
+          ],
+          [
+            -57.546227159011856,
+            -16.50765487641124
+          ],
+          [
+            -57.54283497449613,
+            -16.509436110396653
+          ],
+          [
+            -57.539395608788034,
+            -16.511222926497336
+          ],
+          [
+            -57.53702449317382,
+            -16.51242913287119
+          ]
+        ]
+      ]
+    ]
+  }
+}

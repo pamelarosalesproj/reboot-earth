@@ -1,6 +1,6 @@
 // Textos da interface (pt-BR). Centralizados para facilitar traduções futuras.
 export const t = {
-  appName: 'RebootEarth',
+  appName: 'ELO Rural',
   preview: {
     notice: 'Prévia de design · dados fictícios · sem conexão com a API',
     exit: 'Voltar ao site',
@@ -129,7 +129,7 @@ export const t = {
     genericError: 'Algo deu errado. Tente novamente.',
   },
 
-  sidebar: { home: 'Início', cars: 'Meus CARs', search: 'Consultar CNPJ' },
+  sidebar: { home: 'Início', cars: 'Meus CARs' },
 
   home: {
     eyebrow: 'PAINEL DO PRODUTOR',

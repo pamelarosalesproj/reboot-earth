@@ -1,4 +1,4 @@
-# RebootEarth Constitution
+# ELO Rural Constitution
 
 ## Core Principles
 
@@ -133,4 +133,6 @@ español.
 - **Revisión de cumplimiento**: al cerrar cada feature se revisa que los tests exigidos por el
   principio VI existan y pasen.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.0.1 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-06
+
+*1.0.1 (2026-11-06): el proyecto pasa a llamarse ELO Rural (antes RebootEarth). Sin cambios en los principios.*

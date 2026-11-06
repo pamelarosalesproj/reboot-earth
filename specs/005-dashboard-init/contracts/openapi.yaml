@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: RebootEarth – Início do produtor (feature 005)
+  title: ELO Rural – Início do produtor (feature 005)
   version: 0.5.0
 paths:
   /api/dashboard/overview:

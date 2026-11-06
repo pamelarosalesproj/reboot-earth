@@ -1,4 +1,6 @@
-# RebootEarth
+# ELO Rural
+
+*(antes RebootEarth; o repositório mantém o nome `reboot-earth`)*
 
 Plataforma que mostra, de forma simples e rastreável, a situação socioambiental de produtores
 rurais brasileiros: **polígono de cada imóvel (CAR), alertas de desmatamento, embargos e indicadores
@@ -170,8 +172,8 @@ Detalhes técnicos (endpoints, tabelas, fontes, testes): [`docs/arquitetura.md`]
 ## Consulta pública por CNPJ
 
 - **Telas**: `/consulta` e `/consulta/:cnpj` (link compartilhável), sem login. Acesso pela aba
-  "Consultar CNPJ" da barra superior, pelo botão "É comprador? Consulte o status do seu produtor" da
-  página inicial e, para produtores logados, pela barra lateral do painel (`/painel/consulta`).
+  "Consultar CNPJ" da barra superior e pelos botões da página inicial. (A barra lateral do painel
+  do produtor não tem mais esse atalho.)
 - **API**: `GET /api/public/cnpj/{cnpj}` (com ou sem máscara). Responde 200 também para CNPJ não
   cadastrado (`Sem dados`), 422 para CNPJ inválido e 429 com `Retry-After` ao passar do limite.
   Contrato: [`specs/002-cnpj-score-search/contracts/openapi.yaml`](specs/002-cnpj-score-search/contracts/openapi.yaml).
