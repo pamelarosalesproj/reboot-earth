@@ -6,7 +6,15 @@ from app.auth import current_producer
 from app.db import get_session
 from app.mapbiomas.client import MapBiomasClient, get_mapbiomas_client
 from app.models import Producer, ProducerCar
-from app.schemas import AddCarRequest, CarDetail, CarSummary, ProducerCarOut, ValidationErrorOut
+from app.schemas import (
+    AddCarRequest,
+    CarDetail,
+    CarIndicators,
+    CarSummary,
+    ProducerCarOut,
+    ValidationErrorOut,
+)
+from app.services.car_indicators import get_indicators
 from app.services.car_service import get_detail, get_summary, verify_car_exists
 from app.validators import normalize_car
 
@@ -85,3 +93,16 @@ async def car_detail(
 ):
     car = own_car(db, producer, car_code)
     return await get_detail(db, client, car.car_code, refresh)
+
+
+@router.get("/{car_code}/indicators", response_model=CarIndicators)
+async def car_indicators(
+    car_code: str,
+    refresh: bool = False,
+    producer: Producer = Depends(current_producer),
+    db: Session = Depends(get_session),
+    client: MapBiomasClient = Depends(get_mapbiomas_client),
+):
+    """Indicadores socioambientales (feature 003). Siempre 200 para un CAR propio."""
+    car = own_car(db, producer, car_code)
+    return await get_indicators(db, client, car.car_code, refresh)

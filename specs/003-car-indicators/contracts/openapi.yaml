@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: RebootEarth – Indicadores por CAR (feature 003)
+  version: 0.3.0
+  description: Endpoint nuevo. El resto del API, en specs/001 y specs/002.
+paths:
+  /api/cars/{car_code}/indicators:
+    get:
+      summary: Indicadores socioambientales de un CAR del productor autenticado
+      parameters:
+        - { name: car_code, in: path, required: true, schema: { type: string } }
+        - { name: refresh, in: query, required: false, schema: { type: boolean, default: false } }
+      responses:
+        "200":
+          description: >
+            Siempre 200 cuando el CAR es del productor: las fuentes que fallan quedan como
+            status=indisponivel (o en caché con stale=true); nunca 503 por una fuente externa.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CarIndicators" }
+        "401": { description: Sin sesión }
+        "404": { description: El CAR no pertenece al productor }
+components:
+  schemas:
+    SourceStatus:
+      type: object
+      required: [status, fetched_at, stale]
+      properties:
+        status: { type: string, enum: [ok, indisponivel, nao_se_aplica] }
+        fetched_at: { type: [string, "null"], format: date-time }
+        stale: { type: boolean }
+    Count:
+      type: object
+      required: [n, ha]
+      properties: { n: { type: integer }, ha: { type: number } }
+    Situacao:
+      type: string
+      enum: [suspensa_judicial, embargo_vigente, autorizada, embargo_levantado, com_fiscalizacao, pendente]
+    AlertIndicator:
+      type: object
+      required: [alert_code, detected_at, area_in_car_ha, status, post_2020, authorized_ha, legal_reserve_ha,
+                 touches_app, indigenous_land_ha, integral_protection_ha, sustainable_use_ha, conservation_units]
+      properties:
+        alert_code: { type: integer }
+        detected_at: { type: [string, "null"], format: date }
+        area_in_car_ha: { type: number }
+        status: { $ref: "#/components/schemas/Situacao" }
+        post_2020: { type: boolean }
+        authorized_ha: { type: number }
+        legal_reserve_ha: { type: number }
+        touches_app: { type: boolean }
+        indigenous_land_ha: { type: number }
+        integral_protection_ha: { type: number }
+        sustainable_use_ha: { type: number }
+        conservation_units: { type: array, items: { type: string } }
+    CarIndicators:
+      type: object
+      required: [car_code, fetched_at, stale, sources, alerts_by_status, open, context, alerts]
+      properties:
+        car_code: { type: string }
+        fetched_at: { type: string, format: date-time }
+        stale: { type: boolean }
+        sources:
+          type: object
+          required: [mapbiomas, prodes, deter, focos, sinaflor]
+          additionalProperties: { $ref: "#/components/schemas/SourceStatus" }
+        alerts_by_status:
+          type: object
+          description: Las 6 situaciones cuando MapBiomas está ok; objeto vacío cuando está indisponível (nunca ceros falsos).
+          additionalProperties: { $ref: "#/components/schemas/Count" }
+        open:
+          type: object
+          description: Riscos abertos. Campos null cuando MapBiomas está indisponível.
+          properties:
+            post_2020: { oneOf: [{ $ref: "#/components/schemas/Count" }, { type: "null" }] }
+            legal_reserve_ha: { type: [number, "null"] }
+            app_alerts: { type: [integer, "null"] }
+            embargoes_active: { type: [integer, "null"] }
+            indigenous_land_ha: { type: [number, "null"] }
+            integral_protection_ha: { type: [number, "null"] }
+        context:
+          type: object
+          properties:
+            embargoes_lifted: { type: [integer, "null"] }
+            sustainable_use_ha: { type: [number, "null"] }
+            sustainable_use_names: { type: array, items: { type: string } }
+            native_vegetation:
+              type: [object, "null"]
+              properties:
+                remaining_pct: { type: number }
+                deforested_ha: { type: number }
+                by_year: { type: object, additionalProperties: { type: number } }
+            deter:
+              type: [object, "null"]
+              properties:
+                by_class:
+                  type: object
+                  additionalProperties:
+                    type: object
+                    properties: { n: { type: integer }, ha: { type: number }, last: { type: [string, "null"] } }
+            hotspots_12m:
+              type: [object, "null"]
+              properties:
+                count: { type: integer }
+                by_month: { type: object, additionalProperties: { type: integer } }
+            forest_management:
+              type: [object, "null"]
+              properties:
+                authorizations: { type: integer }
+                active: { type: integer }
+                volume_m3: { type: number }
+                last_issued: { type: [string, "null"], format: date }
+        alerts: { type: array, items: { $ref: "#/components/schemas/AlertIndicator" } }
