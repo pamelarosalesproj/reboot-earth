@@ -1,185 +1,56 @@
-"""Testes de unidade e integração do serviço de Auditoria e Consultoria ESG com IA."""
+"""Testes de integração para os endpoints e motor de auditoria mensal ESG."""
 
-import json
+from datetime import date
 
-import httpx
 import pytest
-import respx
+from httpx import ASGITransport, AsyncClient
 
-from app.schemas_audit import (
-    AIAuditResult,
-    AuditCrossCheckRequest,
-    CarAuditContext,
-    InvoiceAuditInput,
-    InvoiceWoodItem,
-)
-from app.services.ai_auditor_service import (
-    audit_invoice_with_car,
-)
-
-LLM_TEST_URL = "https://mock-llm.rebootearth.local/v1/chat/completions"
+from app.main import app
+from app.schemas_audit import InvoiceWoodItem, MonthlyInvoiceInput
 
 
 @pytest.mark.asyncio
-async def test_audit_apto_with_llm_mock():
-    """Cenário Apto: NF possui CAR válido, volume dentro do limite e LLM responde com sucesso."""
-    req = AuditCrossCheckRequest(
-        invoice=InvoiceAuditInput(
-            invoice_number="NF-001234",
-            issuer_cnpj="04654691000106",
-            car_code="PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
-            volume_extracted_m3=30.0,
-            items=[
-                InvoiceWoodItem(species="Ipê", volume_m3=20.0),
-                InvoiceWoodItem(species="Jatobá", volume_m3=10.0),
-            ],
-        ),
-        car_context=CarAuditContext(
-            car_code="PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
-            state="PE",
-            area_ha=100.0,
-            alerts_count=0,
-            embargoes_count=0,
-            max_volume_allowed_m3=80.0,
-        ),
-    )
-
-    llm_mock_response = {
-        "choices": [
-            {
-                "message": {
-                    "content": json.dumps(
-                        {
-                            "status": "apto",
-                            "score": 95,
-                            "justification": "Operação em perfeita conformidade. CAR regular sem alertas e volume compatível com o plano de manejo.",
-                            "suggestions": [
-                                "Manter o registro contínuo das coordenadas de extração para auditorias futuras.",
-                                "Integrar o sistema emissor de NF diretamente com o sistema DOF/Sinaflor.",
-                                "Realizar inventário florestal contínuo para renovação das cotas anuais.",
-                            ],
-                        }
-                    )
-                }
-            }
-        ]
-    }
-
-    with respx.mock(assert_all_called=False) as mock:
-        mock.post(LLM_TEST_URL).mock(
-            return_value=httpx.Response(200, json=llm_mock_response)
-        )
-
-        result: AIAuditResult = await audit_invoice_with_car(
-            req, llm_api_url=LLM_TEST_URL
-        )
-
-        assert result.status == "apto"
-        assert result.score == 95
-        assert "conformidade" in result.justification
-        assert len(result.suggestions) >= 3
+async def test_generate_report_requires_auth():
+    """Endpoint de auditoria mensal exige autenticação de produtor."""
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        resp = await client.post("/api/audit/generate-report", json={})
+        assert resp.status_code == 401
 
 
 @pytest.mark.asyncio
-async def test_audit_nao_apto_omissao_car():
-    """Cenário Não Apto 1: Omissão de CAR compromete rastreabilidade e reduz Score."""
-    req = AuditCrossCheckRequest(
-        invoice=InvoiceAuditInput(
-            invoice_number="NF-999001",
-            issuer_cnpj="04654691000106",
-            car_code=None,  # CAR omitido!
-            volume_extracted_m3=25.0,
-        ),
-        car_context=None,
+async def test_audit_monthly_report_unit_mock():
+    """Valida o serviço audit_monthly_report com dados controlados."""
+    from app.services.ai_auditor_service import audit_monthly_report
+
+    registered_cars = [
+        {"car_code": "PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0", "area_ha": 100.0, "max_volume_allowed_m3": 80.0, "embargoes_count": 0, "alerts_count": 0},
+        {"car_code": "MT-5102504-D274A7C9CD6C4B4C8FE5B14B88BA1BCE", "area_ha": 50.0, "max_volume_allowed_m3": 40.0, "embargoes_count": 0, "alerts_count": 0},
+    ]
+
+    invoices = [
+        MonthlyInvoiceInput(
+            invoice_number="NF-TEST-01",
+            issue_date=date(2026, 10, 10),
+            car_code="PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
+            volume_extracted_m3=20.0,
+            items=[InvoiceWoodItem(species="Manejo Sustentável", volume_m3=20.0)],
+        )
+    ]
+
+    report = await audit_monthly_report(
+        cnpj="04654691000106",
+        reference_period="2026-10",
+        registered_cars=registered_cars,
+        invoices=invoices,
+        allow_fallback=True,
     )
 
-    llm_mock_response = {
-        "choices": [
-            {
-                "message": {
-                    "content": json.dumps(
-                        {
-                            "status": "apto",  # LLM tentou marcar como apto erroneamente
-                            "score": 90,
-                            "justification": "Tentativa de aprovação.",
-                            "suggestions": [
-                                "Informar o CAR de origem.",
-                                "Aprimorar rastreabilidade documental.",
-                                "Capacitar a equipe em governança florestal.",
-                            ],
-                        }
-                    )
-                }
-            }
-        ]
-    }
-
-    with respx.mock(assert_all_called=False) as mock:
-        mock.post(LLM_TEST_URL).mock(
-            return_value=httpx.Response(200, json=llm_mock_response)
-        )
-
-        # Regra de negócio mandatória do sistema deve sobrepor a do LLM: status 'nao_apto' e score penalizado
-        result: AIAuditResult = await audit_invoice_with_car(
-            req, llm_api_url=LLM_TEST_URL
-        )
-
-        assert result.status == "nao_apto"
-        assert result.score <= 50  # penalizado
-        assert len(result.suggestions) >= 3
-
-
-@pytest.mark.asyncio
-async def test_audit_nao_apto_volume_excedente():
-    """Cenário Não Apto 2: Volume na NF é superior ao limite permitido no CAR."""
-    req = AuditCrossCheckRequest(
-        invoice=InvoiceAuditInput(
-            invoice_number="NF-888222",
-            issuer_cnpj="04654691000106",
-            car_code="PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
-            volume_extracted_m3=120.0,  # 120 m³ > 50 m³
-        ),
-        car_context=CarAuditContext(
-            car_code="PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
-            state="PE",
-            max_volume_allowed_m3=50.0,
-        ),
-    )
-
-    with respx.mock(assert_all_called=False) as mock:
-        # Simula erro de API (500) para verificar tolerância a falhas e motor determinístico
-        mock.post(LLM_TEST_URL).mock(return_value=httpx.Response(500))
-
-        result: AIAuditResult = await audit_invoice_with_car(
-            req, llm_api_url=LLM_TEST_URL, allow_fallback=True
-        )
-
-        assert result.status == "nao_apto"
-        assert result.score <= 50
-        assert "ultrapassa" in result.justification or "excede" in result.justification
-        assert 3 <= len(result.suggestions) <= 5
-
-
-@pytest.mark.asyncio
-async def test_audit_llm_failure_indisponivel_sem_fallback():
-    """Tolerância a falhas: Se o LLM cair e fallback estiver desativado, retorna status 'indisponivel' sem quebrar."""
-    req = AuditCrossCheckRequest(
-        invoice=InvoiceAuditInput(
-            invoice_number="NF-777333",
-            issuer_cnpj="04654691000106",
-            car_code="PE-2607505-F2671DDFDA3D47CC917EB3E0DFEEB8B0",
-            volume_extracted_m3=10.0,
-        ),
-    )
-
-    with respx.mock(assert_all_called=False) as mock:
-        mock.post(LLM_TEST_URL).mock(side_effect=httpx.ConnectTimeout("Timeout ao conectar ao LLM"))
-
-        result: AIAuditResult = await audit_invoice_with_car(
-            req, llm_api_url=LLM_TEST_URL, allow_fallback=False
-        )
-
-        assert result.status == "indisponivel"
-        assert result.score is None
-        assert "indisponível" in result.justification
-
+    assert report.cnpj == "04654691000106"
+    assert report.total_cars_registered == 2
+    assert report.cars_evidenced_count == 1
+    assert report.cars_omitted_count == 1
+    assert "MT-5102504-D274A7C9CD6C4B4C8FE5B14B88BA1BCE" in report.omitted_car_codes
+    assert report.total_volume_extracted_m3 == 20.0
+    assert report.has_volume_exceeded is False
+    assert len(report.suggestions) >= 3
