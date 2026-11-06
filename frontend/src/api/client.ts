@@ -50,3 +50,7 @@ export const getDetail = (code: string, refresh?: boolean) =>
 
 /** Ficha pública de un CNPJ (sin sesión). 429 → ApiError con body.retry_after_s. */
 export const getPublicCnpj = (cnpj: string) => apiFetch<PublicCnpjReport>(`/api/public/cnpj/${enc(cnpj)}`)
+
+/** Gera relatório mensal de auditoria e conformidade ESG */
+export const generateMonthlyAuditReport = (reference_month?: string) =>
+  apiFetch<any>('/api/audit/generate-report', json({ reference_month }))
