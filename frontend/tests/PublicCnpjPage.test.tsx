@@ -66,7 +66,7 @@ describe('PublicCnpjPage', () => {
     fireEvent.change(screen.getByLabelText(/CNPJ do produtor/), { target: { value: '04654691000106' } })
     fireEvent.click(screen.getByRole('button', { name: 'Consultar' }))
     expect(await screen.findByText('Silver')).toBeInTheDocument()
-    expect(screen.getByText('Score em cálculo')).toBeInTheDocument()
+    expect(screen.queryByText(/Score/)).toBeNull() // o score ainda não existe: não se mostra
     expect(screen.getByText('2 propriedades informadas pelo produtor')).toBeInTheDocument()
     expect(container.textContent).not.toMatch(/PE-/)
   })
@@ -76,7 +76,7 @@ describe('PublicCnpjPage', () => {
     renderAt('/consulta/11222333000181')
     expect(await screen.findByText('CNPJ não cadastrado na plataforma')).toBeInTheDocument()
     expect(screen.getByText('Sem dados')).toBeInTheDocument()
-    expect(screen.getByText('Score não calculável')).toBeInTheDocument()
+    expect(screen.queryByText(/Score/)).toBeNull()
   })
 
   it('429 muestra el límite en minutos', async () => {

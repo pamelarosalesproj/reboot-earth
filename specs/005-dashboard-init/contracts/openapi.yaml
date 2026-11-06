@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+  title: RebootEarth – Início do produtor (feature 005)
+  version: 0.5.0
+paths:
+  /api/dashboard/overview:
+    get:
+      summary: Números do CNPJ do produtor autenticado (CARs, alertas abertas/superadas, embargos vigentes)
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CnpjOverview" }
+        "401": { description: Sem sessão }
+  /api/dashboard/report:
+    get:
+      summary: Relatório do CNPJ (hoje um exemplo escrito à mão; depois, gerado pelo agente)
+      description: >
+        Sempre 200 para um produtor autenticado. `status=indisponivel` quando não há relatório.
+        `nivel` é sempre o calculado pelas regras (compute_status), nunca o texto do relatório.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CnpjReport" }
+        "401": { description: Sem sessão }
+components:
+  schemas:
+    Count:
+      type: object
+      required: [n, ha]
+      properties: { n: { type: integer }, ha: { type: number } }
+    CnpjOverview:
+      type: object
+      required: [cars_count, alerts_total, open_alerts, superseded_alerts, embargoes_active,
+                 cars_without_alert_data, cars_embargoes_unknown, data_as_of]
+      properties:
+        cars_count: { type: integer }
+        alerts_total: { type: [integer, "null"], description: "null se nenhum CAR tem dados" }
+        open_alerts: { oneOf: [{ $ref: "#/components/schemas/Count" }, { type: "null" }] }
+        superseded_alerts: { oneOf: [{ $ref: "#/components/schemas/Count" }, { type: "null" }] }
+        embargoes_active: { type: [integer, "null"], description: "únicos por (órgão, processo); null se nenhum CAR tem embargos determináveis" }
+        cars_without_alert_data: { type: integer }
+        cars_embargoes_unknown: { type: integer }
+        data_as_of: { type: [string, "null"], format: date-time }
+    ReportProperty:
+      type: object
+      required: [car_code, resumo]
+      properties: { car_code: { type: string }, resumo: { type: string } }
+    CnpjReport:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [ok, indisponivel] }
+        origem: { type: [string, "null"], enum: [exemplo, agente, null] }
+        nivel: { type: [string, "null"], enum: [gold, silver, bronze, sem_dados, null] }
+        titulo: { type: [string, "null"] }
+        riscos: { type: array, maxItems: 3, items: { type: string } }
+        contexto: { type: array, maxItems: 3, items: { type: string } }
+        ressalvas: { type: array, items: { type: string } }
+        imoveis: { type: array, items: { $ref: "#/components/schemas/ReportProperty" } }
+        data_dos_dados: { type: [string, "null"], format: date }
+        gerado_em: { type: [string, "null"], format: date-time }

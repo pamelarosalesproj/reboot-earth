@@ -1,6 +1,6 @@
 # Arquitetura técnica
 
-**Atualizado em**: 2026-11-06 · **Estado**: `main` em `859179c` (features 001, 002 e 003 + redesign do frontend)
+**Atualizado em**: 2026-11-06 · **Estado**: features 001, 002, 003 e 005 + redesign do frontend
 
 Documento de referência para quem mantém o código. Produto e motivação: [`README.md`](../README.md).
 Regras de governança: [constituição](../.specify/memory/constitution.md). Detalhe de cada feature:
@@ -45,6 +45,8 @@ Princípios que guiam o desenho (constituição I–VII):
 | `GET /api/cars/{car}/summary` · `/detail` | ✓ | 001 | Polígono, alertas e embargos (cache de 24 h, `?refresh=true`) |
 | `GET /api/cars/{car}/indicators` | ✓ | 003 | Indicadores socioambientais (riscos abertos e contexto) |
 | `GET /api/dashboard` | ✓ | 001/002 | Totais da conta + `cnpj_status` / `cnpj_score` do CNPJ |
+| `GET /api/dashboard/overview` | ✓ | 005 | Números do CNPJ: CARs, alertas abertas/superadas (n.º, ha), embargos vigentes |
+| `GET /api/dashboard/report` | ✓ | 005 | Relatório do CNPJ (hoje um **exemplo escrito à mão**; depois o agente). `nivel` imposto pelas regras |
 | `GET /api/public/cnpj/{cnpj}` | — | 002 | Ficha pública agregada; rate limit de 30/h por IP |
 | `GET /api/health` | — | — | Saúde |
 
@@ -75,11 +77,24 @@ mudança de esquema numa tabela existente exige migração.
 | Score | `services/cnpj_report.py` (`get_score`) | Hoje só o estado (`em_calculo` / `nao_calculavel`); ponto de substituição do método |
 | Situação de cada alerta | `services/car_indicators.py` (`classify_alert`) | Suspensa judicial > embargo vigente > autorizada > embargo levantado > com fiscalização > pendente |
 | Indicadores do CAR | `services/car_indicators.py` (`build_indicators`, `get_indicators`) | Uma fonte por bloco; cache de 24 h; SINAFLOR é sempre lido na hora |
+| Números do CNPJ | `services/cnpj_overview.py` (`cnpj_overview`) | Reaproveita `get_indicators` (situação das alertas) e `get_detail` (embargos); alerta única por código, embargo vigente único por (órgão, processo) |
+| Relatório do CNPJ | `reports/__init__.py` (`get_report`) | Valida o formato e o vocabulário proibido; impõe `nivel` = `compute_status` |
 
 O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). Uma proposta
 para substituir a regra provisória (abertas × superadas, nível do CNPJ pelo pior CAR, agente de
 resumos) está em [`proposta-regras-nivel-e-agente.md`](proposta-regras-nivel-e-agente.md) e **ainda
 não foi implementada**.
+
+### Relatório do CNPJ: exemplo hoje, agente depois
+
+- **Hoje**: `get_report` lê `MOCK_REPORTS_DIR/<cnpj>.json` (padrão `backend/data/mock_reports/`, **fora do git** porque associa CARs reais a um CNPJ). O conteúdo foi redigido por Claude a partir dos indicadores reais de 2026-11-06 e é estático. Sem arquivo para o CNPJ → `status=indisponivel`.
+- **Integração do agente**: substituir `_example_report()` em `app/reports/__init__.py` pela geração real, mantendo:
+  - o formato `CnpjReport` (`specs/005-dashboard-init/contracts/openapi.yaml`);
+  - `_validate()` (máximo de 3 riscos e 3 itens de contexto; sem "ilegal" nem "crime");
+  - a regra de que `nivel` vem de `compute_status`;
+  - `origem="agente"` (a interface muda o aviso automaticamente).
+
+  Regras do prompt: [`proposta-regras-nivel-e-agente.md`](proposta-regras-nivel-e-agente.md).
 
 ### Tolerância a falhas e cache
 
@@ -146,9 +161,11 @@ não foi implementada**.
 | `CarCard`, `CarMap` | Cartão do CAR (mapa, alertas, embargos) |
 | `CarIndicators` (`IndicatorsView`), `IndicatorValue` | Blocos "Riscos abertos" e "Contexto" no **detalhe do CAR** (o cartão não os mostra); os três estados; ajuda de termos (ex.: APP) |
 | `StatusBadge`, `CnpjReportCard`, `CnpjSearch` | Nível Gold/Silver/Bronze/Sem dados, ficha pública, busca com validação de CNPJ |
-| `LotOverview` | Visão de lotes do início (redesign). Sem fonte no backend: os campos aparecem como não disponíveis |
+| `CnpjReportView` | Secção "Relatório do CNPJ" do Início, com aviso de origem (exemplo/agente) |
+| `LotOverview` | Módulo de lotes do redesign. **Fora do Início** (não há fonte de lotes); só na prévia `/preview/lotes` |
 
-- **Preview de design** (só em desenvolvimento): `/preview/painel` mostra o início com dados fictícios de 3 lotes, sem backend. Fica fora do build de produção. Notas e limites: [`frontend/design-dashboard.md`](../frontend/design-dashboard.md).
+- **Início** (`/painel`, feature 005): status do CNPJ, 3 números (CARs, alertas abertas, embargos vigentes) e relatório. Números e relatório carregam à parte; se falharem, o status continua visível.
+- **Preview de design** (só em desenvolvimento, sem backend, fora do build de produção): `/preview/painel` mostra o Início com dados fictícios; `/preview/lotes` mostra o módulo de lotes. Notas e limites: [`frontend/design-dashboard.md`](../frontend/design-dashboard.md).
 - **Estilo**: `index.css` (tokens e componentes base) e CSS por página/layout (`LandingPage.css`, `HomePage.css`, `PublicCnpjPage.css`, `AppLayout.css`, `AuthLayout.css`). Os blocos de indicadores (003), no detalhe do CAR, ainda usam o estilo anterior ao redesign.
 
 ## 5. Testes

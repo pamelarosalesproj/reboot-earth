@@ -93,3 +93,29 @@
 @media (max-width: 1250px) { .producer-overview { padding: 28px 25px 40px; }.overview-header { align-items: start; }.overview-primary-action { margin-top: 20px; }.overview-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }.overview-matrix-top { align-items: start; flex-direction: column; } }
 @media (max-width: 760px) { .producer-overview { padding: 26px 20px 40px; }.overview-header { flex-direction: column; gap: 0; }.overview-header h1 { max-width: 400px; }.overview-primary-action { margin-top: 20px; }.overview-metric { padding: 17px; }.overview-metric-value strong { font-size: 2rem; }.overview-metric-heading { gap: 7px; }.overview-metric-heading h2 { font-size: .65rem; }.overview-matrix, .overview-buyer-view, .overview-environment { padding: 21px; }.overview-toolbar { padding: 0 20px 20px; }.overview-table-heading { padding: 22px 20px; }.overview-search { max-width: none; }.overview-environment-numbers { grid-template-columns: 1fr; gap: 22px; } }
 @media (max-width: 400px) { .producer-overview { padding-left: 15px; padding-right: 15px; }.overview-metrics { gap: 10px; }.overview-metric { padding: 14px; }.overview-metric-heading > span { width: 25px; height: 25px; border-radius: 7px; }.overview-metric svg { width: 15px; height: 15px; }.overview-filters { flex-wrap: wrap; border-radius: 12px; }.overview-search { min-width: 0; width: 100%; }.overview-legend { gap: 12px; } }
+
+/* ---- Feature 005: relatório do CNPJ (mesmo cartão que as outras secções) ---- */
+.overview-report { border: 1px solid var(--ov-border); border-radius: 18px; background: #fffefb; margin-bottom: 23px; padding: 25px; }
+.overview-report h2 { font-size: 1rem; margin: 0; font-weight: 500; letter-spacing: -.02em; }
+.report-heading { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.report-heading .status-badge { border: 0; border-radius: 9px; font-size: .78rem; padding: 4px 10px; }
+.report-origin { font-size: .66rem; color: var(--ov-muted); margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: #f3f6ec; line-height: 1.6; }
+.report-headline { font-size: 1.05rem; font-weight: 500; line-height: 1.45; margin: 18px 0 6px; letter-spacing: -.01em; }
+.report-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px 32px; }
+.report-list h3, .report-properties h3 { font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: #6e825c; font-weight: 600; margin: 18px 0 8px; }
+.report-list ul { margin: 0; padding-left: 18px; font-size: .78rem; line-height: 1.65; }
+.report-list li + li { margin-top: 6px; }
+.report-properties ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ov-border); }
+.report-properties li { display: grid; grid-template-columns: minmax(0, 15rem) 1fr auto; gap: 6px 18px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--ov-border); font-size: .76rem; line-height: 1.55; }
+.report-car { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .68rem; color: var(--ov-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.report-properties a { color: #527245; font-size: .7rem; white-space: nowrap; }
+.report-unavailable { font-size: .78rem; color: var(--ov-muted); margin: 12px 0 0; }
+.big-number-unavailable { font-size: 1.1rem !important; color: var(--ov-muted); font-style: italic; }
+.overview-data-date { margin: 16px 0 0; }
+
+@media (max-width: 720px) {
+  .overview-environment-numbers { grid-template-columns: 1fr; }
+  .report-properties li { grid-template-columns: 1fr; }
+}
+.report-export { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 100px; border: 1px solid var(--ov-border); background: #f6f9ef; color: #40673b; font: inherit; font-size: .72rem; font-weight: 500; cursor: not-allowed; }
+.report-export svg { flex-shrink: 0; }

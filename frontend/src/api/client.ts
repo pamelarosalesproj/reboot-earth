@@ -2,6 +2,8 @@ import type {
   CarDetail,
   CarIndicators,
   CarSummary,
+  CnpjOverview,
+  CnpjReport,
   DashboardSummary,
   Me,
   ProducerCar,
@@ -62,3 +64,7 @@ export const getPublicCnpj = (cnpj: string) => apiFetch<PublicCnpjReport>(`/api/
 /** Indicadores socioambientales del CAR (feature 003). */
 export const getIndicators = (code: string, refresh?: boolean) =>
   apiFetch<CarIndicators>(`/api/cars/${enc(code)}/indicators${q(refresh)}`)
+
+/** Feature 005: números e relatório do CNPJ do produtor autenticado. */
+export const getOverview = () => apiFetch<CnpjOverview>('/api/dashboard/overview')
+export const getReport = () => apiFetch<CnpjReport>('/api/dashboard/report')

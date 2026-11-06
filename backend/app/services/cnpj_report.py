@@ -54,7 +54,9 @@ def compute_status(agg: CarsAggregate | None, registered: bool) -> Status:
     partial = bool(agg and (agg.cars_unavailable > 0 or agg.cars_embargoes_unknown > 0))
 
     def status(level, reason=None):
-        return Status(level=level, reason=reason, partial=partial, basis="provisional")
+        return Status(level=level, reason=reason, partial=partial, basis="provisional",
+                      alerts_count=agg.alerts_count if agg else None,
+                      embargoes_count=agg.embargoes_count if agg else None)
 
     if not registered:
         return status("sem_dados", "not_registered")

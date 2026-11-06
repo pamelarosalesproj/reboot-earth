@@ -33,6 +33,8 @@ class Settings(BaseSettings):
     inpe_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/geoserver/ows"
     inpe_fire_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/queimadas/geoserver/wfs"
     inpe_timeout_s: float = 30.0
+    # Feature 005: relatório do CNPJ de exemplo (escrito à mão), fora do repositório (backend/data é ignorado).
+    mock_reports_dir: str = str(BACKEND_DIR / "data" / "mock_reports")
     sinaflor_poa_url: str = (
         "https://stibamadadosabertosprd.blob.core.windows.net/dados-abertos/dados/SINAFLOR/"
         "poaAmazoniaLegal/sinaflor-poa-amazonia-legal.csv"

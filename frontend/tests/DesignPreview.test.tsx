@@ -11,8 +11,10 @@ it('mostra o painel com dados fictícios sem chamar a API', async () => {
   vi.stubGlobal('fetch', fetchMock)
   window.history.replaceState({}, '', '/preview/painel')
   render(<DesignPreview />)
-  expect(await screen.findByText('Silver')).toBeInTheDocument()
-  expect(screen.getByRole('note')).toHaveTextContent('dados fictícios')
+  expect((await screen.findAllByText('Silver')).length).toBeGreaterThan(0)
+  expect(screen.getAllByRole('note')[0]).toHaveTextContent('dados fictícios')
+  expect(screen.getByText('Relatório do CNPJ')).toBeInTheDocument()
+  expect(screen.queryByText('DEMO-VERDE-01')).toBeNull()
   expect(fetchMock).not.toHaveBeenCalled()
   fireEvent.click(screen.getByRole('link', { name: /Meus CARs/ }))
   expect(screen.getByText('Esta prévia mostra o Início do painel')).toBeInTheDocument()
@@ -34,10 +36,10 @@ it('mantém o painel real protegido quando não há sessão', () => {
   expect(screen.queryByText('Painel protegido')).toBeNull()
 })
 
-it('filtra e busca os lotes fictícios sem chamadas de rede', async () => {
+it('filtra e busca os lotes fictícios em /preview/lotes, sem chamadas de rede', async () => {
   const fetchMock = vi.fn()
   vi.stubGlobal('fetch', fetchMock)
-  window.history.replaceState({}, '', '/preview/painel')
+  window.history.replaceState({}, '', '/preview/lotes')
   render(<DesignPreview />)
   expect(await screen.findByText('DEMO-VERDE-01')).toBeInTheDocument()
   expect(screen.getAllByRole('row')).toHaveLength(4)
