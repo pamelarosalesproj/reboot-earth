@@ -6,7 +6,13 @@ import './index.css'
 import App from './App.tsx'
 import { AuthProvider } from './auth/AuthContext.tsx'
 
-createRoot(document.getElementById('root')!).render(
+const root = createRoot(document.getElementById('root')!)
+
+if (import.meta.env.DEV && window.location.pathname.startsWith('/preview/')) {
+  import('./preview/DesignPreview').then(({ default: DesignPreview }) => {
+    root.render(<StrictMode><DesignPreview /></StrictMode>)
+  })
+} else root.render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>

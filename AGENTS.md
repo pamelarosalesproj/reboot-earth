@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guia para agentes de IA (Claude Code, Copilot, Codex etc.) que trabalham neste repositório.
+Guia para agentes de IA (Claude Code, Copilot, Codex, Antigravity, etc.) que trabalham neste repositório.
 Para o contexto de produto (problema, dores e solução), leia o [`README.md`](README.md).
 
 ## O projeto em uma frase

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { t } from '../i18n/pt-BR'
@@ -17,6 +17,7 @@ export default function CnpjSearch({ basePath = '/consulta', initialValue = '' }
   const navigate = useNavigate()
   const [value, setValue] = useState(maskCnpj(initialValue))
   const [error, setError] = useState<string | null>(null)
+  const id = useId()
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
@@ -31,10 +32,10 @@ export default function CnpjSearch({ basePath = '/consulta', initialValue = '' }
 
   return (
     <form className="cnpj-search" onSubmit={submit} noValidate>
-      <label>
-        {P.label}
+      <label htmlFor={id}>{P.label}</label>
         <div className="cnpj-search-row">
           <input
+            id={id}
             inputMode="numeric"
             value={value}
             onChange={(e) => {
@@ -43,15 +44,16 @@ export default function CnpjSearch({ basePath = '/consulta', initialValue = '' }
             }}
             placeholder={P.placeholder}
             aria-invalid={error ? true : undefined}
+            aria-describedby={`${id}-hint${error ? ` ${id}-error` : ''}`}
             className={error ? 'invalid' : ''}
           />
           <button type="submit" className="btn btn-primary">
             {P.submit}
           </button>
         </div>
-      </label>
+      <span className="field-hint" id={`${id}-hint`}>{P.searchHint}</span>
       {error && (
-        <span className="field-error" role="alert">
+        <span className="field-error" id={`${id}-error`} role="alert">
           {error}
         </span>
       )}

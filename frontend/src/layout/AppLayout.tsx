@@ -20,7 +20,8 @@ export default function AppLayout() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="sidebar-brand">{t.appName}</div>
+        <div className="sidebar-brand"><span className="sidebar-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M19 4C9 2 3 7 5 14s14 9 14-10ZM4 21 15 10M9 16v-5m0 5h5" /></svg></span>{t.appName}</div>
+        <span className="sidebar-section-label">{t.home.workspace}</span>
 
         <div className="profile">
           <div className="avatar" aria-hidden>
@@ -32,7 +33,7 @@ export default function AppLayout() {
           </div>
         </div>
 
-        <nav className="side-nav">
+        <nav className="side-nav" aria-label={t.home.navigation}>
           <NavLink to="/painel" end>
             <span aria-hidden>▦</span> {t.sidebar.home}
           </NavLink>
@@ -44,6 +45,7 @@ export default function AppLayout() {
           </NavLink>
         </nav>
 
+        <p className="sidebar-note">{t.home.sidebarNote}</p>
         <button
           className="btn btn-ghost sidebar-logout"
           onClick={async () => {
