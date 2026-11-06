@@ -1,8 +1,9 @@
 # RebootEarth
 
 Plataforma que mostra, de forma simples e rastreável, a situação socioambiental de produtores
-rurais brasileiros: **polígono de cada imóvel (CAR), alertas de desmatamento e embargos**, com dados
-do **MapBiomas Alerta**. Atende dois públicos:
+rurais brasileiros: **polígono de cada imóvel (CAR), alertas de desmatamento, embargos e indicadores
+socioambientais**, com dados do **MapBiomas Alerta**, do **INPE** (PRODES, DETER, Queimadas) e do
+**IBAMA** (SINAFLOR). Atende dois públicos:
 
 - **Produtor rural** (com conta): cadastra seu CNPJ e seus CARs e acompanha cada imóvel em um painel.
 - **Comprador** (sem conta): frigorífico, trading, cooperativa ou varejista que consulta o CNPJ de um
@@ -60,16 +61,21 @@ apresenta de forma clara para cada público:
    - o número de alertas de desmatamento que cruzam o imóvel;
    - o número de embargos (IBAMA, ICMBio, órgãos estaduais), sem duplicados;
    - um detalhe com cada alerta (código, data de detecção, área dentro do CAR, embargos associados)
-     e cada embargo (órgão, processo, área, data).
-2. **Consulta pública por CNPJ** *(em desenvolvimento — `specs/002-cnpj-score-search/`)* — o
-   comprador digita um CNPJ, sem cadastro, e vê uma ficha resumida:
+     e cada embargo (órgão, processo, área, data);
+   - **indicadores do CAR** separados em *Riscos abertos* e *Contexto* (ver
+     [Indicadores do CAR](#indicadores-do-car)).
+2. **Consulta pública por CNPJ** (`specs/002-cnpj-score-search/`) — o comprador digita um CNPJ, sem
+   cadastro, e vê uma ficha resumida:
    - **Gold**: nenhum alerta nem embargo em todos os imóveis, com dados completos;
    - **Silver**: pelo menos um alerta de desmatamento, ou dados parciais;
    - **Bronze**: pelo menos um embargo;
    - **Sem dados**: CNPJ não cadastrado, sem imóveis informados ou dados indisponíveis.
 
    Esse nível é uma **regra provisória**; depois será substituído por um **score** calculado,
-   sem mudar a experiência do comprador.
+   sem mudar a experiência do comprador. A proposta de nova regra (que não penaliza alertas já
+   superadas) e de um agente de resumos está em
+   [`docs/proposta-regras-nivel-e-agente.md`](docs/proposta-regras-nivel-e-agente.md) — ainda não
+   implementada.
 3. **Transparência para os dois lados** — o produtor vê no seu painel exatamente o mesmo status
    que o comprador vê, para saber como é percebido e corrigir o que falta.
 
@@ -92,11 +98,15 @@ As regras completas estão na constituição do projeto: [`.specify/memory/const
 
 | Caminho | Conteúdo |
 | --- | --- |
-| `backend/` | API em Python 3.12 (FastAPI + SQLModel/SQLite), intermediária para o MapBiomas Alerta |
-| `frontend/` | SPA em TypeScript (React + Vite + Leaflet): landing em `/`, painel em `/painel` |
+| `backend/` | API em Python 3.12 (FastAPI + SQLModel/SQLite), intermediária para MapBiomas, INPE e IBAMA |
+| `frontend/` | SPA em TypeScript (React + Vite + Leaflet): landing em `/`, consulta em `/consulta`, painel em `/painel` |
+| `frontend/design-dashboard.md` | Notas e limites do redesign do início do painel (preview em `/preview/painel`, só em dev) |
+| `docs/arquitetura.md` | **Documentação técnica**: endpoints, tabelas, regras, fontes externas, testes e operação |
+| `docs/proposta-regras-nivel-e-agente.md` | Proposta (não implementada) de regra de nível e agente de resumos |
 | `specs/001-producer-car-dashboard/` | Spec, plano, contrato (`contracts/openapi.yaml`) e tarefas do painel do produtor |
 | `specs/002-cnpj-score-search/` | Spec, plano e tarefas da consulta pública por CNPJ |
-| `data/cars_ejemplo/` | Respostas de exemplo do MapBiomas para CARs de vários estados |
+| `specs/003-car-indicators/` | Spec, plano e tarefas dos indicadores socioambientais do CAR |
+| `data/cars_ejemplo/` | Respostas reais do MapBiomas para CARs de vários estados (**local, não versionado**) |
 | `mapbiomas_api.py`, `dof_ibama.py` | Scripts de exploração das fontes (não são usados pela aplicação) |
 | `SCHEMA.md`, `schema.json` | Documentação do schema GraphQL do MapBiomas Alerta |
 
@@ -119,7 +129,11 @@ MAPBIOMAS_API_URL=https://plataforma.alerta.mapbiomas.org/api/v2/graphql
 # CORS_ORIGINS=["http://localhost:5173"]
 # PUBLIC_SEARCH_LIMIT_PER_HOUR=30                    (consultas públicas por CNPJ, por IP e por hora)
 # TRUST_PROXY_HEADERS=false                          (true só atrás de um proxy confiável: usa X-Forwarded-For)
+# CACHE_TTL_HOURS=24                                 (cache por CAR do MapBiomas e dos indicadores)
+# INPE_TIMEOUT_S=30                                  (timeout por consulta aos WFS do INPE)
 ```
+
+INPE e IBAMA são fontes públicas: não precisam de credenciais.
 
 As credenciais do MapBiomas são usadas só no backend; nunca chegam ao navegador.
 
@@ -131,17 +145,23 @@ cd backend && uv sync && uv run uvicorn app.main:app --reload --port 8000
 
 # Frontend → http://localhost:5173 (proxy /api → :8000)
 cd frontend && npm install && npm run dev
+
+# Uma vez por dia (indicador de manejo florestal): resumo do SINAFLOR por CAR
+cd backend && uv run python -m app.sources.sinaflor
 ```
 
 ## Testes
 
 ```bash
-cd backend && uv run ruff check . && uv run pytest     # MapBiomas simulado, sem rede
+cd backend && uv run ruff check . && uv run pytest
 cd frontend && npm run build && npm test
 ```
 
-Validação manual de ponta a ponta: [`specs/001-producer-car-dashboard/quickstart.md`](specs/001-producer-car-dashboard/quickstart.md)
-e [`specs/002-cnpj-score-search/quickstart.md`](specs/002-cnpj-score-search/quickstart.md).
+Testes sem rede: MapBiomas e INPE simulados com `respx`, SINAFLOR com um CSV de amostra.
+
+Validação manual de ponta a ponta: [`001`](specs/001-producer-car-dashboard/quickstart.md),
+[`002`](specs/002-cnpj-score-search/quickstart.md) e [`003`](specs/003-car-indicators/quickstart.md).
+Detalhes técnicos (endpoints, tabelas, fontes, testes): [`docs/arquitetura.md`](docs/arquitetura.md).
 
 ## Consulta pública por CNPJ
 
