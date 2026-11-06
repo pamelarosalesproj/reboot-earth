@@ -17,7 +17,7 @@ export default function CnpjReportCard({ report }: { report: PublicCnpjReport })
 
       <StatusBadge status={status} />
 
-      <p className="cnpj-report-score">{scoreText(report.score)}</p>
+      {scoreText(report.score) && <p className="cnpj-report-score">{scoreText(report.score)}</p>}
 
       {status.reason === 'not_registered' ? (
         <p className="muted">{P.notRegisteredNote}</p>

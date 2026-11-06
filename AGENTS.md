@@ -104,6 +104,10 @@ Features (todas em `main`):
   CAR; o cartão de "Meus CARs" fica enxuto.
 - Redesign do frontend (sem spec própria; notas em `frontend/design-dashboard.md`). Os blocos de
   indicadores da 003 ainda usam o estilo anterior.
+- `005-dashboard-init` — Início como resumo do CNPJ: status, 3 números e relatório. O relatório é
+  hoje um **exemplo escrito à mão** em `backend/data/mock_reports/<cnpj>.json` (fora do git); a
+  geração pelo agente entra em `app/reports/__init__.py` sem mudar o formato (ver
+  `docs/arquitetura.md`). Os módulos de lotes saíram do Início (só em `/preview/lotes`).
 
 Pendente de decisão: a nova regra de nível e o agente de resumos em
 [`docs/proposta-regras-nivel-e-agente.md`](docs/proposta-regras-nivel-e-agente.md). Mudar a regra de

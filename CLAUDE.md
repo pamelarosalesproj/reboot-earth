@@ -19,7 +19,10 @@ As instruções para agentes estão em [`AGENTS.md`](AGENTS.md) e valem integral
 - Para conferir os indicadores do CAR com dados reais, rode antes o sync do SINAFLOR
   (`uv run python -m app.sources.sinaflor`); sem ele, o manejo florestal aparece "Indisponível".
   Os indicadores ficam em cache 24 h por CAR: use `?refresh=true` para recalcular.
-- O redesign do início pode ser visto sem backend em `http://localhost:5173/preview/painel`
-  (dados fictícios, só em desenvolvimento).
+- O Início pode ser visto sem backend em `http://localhost:5173/preview/painel` e o módulo de lotes
+  em `/preview/lotes` (dados fictícios, só em desenvolvimento).
+- O relatório do CNPJ é um exemplo local em `backend/data/mock_reports/<cnpj>.json` (fora do git).
+  Se escrever um novo, use só números que existam nos indicadores do CNPJ e nunca "ilegal"/"crime":
+  o backend rejeita o arquivo e mostra "Relatório ainda não disponível".
 - Documentação técnica: [`docs/arquitetura.md`](docs/arquitetura.md). Ao mudar endpoints, tabelas,
   fontes ou regras, atualize esse arquivo junto com a spec da feature.

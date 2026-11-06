@@ -5,6 +5,8 @@ export const t = {
     notice: 'Prévia de design · dados fictícios · sem conexão com a API',
     exit: 'Voltar ao site',
     limitedTitle: 'Esta prévia mostra o Início do painel',
+    lotsLink: 'Ver prévia do módulo de lotes',
+    lotsTitle: 'Módulo de lotes (fora do Início até existir uma fonte de lotes)',
     limitedText: 'As outras telas e ações não estão disponíveis nesta demonstração de design.',
     back: 'Voltar ao Início da prévia',
   },
@@ -186,6 +188,37 @@ export const t = {
     seeCars: 'Ver meus CARs →',
     buyerViewTitle: 'Como compradores veem seu CNPJ',
     buyerViewLink: 'Ver ficha pública →',
+    // Feature 005: Início como resumo do CNPJ
+    summaryTitle: 'O resumo socioambiental do seu CNPJ.',
+    summaryIntro: 'Status, números e relatório dos seus imóveis, com dados de MapBiomas, INPE e IBAMA.',
+    statusTitle: 'Status do CNPJ',
+    numbersTitle: 'Seus números',
+    numbersSource: 'Todos os imóveis do CNPJ · MapBiomas Alerta',
+    openAlerts: 'Alertas abertas',
+    openAlertsValue: (n: number, ha: number) =>
+      `${n.toLocaleString('pt-BR')} · ${ha.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} ha`,
+    openAlertsHint: (total: number, superseded: number) =>
+      `de ${total} · ${superseded} ${superseded === 1 ? 'superada' : 'superadas'}`,
+    activeEmbargoes: 'Embargos vigentes',
+    activeEmbargoesHint: 'Únicos (órgão + processo), sem data de fim',
+    carsHint: 'Imóveis do CNPJ',
+    numbersError: 'Não foi possível carregar os números agora.',
+    dataAsOf: (d: string) => `Dados de ${d}`,
+    report: {
+      title: 'Relatório do CNPJ',
+      risks: 'Riscos',
+      context: 'Contexto',
+      caveats: 'Ressalvas',
+      properties: 'Por imóvel',
+      seeCar: 'Ver detalhes',
+      exportPdf: 'Exportar PDF',
+      exportSoon: 'Em breve: exportação do relatório em PDF',
+      originExample: 'Exemplo escrito manualmente — a geração automática ainda não está disponível.',
+      originAgent: 'Gerado por IA a partir dos dados de MapBiomas, INPE e IBAMA; o nível é calculado por regras.',
+      unavailable: 'Relatório ainda não disponível.',
+      loading: 'Carregando relatório…',
+      dataAsOf: (d: string) => `Dados de ${d}`,
+    },
   },
 
   panel: {
@@ -231,8 +264,16 @@ export const t = {
       bronze: 'Há embargos registrados.',
       sem_dados: 'Não há dados suficientes para avaliar.',
     },
-    provisional:
-      'Indicador preliminar baseado apenas em alertas e embargos do MapBiomas Alerta; não é o score definitivo.',
+    provisional: 'Nível provisório: considera apenas alertas e embargos do MapBiomas Alerta.',
+    because: {
+      embargoes: (n: number) =>
+        `Porque há ${n} ${n === 1 ? 'embargo registrado' : 'embargos registrados'} nos imóveis do CNPJ.`,
+      embargoesGeneric: 'Porque há embargos registrados nos imóveis do CNPJ.',
+      alerts: (n: number) =>
+        `Porque há ${n} ${n === 1 ? 'alerta' : 'alertas'} de desmatamento nos imóveis do CNPJ.`,
+      partial: 'Porque parte dos dados não pôde ser verificada.',
+      partialToo: 'Parte dos dados não pôde ser verificada.',
+    },
     score: {
       em_calculo: 'Score em cálculo',
       nao_calculavel: 'Score não calculável',

@@ -75,6 +75,9 @@ export interface Status {
   reason: StatusReason | null
   partial: boolean
   basis: 'provisional' | 'score'
+  /** Conteos que usou a regra (agregados): explicam o nível com números. */
+  alerts_count?: number | null
+  embargoes_count?: number | null
 }
 
 export interface Score {
@@ -163,4 +166,29 @@ export interface CarIndicators {
     forest_management: { authorizations: number; active: number; volume_m3: number; last_issued: string | null } | null
   }
   alerts: AlertIndicator[]
+}
+
+// Feature 005: Início como resumo do CNPJ (specs/005-dashboard-init/contracts/openapi.yaml)
+export interface CnpjOverview {
+  cars_count: number
+  alerts_total: number | null
+  open_alerts: Count | null
+  superseded_alerts: Count | null
+  embargoes_active: number | null
+  cars_without_alert_data: number
+  cars_embargoes_unknown: number
+  data_as_of: string | null
+}
+
+export interface CnpjReport {
+  status: 'ok' | 'indisponivel'
+  origem?: 'exemplo' | 'agente' | null
+  nivel?: StatusLevel | null
+  titulo?: string | null
+  riscos?: string[]
+  contexto?: string[]
+  ressalvas?: string[]
+  imoveis?: { car_code: string; resumo: string }[]
+  data_dos_dados?: string | null
+  gerado_em?: string | null
 }

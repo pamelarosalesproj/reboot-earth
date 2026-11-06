@@ -116,6 +116,8 @@ components:
           description: Solo con level=sem_dados.
         partial: { type: boolean, description: "Algún CAR sin datos o con embargos no determinables." }
         basis: { type: string, enum: [provisional, score] }
+        alerts_count: { type: [integer, "null"], description: "Alertas únicas que usó la regla (agregado; añadido 2026-11-06)." }
+        embargoes_count: { type: [integer, "null"], description: "Embargos únicos registrados que usó la regla (agregado; añadido 2026-11-06)." }
     Score:
       type: object
       additionalProperties: false

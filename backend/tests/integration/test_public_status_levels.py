@@ -20,7 +20,8 @@ def status(client):
 def test_gold_without_alerts_or_embargoes(client, mapbiomas_mock):
     mapbiomas_mock.properties[REF_CAR]["alerts"] = []
     register(client)
-    assert status(client) == {"level": "gold", "reason": None, "partial": False, "basis": "provisional"}
+    assert status(client) == {"level": "gold", "reason": None, "partial": False, "basis": "provisional",
+                              "alerts_count": 0, "embargoes_count": 0}
 
 
 def test_silver_with_alerts(client):
@@ -31,7 +32,8 @@ def test_silver_with_alerts(client):
 def test_bronze_with_embargo(client, mapbiomas_mock):
     mapbiomas_mock.embargoes[REF_CAR] = [EMBARGO]
     register(client)
-    assert status(client)["level"] == "bronze"
+    s = status(client)
+    assert s["level"] == "bronze" and s["embargoes_count"] == 1  # el conteo explica el nivel
 
 
 def test_sem_dados_when_mapbiomas_down_without_cache(client, engine, mapbiomas_mock):

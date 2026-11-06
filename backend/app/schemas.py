@@ -78,6 +78,9 @@ class Status(BaseModel):
     reason: Literal["not_registered", "no_properties", "data_unavailable"] | None  # solo con sem_dados
     partial: bool
     basis: Literal["provisional", "score"]
+    # Conteos que usó la regla (agregados, públicos): permiten explicar el nivel con números.
+    alerts_count: int | None = None
+    embargoes_count: int | None = None
 
 
 class Score(BaseModel):
@@ -226,3 +229,39 @@ class CarIndicators(BaseModel):
     open: OpenRisks
     context: Context
     alerts: list[AlertIndicator] = []
+
+
+# ---------------------------------------------------------------------------
+# Feature 005: Início como resumo do CNPJ (specs/005-dashboard-init/contracts/openapi.yaml)
+# ---------------------------------------------------------------------------
+class CnpjOverview(BaseModel):
+    cars_count: int
+    alerts_total: int | None
+    open_alerts: Count | None
+    superseded_alerts: Count | None
+    embargoes_active: int | None
+    cars_without_alert_data: int
+    cars_embargoes_unknown: int
+    data_as_of: datetime | None
+
+
+class ReportProperty(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    car_code: str
+    resumo: str
+
+
+class CnpjReport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal["ok", "indisponivel"]
+    origem: Literal["exemplo", "agente"] | None = None
+    nivel: Literal["gold", "silver", "bronze", "sem_dados"] | None = None
+    titulo: str | None = None
+    riscos: list[str] = Field(default_factory=list, max_length=3)
+    contexto: list[str] = Field(default_factory=list, max_length=3)
+    ressalvas: list[str] = []
+    imoveis: list[ReportProperty] = []
+    data_dos_dados: date | None = None
+    gerado_em: datetime | None = None

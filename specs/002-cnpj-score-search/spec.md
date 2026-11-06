@@ -8,6 +8,8 @@
 
 **Input**: User description: "una búsqueda basica por cnpj donde indique el score de ese cpnj, ese score lo calcularemos despues. porque esta plataforma debe ser tanto para el productor y para el comprador ( que no necesita registrarse) pero sí saber el status, como propones ?"
 
+> **Cambio (2026-11-06, solicitado por el usuario):** la explicación del nivel era confusa ("Há embargos registrados." + "Indicador preliminar… não é o score definitivo." + "Score em cálculo"). Ahora: (1) el motivo usa los números de la regla, por ejemplo "Porque há 7 embargos registrados nos imóveis do CNPJ." (`Status` añade los agregados `alerts_count` y `embargoes_count`); (2) el aviso pasa a "Nível provisório: considera apenas alertas e embargos do MapBiomas Alerta."; (3) **el score solo se muestra cuando existe** (`disponivel`). Mientras tanto no aparece "Score em cálculo". Afecta a FR-103 y FR-112 y vale para el panel y la ficha pública.
+
 ## Propuesta
 
 La plataforma pasa a tener dos públicos:

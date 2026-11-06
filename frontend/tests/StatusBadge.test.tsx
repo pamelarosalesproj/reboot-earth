@@ -32,12 +32,23 @@ describe('StatusBadge (FR-111/112)', () => {
 
   it('explica el nivel y avisa que es provisional', () => {
     render(<StatusBadge status={st('bronze')} />)
-    expect(screen.getByText('Há embargos registrados.')).toBeInTheDocument()
-    expect(screen.getByText(/Indicador preliminar/)).toBeInTheDocument()
+    expect(screen.getByText('Porque há embargos registrados nos imóveis do CNPJ.')).toBeInTheDocument()
+    expect(screen.getByText(/Nível provisório/)).toBeInTheDocument()
   })
 
   it('sin aviso provisional cuando el nivel viene del score', () => {
     render(<StatusBadge status={st('gold', { basis: 'score' })} />)
-    expect(screen.queryByText(/Indicador preliminar/)).toBeNull()
+    expect(screen.queryByText(/Nível provisório/)).toBeNull()
+  })
+
+  it.each([
+    [{ level: 'bronze', embargoes_count: 7 }, 'Porque há 7 embargos registrados nos imóveis do CNPJ.'],
+    [{ level: 'bronze', embargoes_count: 1 }, 'Porque há 1 embargo registrado nos imóveis do CNPJ.'],
+    [{ level: 'silver', alerts_count: 3 }, 'Porque há 3 alertas de desmatamento nos imóveis do CNPJ.'],
+    [{ level: 'silver', alerts_count: 3, partial: true }, 'Porque há 3 alertas de desmatamento nos imóveis do CNPJ. Parte dos dados não pôde ser verificada.'],
+    [{ level: 'silver', alerts_count: 0, partial: true }, 'Porque parte dos dados não pôde ser verificada.'],
+  ] as const)('explica o nível com os números da regra: %o', (extra, text) => {
+    render(<StatusBadge status={st(extra.level, extra)} />)
+    expect(screen.getByText(text)).toBeInTheDocument()
   })
 })

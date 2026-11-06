@@ -77,6 +77,9 @@ apresenta de forma clara para cada público:
    implementada.
 3. **Transparência para os dois lados** — o produtor vê no seu painel exatamente o mesmo status
    que o comprador vê, para saber como é percebido e corrigir o que falta.
+4. **Início como resumo do CNPJ** (`specs/005-dashboard-init/`) — status do CNPJ, três números
+   (CARs, alertas abertas, embargos vigentes) e um relatório do CNPJ. Por enquanto o relatório é
+   um **exemplo escrito à mão**; a geração automática por um agente está em desenvolvimento.
 
 ### Princípios da solução
 
@@ -105,6 +108,7 @@ As regras completas estão na constituição do projeto: [`.specify/memory/const
 | `specs/001-producer-car-dashboard/` | Spec, plano, contrato (`contracts/openapi.yaml`) e tarefas do painel do produtor |
 | `specs/002-cnpj-score-search/` | Spec, plano e tarefas da consulta pública por CNPJ |
 | `specs/003-car-indicators/` | Spec, plano e tarefas dos indicadores socioambientais do CAR |
+| `specs/005-dashboard-init/` | Spec, plano, contrato e tarefas do Início como resumo do CNPJ |
 | `data/cars_ejemplo/` | Respostas reais do MapBiomas para CARs de vários estados (**local, não versionado**) |
 | `mapbiomas_api.py`, `dof_ibama.py` | Scripts de exploração das fontes (não são usados pela aplicação) |
 | `SCHEMA.md`, `schema.json` | Documentação do schema GraphQL do MapBiomas Alerta |
@@ -130,6 +134,7 @@ MAPBIOMAS_API_URL=https://plataforma.alerta.mapbiomas.org/api/v2/graphql
 # TRUST_PROXY_HEADERS=false                          (true só atrás de um proxy confiável: usa X-Forwarded-For)
 # CACHE_TTL_HOURS=24                                 (cache por CAR do MapBiomas e dos indicadores)
 # INPE_TIMEOUT_S=30                                  (timeout por consulta aos WFS do INPE)
+# MOCK_REPORTS_DIR=backend/data/mock_reports         (relatórios de exemplo por CNPJ, fora do git)
 ```
 
 INPE e IBAMA são fontes públicas: não precisam de credenciais.

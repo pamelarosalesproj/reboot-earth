@@ -46,7 +46,7 @@ def test_not_registered_cnpj(client):
     d = public(client, NOT_REGISTERED).json()
     assert d["registered"] is False
     assert d["status"] == {"level": "sem_dados", "reason": "not_registered", "partial": False,
-                           "basis": "provisional"}
+                           "basis": "provisional", "alerts_count": None, "embargoes_count": None}
     assert d["score"]["state"] == "nao_calculavel"
     assert (d["cars_count"], d["data_as_of"]) == (0, None)
 
