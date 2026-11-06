@@ -1,16 +1,25 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ApiError, getDetail } from '../api/client'
+import { ApiError, getDetail, getIndicators } from '../api/client'
 import { EmbargoesValue } from '../components/CarCard'
+import { IndicatorsView } from '../components/CarIndicators'
 import CarMap from '../components/CarMap'
 import { fmtDate, fmtDateTime, fmtNum, t } from '../i18n/pt-BR'
-import type { CarDetail } from '../types'
+import type { AlertIndicator, CarDetail, CarIndicators } from '../types'
+
+const OPEN = new Set(['embargo_vigente', 'com_fiscalizacao', 'pendente'])
 
 export default function CarDetailPage() {
   const { code = '' } = useParams()
   const [detail, setDetail] = useState<CarDetail | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  // Indicadores por alerta (feature 003): si fallan, la tabla se muestra igual.
+  const [indicators, setIndicators] = useState<CarIndicators | null>(null)
+  const [indicatorsError, setIndicatorsError] = useState(false)
+  const byAlert: Map<number, AlertIndicator> | null = indicators
+    ? new Map(indicators.alerts.map((a) => [a.alert_code, a]))
+    : null
 
   const load = useCallback(
     (refresh = false) => {
@@ -20,6 +29,15 @@ export default function CarDetailPage() {
         .then(setDetail)
         .catch((err) => setError(err instanceof ApiError && err.status === 404 ? err.message : t.panel.unavailable))
         .finally(() => setLoading(false))
+      getIndicators(code, refresh)
+        .then((d) => {
+          setIndicators(d)
+          setIndicatorsError(false)
+        })
+        .catch(() => {
+          setIndicators(null)
+          setIndicatorsError(true)
+        })
     },
     [code],
   )
@@ -28,6 +46,7 @@ export default function CarDetailPage() {
 
   const s = detail?.summary
   const D = t.detail
+  const I = t.indicators
 
   return (
     <main className="page">
@@ -77,6 +96,15 @@ export default function CarDetailPage() {
             </p>
           </div>
 
+          <section className="card detail-indicators">
+            <h2>{I.title}</h2>
+            {indicators ? (
+              <IndicatorsView d={indicators} />
+            ) : (
+              <p className="muted small">{indicatorsError ? I.error : I.loading}</p>
+            )}
+          </section>
+
           <section className="card">
             <h2>{D.alertsTitle}</h2>
             {detail.alerts.length === 0 ? (
@@ -91,6 +119,15 @@ export default function CarDetailPage() {
                       <th className="num">{D.cols.area}</th>
                       <th className="num">{D.cols.areaInCar}</th>
                       <th className="num">{D.cols.embargoes}</th>
+                      {byAlert && (
+                        <>
+                          <th>{I.cols.status}</th>
+                          <th>{I.cols.post2020}</th>
+                          <th className="num">{I.cols.legalReserve}</th>
+                          <th>{I.cols.app}</th>
+                          <th>{I.cols.uc}</th>
+                        </>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -101,6 +138,22 @@ export default function CarDetailPage() {
                         <td className="num">{fmtNum(a.area_ha)}</td>
                         <td className="num">{fmtNum(a.area_in_car_ha)}</td>
                         <td className="num">{a.embargoes_count ?? '—'}</td>
+                        {byAlert &&
+                          (() => {
+                            const x = byAlert.get(a.alert_code)
+                            if (!x) return <td colSpan={5}>—</td>
+                            return (
+                              <>
+                                <td className={OPEN.has(x.status) ? 'ind-status-open' : ''}>
+                                  {I.situacaoShort[x.status]}
+                                </td>
+                                <td>{x.post_2020 ? I.yes : I.no}</td>
+                                <td className="num">{fmtNum(x.legal_reserve_ha)}</td>
+                                <td>{x.touches_app ? I.yes : I.no}</td>
+                                <td>{x.conservation_units.join(', ') || '—'}</td>
+                              </>
+                            )
+                          })()}
                       </tr>
                     ))}
                   </tbody>

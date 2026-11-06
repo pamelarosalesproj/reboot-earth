@@ -35,5 +35,14 @@ class Settings(BaseSettings):
     # Sin proxy, un visitante podría falsear la cabecera y saltarse el límite.
     trust_proxy_headers: bool = False
 
+    # Indicadores del CAR (feature 003): fuentes públicas sin credenciales.
+    inpe_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/geoserver/ows"
+    inpe_fire_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/queimadas/geoserver/wfs"
+    inpe_timeout_s: float = 30.0
+    sinaflor_poa_url: str = (
+        "https://stibamadadosabertosprd.blob.core.windows.net/dados-abertos/dados/SINAFLOR/"
+        "poaAmazoniaLegal/sinaflor-poa-amazonia-legal.csv"
+    )
+
 
 settings = Settings()

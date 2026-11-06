@@ -86,6 +86,7 @@ export default function CarCard({ car, onRemove }: Props) {
         </>
       )}
 
+
       <footer className="car-card-actions">
         <Link className="btn btn-primary btn-sm" to={`/painel/cars/${encodeURIComponent(car.car_code)}`}>
           {t.panel.details}

@@ -40,12 +40,17 @@ class FakeMapBiomas:
         self.embargoes: dict[str, list[dict]] = {}
         self.down = False
         self.calls: list[str] = []
+        # Feature 003: overrides por alerta (campos crossed*, actionsList) y alertas suspendidas.
+        self.alert_extra: dict[int, dict] = {}
+        self.judicial: dict[str, list[int]] = {}
+        self.judicial_error = False
 
     def handler(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
         q, v = body["query"], body.get("variables") or {}
         op = next((n for n in ("SignIn", "CarExists", "RuralPropertyCar", "CarEmbargoesViaAlerts",
-                               "CarEmbargoesViaPoint") if n in q), "?")
+                               "CarEmbargoesViaPoint", "AlertIndicators", "SuspendedJudicialAlerts")
+                   if n in q), "?")
         self.calls.append(op)
         if self.down and op != "SignIn":
             return httpx.Response(502, text="Bad Gateway")
@@ -63,6 +68,16 @@ class FakeMapBiomas:
                 return httpx.Response(200, json={"data": {"alerts": {"collection": []}}})
             rp = {"carCode": code, "embargoedAreas": self.embargoes.get(code, [])}
             return httpx.Response(200, json={"data": {"alerts": {"collection": [{"ruralProperties": [rp]}]}}})
+        if op == "AlertIndicators":
+            prop = self.properties.get(v["c"][0])
+            alerts = [{**a, **self.alert_extra.get(a["alertCode"], {})} for a in (prop or {}).get("alerts", [])]
+            return httpx.Response(200, json={"data": {"alerts": {"collection": alerts}}})
+        if op == "SuspendedJudicialAlerts":
+            if self.judicial_error:
+                return httpx.Response(200, json={"errors": [{"message": "boom"}]})
+            codes = self.judicial.get(v["c"], [])
+            return httpx.Response(200, json={"data": {"findSuspendedJudicialAlert":
+                                                      [{"alertCode": c} for c in codes]}})
         if op == "CarEmbargoesViaPoint":
             return httpx.Response(200, json={"data": {"pointInformation": {"ruralProperties": []}}})
         return httpx.Response(400, json={"errors": [{"message": "unknown op"}]})
@@ -71,12 +86,35 @@ class FakeMapBiomas:
         return self.calls.count(op)
 
 
+class FakeInpe:
+    """WFS del INPE simulado: features por capa (GeoJSON), filtrados solo por nombre de capa."""
+
+    def __init__(self):
+        self.layers: dict[str, list[dict]] = {}
+        self.down = False
+        self.calls: list[str] = []
+
+    def handler(self, request: httpx.Request) -> httpx.Response:
+        layer = request.url.params.get("typeName", "")
+        self.calls.append(layer)
+        if self.down:
+            return httpx.Response(500, text="Internal error")
+        return httpx.Response(200, json={"type": "FeatureCollection", "features": self.layers.get(layer, [])})
+
+
 @pytest.fixture
 def mapbiomas_mock():
     fake = FakeMapBiomas()
+    fake.inpe = FakeInpe()
     with respx.mock(assert_all_called=False) as router:
         router.post(API_URL).mock(side_effect=fake.handler)
+        router.get(url__startswith="https://terrabrasilis.dpi.inpe.br/").mock(side_effect=fake.inpe.handler)
         yield fake
+
+
+@pytest.fixture
+def inpe(mapbiomas_mock):
+    return mapbiomas_mock.inpe
 
 
 @pytest.fixture(autouse=True)

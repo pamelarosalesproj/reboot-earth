@@ -1,4 +1,12 @@
-import type { CarDetail, CarSummary, DashboardSummary, Me, ProducerCar, PublicCnpjReport } from '../types'
+import type {
+  CarDetail,
+  CarIndicators,
+  CarSummary,
+  DashboardSummary,
+  Me,
+  ProducerCar,
+  PublicCnpjReport,
+} from '../types'
 
 export class ApiError extends Error {
   status: number
@@ -50,6 +58,10 @@ export const getDetail = (code: string, refresh?: boolean) =>
 
 /** Ficha pública de un CNPJ (sin sesión). 429 → ApiError con body.retry_after_s. */
 export const getPublicCnpj = (cnpj: string) => apiFetch<PublicCnpjReport>(`/api/public/cnpj/${enc(cnpj)}`)
+
+/** Indicadores socioambientales del CAR (feature 003). */
+export const getIndicators = (code: string, refresh?: boolean) =>
+  apiFetch<CarIndicators>(`/api/cars/${enc(code)}/indicators${q(refresh)}`)
 
 /** Gera relatório mensal de auditoria e conformidade ESG */
 export const generateMonthlyAuditReport = (reference_month?: string) =>

@@ -25,6 +25,21 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
+it('não inventa volumes, conformidade ou riscos quando a API não os fornece', async () => {
+  const fetchMock = vi.fn()
+  vi.stubGlobal('fetch', fetchMock)
+  render(<MemoryRouter><HomePage previewData={{ ...dashboard, alerts_count: null }} /></MemoryRouter>)
+  expect(await screen.findByText('Os dados de lotes ainda não estão disponíveis.')).toBeInTheDocument()
+  for (const name of ['Volume homologado', 'Conformidade EUDR', 'Alertas territoriais']) {
+    const card = screen.getByRole('heading', { name }).closest('article')
+    expect(card).toHaveTextContent('—')
+    expect(card).not.toHaveTextContent('0%')
+  }
+  expect(screen.queryByText('DEMO-VERDE-01')).toBeNull()
+  expect(screen.getByText('A distribuição será exibida quando a classificação de risco estiver disponível.')).toBeInTheDocument()
+  expect(fetchMock).not.toHaveBeenCalled()
+})
+
 describe('HomePage — cómo ven los compradores mi CNPJ (FR-114)', () => {
   it('muestra el nivel del CNPJ y enlaza a la ficha pública', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(dashboard), { status: 200 })))

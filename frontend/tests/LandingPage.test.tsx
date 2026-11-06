@@ -37,7 +37,7 @@ describe('LandingPage', () => {
   it('explica la fuente de datos', () => {
     renderWith(null)
     expect(screen.getAllByText(/MapBiomas Alerta/).length).toBeGreaterThan(0)
-    expect(screen.getByText('Como funciona')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Como funciona', level: 2 })).toBeInTheDocument()
   })
 
   it('no tiene buscador; el botón del comprador lleva a /consulta (FR-101, FR-115)', () => {

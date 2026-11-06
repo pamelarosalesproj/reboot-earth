@@ -1,0 +1,11 @@
+Generator: built-in image_gen
+Purpose: decorative illustrations for login and registration; do not represent actual users or consulted properties.
+Optimization: JPEG quality 85, original dimensions preserved (1024 x 1536).
+
+Asset: auth-login-crops.jpg
+Prompt:
+Use case: photorealistic-natural. Asset type: portrait decorative photo for the login page of RebootEarth, a Brazilian rural environmental transparency platform. Primary request: a beautiful high oblique drone photograph of cultivated Brazilian countryside, long gently curved rows of green crops following the contours of softly rolling land, narrow ochre farm track leading into the distance. No forest, no trees as main subject. Premium editorial agricultural photography, realistic fine textures, soft early morning light, muted olive and deep green colors with subtle warm earth accents. Portrait 1024x1536 composition for a tall website side panel, quieter darker low-detail upper third suitable for light HTML text overlay, rich crop patterns in lower two thirds. No people, no buildings, no text, no logos, no map boundaries, no charts. This is illustrative scenery, not an actual consulted property.
+
+Asset: auth-register-soil.jpg
+Prompt:
+Use case: photorealistic-natural. Asset type: portrait decorative photo for RebootEarth account registration, a Brazilian rural environmental transparency platform. Primary request: intimate premium editorial agricultural photograph of a Brazilian rural producer examining fertile soil and a small healthy young soybean seedling in their cupped hands. Close view of realistic weathered hands holding a modest mound of dark earth, a fresh small seedling rooted in the soil, simple muted olive work shirt sleeves; no face visible. Background is a softly blurred cultivated field, no trees or forest. Authentic, calm, grounded in care for productive land, natural side lighting, rich deep olive green and earthy brown palette. Portrait 1024x1536 composition for tall website side panel: hands and seedling centered in the lower middle, top third is a quiet dark olive out-of-focus field for light HTML text overlay. No text, logos, jewelry, devices, borders, UI, or watermark. No large forest scenery; make the human care for soil the main subject. This is an illustrative scene, not an actual user or consulted property.

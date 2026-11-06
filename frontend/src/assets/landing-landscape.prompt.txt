@@ -1,0 +1,7 @@
+Asset: landing-landscape.jpg
+Generator: built-in image_gen
+Purpose: decorative illustrative landscape; does not represent a consulted property.
+Optimization: JPEG quality 85, original dimensions preserved (1536 x 1024).
+
+Prompt:
+Use case: photorealistic-natural. Asset type: decorative landscape image for RebootEarth, a Brazilian rural environmental transparency website. Create a premium editorial aerial landscape photograph of Brazilian farmland meeting lush native forest, gently rolling green cultivated fields, organic dark green forest edges, distant layers of hills and a soft pale mint-blue morning sky. Wide landscape 3:2 composition, horizon near upper third, fresh natural sunlight, subtle atmospheric haze, realistic rich botanical textures, restrained sage and forest green palette. Peaceful, sophisticated, hopeful. No people, machinery, text, logos, maps, property boundaries, icons or overlays. This is an illustrative landscape, not a specific geolocated property.

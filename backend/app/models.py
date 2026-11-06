@@ -1,6 +1,6 @@
 """Tablas persistidas (ver specs/001-producer-car-dashboard/data-model.md)."""
 
-from datetime import datetime
+from datetime import date, datetime
 from enum import StrEnum
 
 from sqlalchemy import JSON, Column, ForeignKey, Integer, UniqueConstraint
@@ -57,3 +57,36 @@ class CarSnapshot(SQLModel, table=True):
     summary_json: dict = Field(sa_column=Column(JSON, nullable=False))
     detail_json: dict | None = Field(default=None, sa_column=Column(JSON, nullable=True))
     fetched_at: datetime = Field(default_factory=utcnow)
+
+
+class CarIndicatorsSnapshot(SQLModel, table=True):
+    """Caché de indicadores por CAR (feature 003, research R5). Tabla nueva: sin migración."""
+
+    __tablename__ = "car_indicators_snapshot"
+
+    car_code: str = Field(primary_key=True)
+    payload: dict = Field(sa_column=Column(JSON, nullable=False))
+    fetched_at: datetime = Field(default_factory=utcnow)
+
+
+class SinaflorCar(SQLModel, table=True):
+    """Resumen por CAR del POA Amazônia Legal (IBAMA/SINAFLOR), reemplazado en cada sync."""
+
+    __tablename__ = "sinaflor_car"
+
+    car_code: str = Field(primary_key=True)
+    autorizacoes: int
+    vigentes: int
+    volume_m3: float
+    ultima_emissao: date | None = None
+
+
+class SinaflorSync(SQLModel, table=True):
+    """Fila única (id=1). Si no existe, SINAFLOR nunca se sincronizó → "indisponível"."""
+
+    __tablename__ = "sinaflor_sync"
+
+    id: int = Field(default=1, primary_key=True)
+    synced_at: datetime = Field(default_factory=utcnow)
+    source_last_modified: str | None = None
+    rows: int = 0

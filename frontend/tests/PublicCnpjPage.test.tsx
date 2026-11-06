@@ -39,6 +39,8 @@ function renderAt(path: string) {
       <Routes>
         <Route path="/consulta" element={<PublicCnpjPage />} />
         <Route path="/consulta/:cnpj" element={<PublicCnpjPage />} />
+        <Route path="/painel/consulta" element={<PublicCnpjPage basePath="/painel/consulta" />} />
+        <Route path="/painel/consulta/:cnpj" element={<PublicCnpjPage basePath="/painel/consulta" />} />
       </Routes>
     </MemoryRouter>,
   )
@@ -87,5 +89,35 @@ describe('PublicCnpjPage', () => {
     vi.stubGlobal('fetch', respond(200, { ...report, cars_with_data: 1, status: { ...report.status, partial: true } }))
     renderAt('/consulta/04654691000106')
     expect(await screen.findByText('Dados parciais: 1 de 2 propriedades.')).toBeInTheDocument()
+  })
+
+  it('permite reintentar el mismo CNPJ después de un fallo de conexión', async () => {
+    const fetchMock = vi.fn()
+      .mockRejectedValueOnce(new TypeError('Network error'))
+      .mockResolvedValueOnce(new Response(JSON.stringify(report), { status: 200 }))
+    vi.stubGlobal('fetch', fetchMock)
+    renderAt('/consulta/04654691000106')
+    expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível consultar agora')
+    fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }))
+    expect(await screen.findByText('Silver')).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fetchMock.mock.calls[0][0]).toBe(fetchMock.mock.calls[1][0])
+  })
+
+  it('conserva el aviso de datos desactualizados y la fecha de la fuente', async () => {
+    vi.stubGlobal('fetch', respond(200, { ...report, stale: true }))
+    renderAt('/consulta/04654691000106')
+    expect(await screen.findByText(/desatualizado/, { selector: '.stale-tag' })).toBeInTheDocument()
+    expect(screen.getByText(/Dados de/)).toBeInTheDocument()
+  })
+
+  it('usa el mismo resumen público dentro del panel sin duplicar el encabezado', async () => {
+    vi.stubGlobal('fetch', respond(200, report))
+    const { container } = renderAt('/painel/consulta/04654691000106')
+    expect(await screen.findByText('Silver')).toBeInTheDocument()
+    expect(container.querySelector('.cnpj-header')).toBeNull()
+    expect(container.querySelector('.cnpj-screen-in-panel')).toBeInTheDocument()
+    expect(container.querySelector('.leaflet-container')).toBeNull()
+    expect(screen.getByText('2 propriedades informadas pelo produtor')).toBeInTheDocument()
   })
 })

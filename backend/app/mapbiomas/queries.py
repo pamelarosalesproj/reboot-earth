@@ -42,3 +42,27 @@ query CarEmbargoesViaPoint($b: BoundingBoxInput) {{
   pointInformation(boundingBox: $b) {{ ruralProperties {{ {EMBARGO_FIELDS} }} }}
 }}
 """
+
+# ---- Feature 003: situación de cada alerta (specs/003-car-indicators/research.md R1) ----
+ALERT_INDICATORS_QUERY = """
+query AlertIndicators($c: [ID!]) {
+  alerts(propertyCodes: $c, limit: 200) {
+    collection {
+      alertCode detectedAt areaHa
+      crossedRuralProperties { code alertAreaInCar }
+      crossedDeforestationAuthorizationsArea crossedForestManagementsArea
+      crossedLegalReservesArea crossedPermanentProtectedAreaTotal
+      crossedIndigenousLandsArea
+      crossedFederalProtectedAreaIntegralProtectionsArea crossedStateProtectedAreaIntegralProtectionsArea
+      crossedMunicipalityProtectedAreaIntegralProtectionsArea
+      crossedFederalProtectedAreaSustainableUsesArea crossedStateProtectedAreaSustainableUsesArea
+      crossedMunicipalityProtectedAreaSustainableUsesArea
+      crossedConservationUnitsList crossedEmbargoesArea actionsList
+    }
+  }
+}
+"""
+
+JUDICIAL_ALERTS_QUERY = """
+query SuspendedJudicialAlerts($c: String!) { findSuspendedJudicialAlert(carCode: $c) { alertCode } }
+"""
