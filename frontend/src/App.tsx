@@ -2,6 +2,7 @@ import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate, usePa
 import { RequireAuth, useAuth } from './auth/AuthContext'
 import { t } from './i18n/pt-BR'
 import AppLayout from './layout/AppLayout'
+import LevelRulesPage from './pages/LevelRulesPage'
 import CarDetailPage from './pages/CarDetailPage'
 import CarsPage from './pages/CarsPage'
 import HomePage from './pages/HomePage'
@@ -71,6 +72,7 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="cars" element={<CarsPage />} />
           <Route path="cars/:code" element={<CarDetailPage />} />
+          <Route path="nivel" element={<LevelRulesPage />} />
           <Route path="consulta" element={<PublicCnpjPage basePath="/painel/consulta" />} />
           <Route path="consulta/:cnpj" element={<PublicCnpjPage basePath="/painel/consulta" />} />
         </Route>

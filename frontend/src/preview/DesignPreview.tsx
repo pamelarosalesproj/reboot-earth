@@ -19,7 +19,15 @@ const summary: DashboardSummary = {
   cars_embargoes_unknown: 0,
   stale: false,
   oldest_fetched_at: '2026-11-06T12:00:00Z',
-  cnpj_status: { level: 'silver', reason: null, partial: false, basis: 'provisional' },
+  cnpj_status: {
+    level: 'silver',
+    reason: null,
+    partial: false,
+    basis: 'regras',
+    reasons: [{ code: 'ALERTA_ABERTA', severity: 'silver', cars: 2 }],
+    cars_by_level: { gold: 1, silver: 2, bronze: 0, sem_dados: 0 },
+    eudr_attention: true,
+  },
   cnpj_score: { state: 'em_calculo', value: null, computed_at: null, method_version: null },
 }
 

@@ -6,7 +6,7 @@ Consolida dados reais de:
 - IBAMA / SINAFLOR (planos de manejo POA e cotas)
 
 Respeita estritamente:
-- Princípio do Nível: calculado exclusivamente por regras fixas (compute_status), nunca pelo texto.
+- Princípio do Nível: calculado exclusivamente por regras fixas (level_rules, feature 006), nunca pelo texto.
 - Princípio do Vocabulário: jamais usa palavras proibidas como 'crime' ou 'ilegal' no parecer.
 - Tolerância a falhas: fallback analítico determinístico se a API do LLM estiver sem chave ou falhar.
 """
@@ -38,7 +38,7 @@ from app.schemas import (
 )
 from app.services.car_indicators import get_indicators
 from app.services.car_service import get_detail
-from app.services.cnpj_report import cnpj_aggregate, compute_status
+from app.services.cnpj_report import cnpj_status
 
 log = logging.getLogger("app.reports")
 
@@ -289,15 +289,15 @@ async def get_report(db: Session, client: MapBiomasClient, cnpj: str) -> CnpjRep
         validated = _validate(raw_mock)
         if not validated:
             return UNAVAILABLE
-        registered, agg = await cnpj_aggregate(db, client, cnpj)
-        validated.nivel = compute_status(agg, registered).level  # o nível nunca vem do texto
+        _, status, _ = await cnpj_status(db, client, cnpj)
+        validated.nivel = status.level  # o nível nunca vem do texto
         validated.origem = "exemplo"
         return validated
-    registered, agg = await cnpj_aggregate(db, client, cnpj)
-    if not registered or not agg or agg.cars_count == 0:
+    registered, status, agg = await cnpj_status(db, client, cnpj)
+    if not registered or agg.cars_count == 0:
         return UNAVAILABLE
 
-    computed_level = compute_status(agg, registered).level
+    computed_level = status.level
 
     ids = db.exec(select(Producer.id).where(Producer.cnpj == cnpj)).all()
     codes = sorted(set(db.exec(

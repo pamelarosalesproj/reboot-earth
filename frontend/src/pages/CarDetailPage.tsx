@@ -72,7 +72,7 @@ export default function CarDetailPage() {
           {s.status && (
             <section className="card car-status" aria-labelledby="car-status-title">
               <h2 id="car-status-title">{t.status.carTitle}</h2>
-              <StatusBadge status={s.status} scope="car" />
+              <StatusBadge status={s.status} scope="car" learnMore />
             </section>
           )}
           <div className="detail-head card">

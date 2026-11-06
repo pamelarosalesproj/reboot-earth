@@ -72,11 +72,41 @@ export interface DashboardSummary {
 export type StatusLevel = 'gold' | 'silver' | 'bronze' | 'sem_dados'
 export type StatusReason = 'not_registered' | 'no_properties' | 'data_unavailable'
 
+export type ReasonCode =
+  | 'EMBARGO_VIGENTE'
+  | 'TI_UC_INTEGRAL'
+  | 'RL_APP_POS2020'
+  | 'DETER_GRAVE'
+  | 'ALERTA_ABERTA'
+  | 'DETER_DEGRADACAO'
+  | 'DADOS_PARCIAIS'
+
+export interface Reason {
+  code: ReasonCode
+  severity: 'bronze' | 'silver'
+  n?: number | null
+  ha?: number | null
+  pct?: number | null
+  /** Só no CNPJ: em quantos imóveis. */
+  cars?: number | null
+}
+
+export interface CarsByLevel {
+  gold: number
+  silver: number
+  bronze: number
+  sem_dados: number
+}
+
 export interface Status {
   level: StatusLevel
   reason: StatusReason | null
   partial: boolean
-  basis: 'provisional' | 'score'
+  basis: 'provisional' | 'regras' | 'score'
+  /** Feature 006: motivos do nível, imóveis por nível (CNPJ) e sinal EUDR (null = indeterminado). */
+  reasons?: Reason[]
+  cars_by_level?: CarsByLevel | null
+  eudr_attention?: boolean | null
   /** Conteos que usou a regra (agregados): explicam o nível com números. */
   alerts_count?: number | null
   embargoes_count?: number | null

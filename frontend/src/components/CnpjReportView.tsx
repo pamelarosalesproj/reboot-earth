@@ -57,7 +57,7 @@ export default function CnpjReportView({ report }: { report: CnpjReport | 'loadi
       <div className="report-heading">
         <h2 id="report-title">{R.title}</h2>
         {report.nivel && (
-          <StatusBadge status={{ level: report.nivel, reason: null, partial: false, basis: 'provisional' }} compact />
+          <StatusBadge status={{ level: report.nivel, reason: null, partial: false, basis: 'regras' }} compact />
         )}
         <ExportButton />
       </div>

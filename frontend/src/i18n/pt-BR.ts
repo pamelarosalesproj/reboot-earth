@@ -80,9 +80,9 @@ export const t = {
     buyerText:
       'Frigoríficos, tradings, cooperativas e varejistas podem consultar o CNPJ de um produtor sem se cadastrar e ver o nível socioambiental dele, com base nos dados do MapBiomas Alerta.',
     buyerLevels: [
-      { level: 'gold', text: 'Sem alertas de desmatamento nem embargos.' },
-      { level: 'silver', text: 'Com alertas de desmatamento, ou dados parciais.' },
-      { level: 'bronze', text: 'Com embargos registrados.' },
+      { level: 'gold', text: 'Nenhum risco aberto: sem embargos vigentes nem alertas de desmatamento em aberto.' },
+      { level: 'silver', text: 'Alertas em aberto sem gravidade alta, degradação recente ou dados parciais.' },
+      { level: 'bronze', text: 'Risco grave: embargo vigente, alerta em terra indígena ou UC de proteção integral, desmatamento após 2020 em reserva legal/APP ou corte seletivo desordenado/mineração.' },
       { level: 'sem_dados', text: 'Sem dados suficientes, ou CNPJ não cadastrado.' },
     ] as const,
     buyerPrivacy: 'A consulta mostra só o resumo do CNPJ: nunca códigos de CAR, mapas ou dados da conta do produtor.',
@@ -129,7 +129,7 @@ export const t = {
     genericError: 'Algo deu errado. Tente novamente.',
   },
 
-  sidebar: { home: 'Início', cars: 'Meus CARs', search: 'Consultar CNPJ' },
+  sidebar: { home: 'Início', cars: 'Meus CARs', search: 'Consultar CNPJ', rules: 'Entenda o nível' },
 
   home: {
     eyebrow: 'PAINEL DO PRODUTOR',
@@ -259,28 +259,130 @@ export const t = {
       data_unavailable: 'Dados indisponíveis',
     },
     explain: {
-      gold: 'Sem alertas de desmatamento nem embargos nas propriedades informadas.',
-      silver: 'Há alertas de desmatamento, ou parte dos dados não pôde ser verificada.',
-      bronze: 'Há embargos registrados.',
+      gold: 'Nenhum risco aberto: sem embargos vigentes, sem alertas de desmatamento em aberto e sem detecções graves do DETER.',
+      silver: 'Há riscos em aberto, mas nenhum grave.',
+      bronze: 'Há pelo menos um risco grave em aberto.',
       sem_dados: 'Não há dados suficientes para avaliar.',
     },
-    provisional: 'Nível provisório: considera apenas alertas e embargos do MapBiomas Alerta.',
     carTitle: 'Nível do imóvel',
-    because: {
-      embargoes: (n: number, where = 'nos imóveis do CNPJ') =>
-        `Porque há ${n} ${n === 1 ? 'embargo registrado' : 'embargos registrados'} ${where}.`,
-      embargoesGeneric: (where = 'nos imóveis do CNPJ') => `Porque há embargos registrados ${where}.`,
-      alerts: (n: number, where = 'nos imóveis do CNPJ') =>
-        `Porque há ${n} ${n === 1 ? 'alerta' : 'alertas'} de desmatamento ${where}.`,
-      inCar: 'neste imóvel',
-      partial: 'Porque parte dos dados não pôde ser verificada.',
-      partialToo: 'Parte dos dados não pôde ser verificada.',
+    reasonsTitle: 'Motivos',
+    basisNote: 'Calculado por regras fixas com dados do MapBiomas Alerta e do INPE (DETER). Não é uma certificação ambiental.',
+    learnMore: 'Entenda o nível',
+    eudr: 'Atenção EUDR',
+    eudrHelp:
+      'Há desmatamento detectado após 31/12/2020, mesmo que autorizado. O regulamento europeu (EUDR) pode exigir comprovação adicional. Não altera o nível.',
+    carsByLevel: (b: { gold: number; silver: number; bronze: number; sem_dados: number }) =>
+      'Imóveis: ' +
+      ([
+        [b.bronze, 'Bronze'],
+        [b.silver, 'Silver'],
+        [b.gold, 'Gold'],
+        [b.sem_dados, 'Sem dados'],
+      ] as const)
+        .filter(([n]) => n > 0)
+        .map(([n, l]) => `${n} ${l}`)
+        .join(' · '),
+    // Motivos (feature 006). `car`: com números do imóvel; `cnpj`: em quantos imóveis.
+    reasonLabel: {
+      EMBARGO_VIGENTE: 'Embargo vigente',
+      TI_UC_INTEGRAL: 'Alerta em aberto em terra indígena ou UC de proteção integral',
+      RL_APP_POS2020: 'Alertas em aberto após 2020 em reserva legal ou APP',
+      DETER_GRAVE: 'Corte seletivo desordenado ou mineração (DETER, últimos 24 meses)',
+      ALERTA_ABERTA: 'Alertas de desmatamento em aberto',
+      DETER_DEGRADACAO: 'Degradação florestal (DETER, últimos 24 meses)',
+      DADOS_PARCIAIS: 'Parte dos dados não pôde ser verificada',
+    },
+    inCars: (n: number) => `em ${n} ${n === 1 ? 'imóvel' : 'imóveis'}`,
+    belowThreshold: 'abaixo de 1 % do imóvel',
+    ofCar: 'do imóvel',
+    count: {
+      EMBARGO_VIGENTE: (n: number) => `${n} ${n === 1 ? 'embargo' : 'embargos'}`,
+      alerts: (n: number) => `${n} ${n === 1 ? 'alerta' : 'alertas'}`,
+      detections: (n: number) => `${n} ${n === 1 ? 'detecção' : 'detecções'}`,
     },
     score: {
       em_calculo: 'Score em cálculo',
       nao_calculavel: 'Score não calculável',
       disponivel: (v: number) => `Score: ${v.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}`,
     },
+  },
+
+  rules: {
+    eyebrow: 'ENTENDA O NÍVEL',
+    title: 'Como calculamos o nível Gold, Silver e Bronze',
+    intro:
+      'O nível resume os riscos socioambientais em aberto de cada imóvel (CAR) e do seu CNPJ. É calculado por regras fixas, sempre iguais para todos, a partir de dados públicos. A inteligência artificial nunca escolhe o nível.',
+    levelsTitle: 'Os níveis',
+    levels: [
+      { level: 'gold', text: 'Nenhum risco em aberto.' },
+      { level: 'silver', text: 'Há riscos em aberto, mas nenhum grave, ou parte dos dados não pôde ser verificada.' },
+      { level: 'bronze', text: 'Há pelo menos um risco grave em aberto.' },
+      { level: 'sem_dados', text: 'Não foi possível obter os dados do imóvel (nem uma cópia recente).' },
+    ] as const,
+    carTitle: 'Nível de cada imóvel',
+    carIntro: 'Vale a coluna mais grave em que o imóvel se encaixar: basta um item do Bronze para ser Bronze. Todos os motivos encontrados são mostrados.',
+    bronzeTitle: 'Basta um destes riscos graves',
+    bronze: [
+      { term: 'Embargo vigente', text: 'Um embargo (IBAMA ou órgão estadual) sem data de término.' },
+      { term: 'Terra indígena ou UC de proteção integral', text: 'Uma alerta em aberto que cruza, mesmo em parte, uma terra indígena ou uma unidade de conservação de proteção integral.' },
+      { term: 'Reserva legal ou APP após 2020', text: 'Alertas em aberto detectadas depois de 31/12/2020 que estão em reserva legal ou tocam uma APP, somando 1\u00a0% ou mais da área do imóvel. Abaixo de 1\u00a0%, contam como Silver.' },
+      { term: 'Corte seletivo desordenado ou mineração', text: 'Detecções do DETER (INPE) dessas classes nos últimos 24 meses. Só na Amazônia.' },
+    ],
+    silverTitle: 'Riscos em aberto sem gravidade alta',
+    silver: [
+      { term: 'Alertas em aberto', text: 'Qualquer alerta de desmatamento sem autorização registrada, com fiscalização ou com embargo vigente, de qualquer data.' },
+      { term: 'Degradação', text: 'Detecções de degradação florestal do DETER nos últimos 24 meses (só na Amazônia).' },
+      { term: 'Dados parciais', text: 'Não foi possível determinar os embargos ou consultar as alertas do imóvel.' },
+    ],
+    goldTitle: 'Nenhum risco em aberto',
+    gold: 'Nenhuma das situações de Bronze ou Silver. Alertas superadas e informações de contexto não contam (veja abaixo).',
+    neverTitle: 'O que nunca rebaixa o nível',
+    neverIntro: 'Só contam os riscos em aberto. O que já foi resolvido e as informações de contexto aparecem no detalhe do CAR, mas não pioram o nível:',
+    never: [
+      'Alertas superadas: com autorização de supressão ou plano de manejo, com embargo levantado ou suspensas por decisão judicial.',
+      'Embargos levantados.',
+      'Unidades de conservação de uso sustentável (ex.: APAs).',
+      'Porcentagem de vegetação nativa (PRODES).',
+      'Focos de calor.',
+      'Corte seletivo com padrão geométrico, típico de manejo florestal autorizado.',
+      'Manejo florestal autorizado no SINAFLOR.',
+      'Falhas temporárias do INPE ou do IBAMA: o dado aparece como "Indisponível", sem penalizar.',
+    ],
+    cnpjTitle: 'Nível do CNPJ',
+    cnpj: [
+      'É o nível do imóvel em pior situação, porque quem compra não sabe de qual imóvel vem o produto.',
+      'Se algum imóvel está sem dados e os demais estão em Gold, o CNPJ fica em Silver.',
+      'Se nenhum imóvel tem dados, o CNPJ fica em Sem dados.',
+      'O comprador vê o mesmo nível na consulta pública, só com dados agregados: nunca os códigos de CAR, mapas ou listas de alertas.',
+    ],
+    eudrTitle: 'Sinal "Atenção EUDR"',
+    eudr:
+      'O regulamento europeu contra o desmatamento (EUDR) exige produtos sem desmatamento após 31/12/2020, mesmo que autorizado. Por isso, quando há alguma alerta detectada depois dessa data, em qualquer situação, mostramos o sinal "Atenção EUDR". Ele é separado do nível: um imóvel pode ser Gold e ter o sinal.',
+    improveTitle: 'Como melhorar o nível',
+    improve: [
+      'Se uma alerta já tem autorização de supressão, plano de manejo, embargo levantado ou decisão judicial, confira se está registrada nos sistemas oficiais (SINAFLOR, órgão estadual, IBAMA): assim que aparece nas bases, a alerta passa a ser superada.',
+      'Verifique no detalhe de cada CAR quais alertas estão em aberto e em reserva legal ou APP.',
+      'Os dados são atualizados a cada 24 horas; use "Atualizar" no cartão do CAR para buscar de novo.',
+    ],
+    sourcesTitle: 'Fontes',
+    sources: [
+      { term: 'MapBiomas Alerta', text: 'Alertas de desmatamento, autorizações, embargos, reserva legal, APP, terras indígenas e unidades de conservação.' },
+      { term: 'INPE – DETER', text: 'Alertas de degradação, corte seletivo e mineração na Amazônia.' },
+      { term: 'INPE – PRODES e Queimadas · IBAMA – SINAFLOR', text: 'Contexto (vegetação nativa, focos de calor, manejo florestal): aparecem no detalhe do CAR, sem mudar o nível.' },
+    ],
+    glossaryTitle: 'Glossário',
+    glossary: [
+      { term: 'Alerta em aberto', text: 'Situação "sem autorização registrada", "com fiscalização" ou "embargo vigente".' },
+      { term: 'Alerta superada', text: 'Situação "autorizada", "embargo levantado" ou "suspensa judicialmente".' },
+      { term: 'APP (Área de Preservação Permanente)', text: 'Margens de rios, nascentes, topos de morro e encostas que o Código Florestal manda manter com vegetação nativa.' },
+      { term: 'Reserva legal', text: 'Parte do imóvel que deve manter vegetação nativa (80 % em floresta na Amazônia Legal, 35 % no Cerrado da Amazônia Legal, 20 % nas demais regiões).' },
+      { term: 'UC de proteção integral', text: 'Unidade de conservação onde não se admite uso direto dos recursos (ex.: parques nacionais, reservas biológicas).' },
+      { term: 'UC de uso sustentável', text: 'Unidade de conservação que admite uso sustentável (ex.: APAs). É contexto, não risco.' },
+      { term: 'DETER', text: 'Sistema do INPE de alertas quase diários sobre a Amazônia.' },
+      { term: 'PRODES', text: 'Mapeamento anual do INPE do desmatamento; não registra regeneração.' },
+      { term: 'EUDR', text: 'Regulamento europeu que exige produtos livres de desmatamento posterior a 31/12/2020.' },
+    ],
+    disclaimer: 'O nível é um indicador calculado com dados públicos e não é uma certificação ambiental nem um parecer jurídico.',
   },
 
   publicSearch: {
@@ -299,7 +401,7 @@ export const t = {
       { title: 'Contexto faz diferença', text: 'Confira a data e os avisos de dados parciais ou desatualizados antes de interpretar o resultado.' },
     ],
     levelsTitle: 'Como interpretar os níveis',
-    provisionalNote: 'Os níveis são preliminares e não representam uma certificação ambiental.',
+    provisionalNote: 'O nível do CNPJ é o do seu imóvel em pior situação. Não é uma certificação ambiental.',
     resultLabel: 'RESUMO SOCIOAMBIENTAL',
     resultSource: 'Base: MapBiomas Alerta · propriedades informadas pelo produtor.',
     noDate: 'Data dos dados indisponível',

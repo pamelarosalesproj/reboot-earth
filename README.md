@@ -65,16 +65,17 @@ apresenta de forma clara para cada público:
      situação legal, embargos associados) e cada embargo (órgão, processo, área, data).
 2. **Consulta pública por CNPJ** (`specs/002-cnpj-score-search/`) — o comprador digita um CNPJ, sem
    cadastro, e vê uma ficha resumida:
-   - **Gold**: nenhum alerta nem embargo em todos os imóveis, com dados completos;
-   - **Silver**: pelo menos um alerta de desmatamento, ou dados parciais;
-   - **Bronze**: pelo menos um embargo;
+   - **Bronze**: algum imóvel com risco grave em aberto — embargo vigente, alerta em terra indígena
+     ou UC de proteção integral, desmatamento após 2020 em reserva legal/APP (≥ 1 % do imóvel) ou
+     corte seletivo desordenado/mineração no DETER nos últimos 24 meses;
+   - **Silver**: alertas em aberto sem gravidade alta, degradação recente ou dados parciais;
+   - **Gold**: nenhum risco em aberto (alertas já autorizadas, com embargo levantado ou suspensas
+     não penalizam);
    - **Sem dados**: CNPJ não cadastrado, sem imóveis informados ou dados indisponíveis.
 
-   Esse nível é uma **regra provisória**; depois será substituído por um **score** calculado,
-   sem mudar a experiência do comprador. A proposta de nova regra (que não penaliza alertas já
-   superadas) e de um agente de resumos está em
-   [`docs/proposta-regras-nivel-e-agente.md`](docs/proposta-regras-nivel-e-agente.md) — ainda não
-   implementada.
+   O nível do CNPJ é o do **imóvel em pior situação**, com os motivos e o sinal **"Atenção EUDR"**
+   (desmatamento após 2020, mesmo autorizado). As regras estão em `specs/006-nivel-regras/` e são
+   explicadas ao produtor na página **"Entenda o nível"** do painel.
 3. **Transparência para os dois lados** — o produtor vê no seu painel exatamente o mesmo status
    que o comprador vê, para saber como é percebido e corrigir o que falta.
 4. **Início como resumo do CNPJ** (`specs/005-dashboard-init/`) — status do CNPJ, três números
@@ -104,7 +105,7 @@ As regras completas estão na constituição do projeto: [`.specify/memory/const
 | `frontend/` | SPA em TypeScript (React + Vite + Leaflet): landing em `/`, consulta em `/consulta`, painel em `/painel` |
 | `frontend/design-dashboard.md` | Notas e limites do redesign do início do painel (preview em `/preview/painel`, só em dev) |
 | `docs/arquitetura.md` | **Documentação técnica**: endpoints, tabelas, regras, fontes externas, testes e operação |
-| `docs/proposta-regras-nivel-e-agente.md` | Proposta (não implementada) de regra de nível e agente de resumos |
+| `docs/proposta-regras-nivel-e-agente.md` | Regra de nível (implementada na 006) e proposta do agente de resumos |
 | `specs/001-producer-car-dashboard/` | Spec, plano, contrato (`contracts/openapi.yaml`) e tarefas do painel do produtor |
 | `specs/002-cnpj-score-search/` | Spec, plano e tarefas da consulta pública por CNPJ |
 | `specs/003-car-indicators/` | Spec, plano e tarefas dos indicadores socioambientais do CAR |

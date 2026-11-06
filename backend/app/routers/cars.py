@@ -82,7 +82,7 @@ async def car_summary(
 ):
     car = own_car(db, producer, car_code)
     detail = await get_detail(db, client, car.car_code, refresh)
-    return detail.summary.model_copy(update={"status": car_status(detail)})
+    return detail.summary.model_copy(update={"status": await car_status(db, client, detail)})
 
 
 @router.get("/{car_code}/detail", response_model=CarDetail)
@@ -95,7 +95,8 @@ async def car_detail(
 ):
     car = own_car(db, producer, car_code)
     detail = await get_detail(db, client, car.car_code, refresh)
-    return detail.model_copy(update={"summary": detail.summary.model_copy(update={"status": car_status(detail)})})
+    status = await car_status(db, client, detail)
+    return detail.model_copy(update={"summary": detail.summary.model_copy(update={"status": status})})
 
 
 @router.get("/{car_code}/indicators", response_model=CarIndicators)

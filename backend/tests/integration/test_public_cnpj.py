@@ -39,14 +39,15 @@ def test_registered_cnpj_without_session(client):
     assert d["cnpj"] == CNPJ and d["cnpj_formatted"] == VALID_CNPJ
     assert d["registered"] is True and d["cars_count"] == 1 and d["cars_with_data"] == 1
     assert d["score"] == {"state": "em_calculo", "value": None, "computed_at": None, "method_version": None}
-    assert d["status"]["basis"] == "provisional" and d["data_as_of"] is not None
+    assert d["status"]["basis"] == "regras" and d["data_as_of"] is not None
 
 
 def test_not_registered_cnpj(client):
     d = public(client, NOT_REGISTERED).json()
     assert d["registered"] is False
     assert d["status"] == {"level": "sem_dados", "reason": "not_registered", "partial": False,
-                           "basis": "provisional", "alerts_count": None, "embargoes_count": None}
+                           "basis": "regras", "reasons": [], "cars_by_level": None,
+                           "eudr_attention": None, "alerts_count": None, "embargoes_count": None}
     assert d["score"]["state"] == "nao_calculavel"
     assert (d["cars_count"], d["data_as_of"]) == (0, None)
 

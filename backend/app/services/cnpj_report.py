@@ -6,15 +6,17 @@
 
 import asyncio
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, select
 
 from app.mapbiomas.client import MapBiomasClient, MapBiomasError, MapBiomasUnavailable
 from app.models import Producer, ProducerCar
-from app.schemas import CarDetail, PublicCnpjReport, Score, Status
+from app.schemas import CarDetail, CarIndicators, PublicCnpjReport, Score, Status
+from app.services.car_indicators import get_indicators
 from app.services.car_service import get_detail
+from app.services.level_rules import car_level, cnpj_level
 
 
 @dataclass(frozen=True)
@@ -49,33 +51,6 @@ def aggregate_cars(details: list[CarDetail | None], cars_count: int) -> CarsAggr
     )
 
 
-def compute_status(agg: CarsAggregate | None, registered: bool) -> Status:
-    """Regla provisional FR-111a, evaluada en orden (gana la primera que se cumple)."""
-    partial = bool(agg and (agg.cars_unavailable > 0 or agg.cars_embargoes_unknown > 0))
-
-    def status(level, reason=None):
-        return Status(level=level, reason=reason, partial=partial, basis="provisional",
-                      alerts_count=agg.alerts_count if agg else None,
-                      embargoes_count=agg.embargoes_count if agg else None)
-
-    if not registered:
-        return status("sem_dados", "not_registered")
-    if agg is None or agg.cars_count == 0:
-        return status("sem_dados", "no_properties")
-    if agg.cars_with_data == 0:
-        return status("sem_dados", "data_unavailable")
-    if (agg.embargoes_count or 0) >= 1:
-        return status("bronze")
-    if (agg.alerts_count or 0) >= 1 or partial:
-        return status("silver")
-    return status("gold")
-
-
-def car_status(detail: CarDetail) -> Status:
-    """Nível de um único CAR: `compute_status` sobre o agregado de um imóvel (mesma regra do CNPJ)."""
-    return compute_status(aggregate_cars([detail], 1), registered=True)
-
-
 def get_score(status: Status) -> Score:
     """Score del CNPJ. Aún no existe método de cálculo: devuelve solo el estado.
 
@@ -100,16 +75,48 @@ async def details_for(db: Session, client: MapBiomasClient, codes: list[str]) ->
     return list(await asyncio.gather(*(_detail_or_none(db.get_bind(), client, c) for c in codes)))
 
 
-async def cnpj_aggregate(db: Session, client: MapBiomasClient, cnpj: str) -> tuple[bool, CarsAggregate | None]:
-    """(registrado, agregado) de un CNPJ normalizado, sumando los CARs sin repetir de todas
-    las cuentas con ese CNPJ (research R4). Nunca propaga errores de MapBiomas."""
+def cnpj_codes(db: Session, cnpj: str) -> tuple[bool, list[str]]:
+    """(registrado, CARs sem repetir de todas as contas com esse CNPJ) (research R4 da 002)."""
     producer_ids = db.exec(select(Producer.id).where(Producer.cnpj == cnpj)).all()
     if not producer_ids:
-        return False, None
-    codes = sorted(set(db.exec(
+        return False, []
+    return True, sorted(set(db.exec(
         select(ProducerCar.car_code).where(ProducerCar.producer_id.in_(producer_ids))  # type: ignore[union-attr]
     ).all()))
-    return True, aggregate_cars(await details_for(db, client, codes), len(codes))
+
+
+async def indicators_or_none(db: Session, client: MapBiomasClient, code: str) -> CarIndicators | None:
+    try:
+        return await get_indicators(db, client, code)
+    except Exception:  # noqa: BLE001 — sem indicadores o nível marca dados parciais, nunca quebra
+        return None
+
+
+async def _inputs_one(bind: Engine, client: MapBiomasClient, code: str) -> tuple[CarDetail | None, CarIndicators | None]:
+    detail = await _detail_or_none(bind, client, code)
+    with Session(bind) as db:
+        return detail, await indicators_or_none(db, client, code)
+
+
+async def car_inputs(db: Session, client: MapBiomasClient,
+                     codes: list[str]) -> list[tuple[CarDetail | None, CarIndicators | None]]:
+    """Detalhe (001) e indicadores (003) de cada CAR, em paralelo: as entradas da regra de nível."""
+    return list(await asyncio.gather(*(_inputs_one(db.get_bind(), client, c) for c in codes)))
+
+
+async def car_status(db: Session, client: MapBiomasClient, detail: CarDetail) -> Status:
+    """Nível de um CAR já carregado (feature 006)."""
+    ind = await indicators_or_none(db, client, detail.summary.car_code)
+    return car_level(detail, ind, date.today())
+
+
+async def cnpj_status(db: Session, client: MapBiomasClient, cnpj: str) -> tuple[bool, Status, CarsAggregate]:
+    """(registrado, nível, agregado) de um CNPJ normalizado. Nunca propaga erros das fontes."""
+    registered, codes = cnpj_codes(db, cnpj)
+    inputs = await car_inputs(db, client, codes)
+    today = date.today()
+    status = cnpj_level([car_level(d, i, today) for d, i in inputs], registered)
+    return registered, status, aggregate_cars([d for d, _ in inputs], len(codes))
 
 
 def format_cnpj(digits: str) -> str:
@@ -117,16 +124,15 @@ def format_cnpj(digits: str) -> str:
 
 
 async def build_public_report(db: Session, client: MapBiomasClient, cnpj: str) -> PublicCnpjReport:
-    registered, agg = await cnpj_aggregate(db, client, cnpj)
-    status = compute_status(agg, registered)
+    registered, status, agg = await cnpj_status(db, client, cnpj)
     return PublicCnpjReport(
         cnpj=cnpj,
         cnpj_formatted=format_cnpj(cnpj),
         registered=registered,
         status=status,
         score=get_score(status),
-        cars_count=agg.cars_count if agg else 0,
-        cars_with_data=agg.cars_with_data if agg else 0,
-        stale=agg.stale if agg else False,
-        data_as_of=agg.oldest_fetched_at if agg else None,
+        cars_count=agg.cars_count,
+        cars_with_data=agg.cars_with_data,
+        stale=agg.stale,
+        data_as_of=agg.oldest_fetched_at,
     )

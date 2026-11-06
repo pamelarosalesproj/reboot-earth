@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+  title: ELO Rural – Nível por regras (feature 006)
+  version: 0.6.0
+  description: >
+    Cambia el esquema `Status` usado en /api/dashboard (cnpj_status), /api/cars/{car}/summary y /detail
+    (summary.status) y /api/public/cnpj/{cnpj} (status). Los endpoints no cambian.
+components:
+  schemas:
+    Reason:
+      type: object
+      additionalProperties: false
+      required: [code, severity]
+      properties:
+        code:
+          type: string
+          enum: [EMBARGO_VIGENTE, TI_UC_INTEGRAL, RL_APP_POS2020, DETER_GRAVE, ALERTA_ABERTA,
+                 DETER_DEGRADACAO, DADOS_PARCIAIS]
+        severity: { type: string, enum: [bronze, silver] }
+        n: { type: [integer, "null"] }
+        ha: { type: [number, "null"] }
+        pct: { type: [number, "null"] }
+        cars: { type: [integer, "null"], description: "Solo en el CNPJ" }
+    Status:
+      type: object
+      additionalProperties: false
+      required: [level, reason, partial, basis]
+      properties:
+        level: { type: string, enum: [gold, silver, bronze, sem_dados] }
+        reason: { type: [string, "null"], enum: [not_registered, no_properties, data_unavailable, null] }
+        partial: { type: boolean }
+        basis: { type: string, enum: [provisional, regras, score] }
+        reasons: { type: array, items: { $ref: "#/components/schemas/Reason" } }
+        cars_by_level:
+          type: [object, "null"]
+          properties:
+            gold: { type: integer }
+            silver: { type: integer }
+            bronze: { type: integer }
+            sem_dados: { type: integer }
+        eudr_attention: { type: [boolean, "null"], description: "null = indeterminado" }
+        alerts_count: { type: [integer, "null"] }
+        embargoes_count: { type: [integer, "null"] }

@@ -865,3 +865,57 @@ th {
   font-size: 1rem;
   margin: 0 0 8px;
 }
+
+/* Feature 006: motivos do nível, sinal EUDR e link "Entenda o nível" */
+.status-line,
+.status-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.eudr-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px dashed #8a6d1f;
+  color: #8a6d1f;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-reasons {
+  margin-top: 6px;
+}
+
+.status-reasons-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-reasons ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+
+.status-reasons .reason-bronze::marker {
+  color: #a0522d;
+}
+
+.status-cars {
+  margin: 6px 0 0;
+}
+
+.status-learn-more {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 600;
+}

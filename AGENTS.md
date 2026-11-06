@@ -98,7 +98,7 @@ Features (todas em `main`):
 
 - `001-producer-car-dashboard` — cadastro, painel e detalhe por CAR (implementada).
 - `002-cnpj-score-search` — consulta pública por CNPJ com nível Gold/Silver/Bronze/Sem dados e
-  regra **provisória** FR-111a (implementada).
+  regra provisória FR-111a (implementada; substituída pela 006).
 - `003-car-indicators` — indicadores do CAR: alertas por situação legal, riscos abertos e contexto,
   com MapBiomas, INPE e SINAFLOR (implementada; **não altera o nível**). Aparecem só no detalhe do
   CAR; o cartão de "Meus CARs" fica enxuto.
@@ -109,8 +109,12 @@ Features (todas em `main`):
   geração pelo agente entra em `app/reports/__init__.py` sem mudar o formato (ver
   `docs/arquitetura.md`). Os módulos de lotes saíram do Início (só em `/preview/lotes`).
 
-Pendente de decisão: a nova regra de nível e o agente de resumos em
-[`docs/proposta-regras-nivel-e-agente.md`](docs/proposta-regras-nivel-e-agente.md). Mudar a regra de
+- `006-nivel-regras` — regra de nível por CAR e por CNPJ (pior CAR), com motivos, sinal "Atenção EUDR"
+  e a página "Entenda o nível" (`/painel/nivel`). A regra fica só em `services/level_rules.py`; se
+  mudar um limite (1 %, 24 meses), atualize também os textos de `t.rules` em `pt-BR.ts`.
+
+Pendente: o agente de resumos (parte 3 de
+[`docs/proposta-regras-nivel-e-agente.md`](docs/proposta-regras-nivel-e-agente.md)). Mudar a regra de
 nível afeta o painel **e** a ficha pública e exige confirmação antes de implementar.
 
 ## Idioma

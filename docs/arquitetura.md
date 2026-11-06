@@ -74,13 +74,13 @@ mudança de esquema numa tabela existente exige migração.
 | Validação de CNPJ e CAR | `app/validators.py` | CNPJ com dígitos verificadores; CAR `UF-NNNNNNN-<32 hex>` |
 | Deduplicação | `services/car_service.py` · `services/cnpj_report.py` | Alertas únicas por código; embargos únicos por (órgão, processo) |
 | Agregação por CNPJ | `services/cnpj_report.py` (`aggregate_cars`, `cnpj_aggregate`) | CARs sem repetição de todas as contas com o mesmo CNPJ |
-| Nível (provisório, FR-111a) | `services/cnpj_report.py` (`compute_status`) | Sem dados → Bronze (embargo) → Silver (alerta ou dados parciais) → Gold |
-| Nível do CAR | `services/cnpj_report.py` (`car_status`) | A mesma regra sobre um único imóvel; vai em `CarSummary.status` (`/summary` e `/detail`), só no painel |
+| Nível do CAR (006) | `services/level_rules.py` (`car_level`) | Sem dados → Bronze (embargo vigente, alerta aberta em TI/UC integral, RL/APP pós-2020 ≥ 1 % do CAR, DETER `CS_DESORDENADO`/`MINERACAO` em 24 meses) → Silver (alerta aberta, `DEGRADACAO` em 24 meses, dados parciais) → Gold. Entradas: `get_detail` + `get_indicators`. Lista todos os motivos com números e o sinal `eudr_attention` |
+| Nível do CNPJ (006) | `services/level_rules.py` (`cnpj_level`), via `cnpj_report.cnpj_status` | O pior CAR com dados; Sem dados + Gold → Silver; motivos contam CARs (`cars`) — só onde o motivo tem a gravidade do nível do CNPJ —, sem somar números; `cars_by_level`. Usado no painel, na ficha pública e no relatório |
 | Score | `services/cnpj_report.py` (`get_score`) | Hoje só o estado (`em_calculo` / `nao_calculavel`); ponto de substituição do método |
 | Situação de cada alerta | `services/car_indicators.py` (`classify_alert`) | Suspensa judicial > embargo vigente > autorizada > embargo levantado > com fiscalização > pendente |
 | Indicadores do CAR | `services/car_indicators.py` (`build_indicators`, `get_indicators`) | Uma fonte por bloco; cache de 24 h; SINAFLOR é sempre lido na hora |
 | Números do CNPJ | `services/cnpj_overview.py` (`cnpj_overview`) | Reaproveita `get_indicators` (situação das alertas) e `get_detail` (embargos); alerta única por código, embargo vigente único por (órgão, processo) |
-| Relatório do CNPJ | `reports/__init__.py` (`get_report`) | Valida o formato e o vocabulário proibido; impõe `nivel` = `compute_status` |
+| Relatório do CNPJ | `reports/__init__.py` (`get_report`) | Valida o formato e o vocabulário proibido; impõe `nivel` = `cnpj_status` |
 | Auditoria Mensal ESG & IA | `services/ai_auditor_service.py` (`audit_monthly_report`) | Cobertura de CARs, estouro volumétrico, CAR coringa, cruzamento com SINAFLOR e parecer |
 
 O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). Uma proposta
@@ -94,7 +94,7 @@ não foi implementada**.
 - **Integração do agente**: substituir `_example_report()` em `app/reports/__init__.py` pela geração real, mantendo:
   - o formato `CnpjReport` (`specs/005-dashboard-init/contracts/openapi.yaml`);
   - `_validate()` (máximo de 3 riscos e 3 itens de contexto; sem "ilegal" nem "crime");
-  - a regra de que `nivel` vem de `compute_status`;
+  - a regra de que `nivel` vem de `cnpj_status` (regras da 006);
   - `origem="agente"` (a interface muda o aviso automaticamente).
 
   Regras do prompt: [`proposta-regras-nivel-e-agente.md`](proposta-regras-nivel-e-agente.md).
@@ -175,7 +175,7 @@ não foi implementada**.
 
 | Onde | O quê |
 |---|---|
-| `backend/tests/unit/` | Funções puras: validadores, agregação, `compute_status`, `classify_alert`, geometria do INPE, agregação do SINAFLOR, rate limit |
+| `backend/tests/unit/` | Funções puras: validadores, agregação, `car_level`/`cnpj_level` (`test_level_rules.py`), `classify_alert`, geometria do INPE, agregação do SINAFLOR, rate limit |
 | `backend/tests/integration/` | API com fontes simuladas: autenticação, CARs, dashboard, ficha pública (privacidade, falhas, 429), indicadores (falha por fonte, 401/404, cache) |
 | `backend/tests/conftest.py` | `FakeMapBiomas` (`properties`, `embargoes`, `alert_extra`, `judicial`, `down`) e `FakeInpe` (fixture `inpe`: `layers`, `down`), via `respx` |
 | `backend/tests/fixtures/` | Resposta real do MapBiomas para o CAR PE-2607505 e amostra do CSV do SINAFLOR |

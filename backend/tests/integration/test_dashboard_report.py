@@ -42,7 +42,7 @@ def test_example_report_with_computed_level(client, reports_dir):
     register(client)
     d = report(client)
     assert d["status"] == "ok" and d["origem"] == "exemplo"
-    assert d["nivel"] == client.get("/api/dashboard").json()["cnpj_status"]["level"] == "silver"
+    assert d["nivel"] == client.get("/api/dashboard").json()["cnpj_status"]["level"] == "bronze"  # regra 006: RL/APP pós-2020
     assert d["titulo"] == REPORT["titulo"] and d["imoveis"][0]["resumo"] == "3 alertas de 2026"
 
 

@@ -1,6 +1,6 @@
 # Proposta: regras de nível (Gold / Silver / Bronze) e agente de resumos
 
-**Status**: proposta para discussão; não implementada · **Data**: 2026-11-06
+**Status**: regras de nível (partes 1 e 2) e sinal EUDR **implementados** na feature [`006-nivel-regras`](../specs/006-nivel-regras/spec.md), com as decisões 1–3 aceitas em 2026-11-06 (Bronze em RL/APP só a partir de 1 % do CAR). O agente (parte 3) ainda não · **Data**: 2026-11-06
 
 **Contexto**: indicadores por CAR da feature [`003-car-indicators`](../specs/003-car-indicators/spec.md).
 Esta proposta substituiria a regra provisória de nível da feature 002 (FR-111a), inclusive na ficha

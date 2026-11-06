@@ -71,16 +71,46 @@ class CarDetail(BaseModel):
     embargoes: list[Embargo]
 
 
-class Status(BaseModel):
-    """Nivel de un CNPJ (specs/002 data-model.md §Status)."""
+Level = Literal["gold", "silver", "bronze", "sem_dados"]
+ReasonCode = Literal["EMBARGO_VIGENTE", "TI_UC_INTEGRAL", "RL_APP_POS2020", "DETER_GRAVE",
+                     "ALERTA_ABERTA", "DETER_DEGRADACAO", "DADOS_PARCIAIS"]
+
+
+class Reason(BaseModel):
+    """Motivo do nível (specs/006 data-model.md). No CAR traz números; no CNPJ, quantos CARs (`cars`)."""
 
     model_config = ConfigDict(extra="forbid")
 
-    level: Literal["gold", "silver", "bronze", "sem_dados"]
+    code: ReasonCode
+    severity: Literal["bronze", "silver"]
+    n: int | None = None
+    ha: float | None = None
+    pct: float | None = None
+    cars: int | None = None
+
+
+class CarsByLevel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    gold: int = 0
+    silver: int = 0
+    bronze: int = 0
+    sem_dados: int = 0
+
+
+class Status(BaseModel):
+    """Nível de um CAR ou de um CNPJ (specs/002 e specs/006 data-model.md §Status)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    level: Level
     reason: Literal["not_registered", "no_properties", "data_unavailable"] | None  # solo con sem_dados
     partial: bool
-    basis: Literal["provisional", "score"]
-    # Conteos que usó la regla (agregados, públicos): permiten explicar el nivel con números.
+    basis: Literal["provisional", "regras", "score"]
+    reasons: list[Reason] = []
+    cars_by_level: CarsByLevel | None = None  # solo no CNPJ
+    eudr_attention: bool | None = None  # None = indeterminado (sem dados de alertas)
+    # Conteos do CAR (alertas abertas, embargos vigentes); None no CNPJ.
     alerts_count: int | None = None
     embargoes_count: int | None = None
 

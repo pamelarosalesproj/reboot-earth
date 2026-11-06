@@ -44,6 +44,9 @@ export default function AppLayout() {
           <NavLink to="/painel/cars">
             <span aria-hidden>⌖</span> {t.sidebar.cars}
           </NavLink>
+          <NavLink to="/painel/nivel">
+            <span aria-hidden>?</span> {t.sidebar.rules}
+          </NavLink>
         </nav>
 
         <p className="sidebar-note">{t.home.sidebarNote}</p>

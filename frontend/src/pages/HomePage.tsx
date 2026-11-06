@@ -121,7 +121,7 @@ export default function HomePage({ previewData, previewOverview, previewReport }
           <div className="overview-buyer-heading">
             <h2 id="status-title">{H.statusTitle}</h2>
           </div>
-          <StatusBadge status={data.cnpj_status} />
+          <StatusBadge status={data.cnpj_status} learnMore />
           {scoreText(data.cnpj_score) && <p className="cnpj-report-score">{scoreText(data.cnpj_score)}</p>}
           {data.stale && <p className="notice">{t.panel.stale}</p>}
         </section>
