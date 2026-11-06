@@ -822,3 +822,16 @@ th {
     transform: none;
   }
 }
+
+/* Indicadores en el detalle del CAR: dos columnas en pantallas anchas */
+.detail-indicators .indicators {
+  border-top: none;
+  padding-top: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px 32px;
+}
+
+.detail-indicators .indicators > :not(.ind-block) {
+  grid-column: 1 / -1;
+}

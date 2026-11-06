@@ -8,6 +8,8 @@
 
 **Input**: User description: "agrega al card del CAR todas estas informaciones" — los indicadores validados con datos reales de 3 CARs el 2026-11-06 (alertas por situación legal, desmatamento después de 2020, reserva legal y APP, embargos vigentes y levantados, superposición con territorios, vegetación nativa remanescente, degradación DETER, focos de calor y manejo forestal SINAFLOR).
 
+> **Cambio de alcance (2026-11-06, solicitado por el usuario):** los indicadores se muestran **solo en el detalle del CAR** ("Ver detalhes"), no en la tarjeta de "Meus CARs", porque la tarjeta quedaba demasiado cargada. La tarjeta vuelve a mostrar solo el mapa, las alertas y los embargos. Donde esta spec dice "tarjeta" para los bloques Riscos abertos y Contexto, léase "detalle del CAR". El resto de los requisitos no cambia.
+
 ## Contexto
 
 Hoy la tarjeta del CAR muestra solo el número de alertas y de embargos. Así, una alerta autorizada o ya sancionada pesa igual que una sin explicación, y el productor no ve el contexto (vegetación, fuego, tala).

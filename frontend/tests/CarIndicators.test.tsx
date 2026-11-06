@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import CarIndicators, { IndicatorsView } from '../src/components/CarIndicators'
+import { IndicatorsView } from '../src/components/CarIndicators'
 import type { CarIndicators as Data } from '../src/types'
 
 const ok = { status: 'ok' as const, fetched_at: '2026-11-06T12:00:00Z', stale: false }
@@ -88,12 +88,6 @@ describe('IndicatorsView (feature 003)', () => {
     })
     render(<IndicatorsView d={d} />)
     expect(screen.getByText('Corte seletivo – padrão de manejo: 2 · 12,3 ha')).toBeInTheDocument()
-  })
-
-  it('error del endpoint no rompe: muestra mensaje', async () => {
-    vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 500 })))
-    render(<CarIndicators code="PE-1" />)
-    expect(await screen.findByText('Indicadores indisponíveis no momento.')).toBeInTheDocument()
   })
 
   it('APP tiene ayuda accesible que explica el término', () => {

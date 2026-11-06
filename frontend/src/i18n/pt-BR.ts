@@ -285,6 +285,7 @@ export const t = {
   },
 
   indicators: {
+    title: 'Indicadores socioambientais',
     open: 'Riscos abertos',
     context: 'Contexto',
     loading: 'Carregando indicadores…',
