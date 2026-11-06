@@ -24,7 +24,7 @@ API_URL = "https://mapbiomas.test/api/v2/graphql"
 
 
 def load_fixture() -> dict:
-    return json.loads((FIXTURES / "pe_2607505_completo.json").read_text())
+    return json.loads((FIXTURES / "pe_2607505_completo.json").read_text(encoding="utf-8"))
 
 
 class FakeMapBiomas:

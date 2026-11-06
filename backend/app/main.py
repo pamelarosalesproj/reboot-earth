@@ -10,7 +10,7 @@ from app.config import settings
 from app.db import create_db_and_tables
 from app.mapbiomas.client import MapBiomasError, MapBiomasUnavailable
 from app.rate_limit import RateLimited
-from app.routers import auth, cars, dashboard, public
+from app.routers import audit, auth, cars, dashboard, public
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 log = logging.getLogger("app")
@@ -70,6 +70,7 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(cars.router, prefix="/api")
 app.include_router(dashboard.router, prefix="/api")
 app.include_router(public.router, prefix="/api")
+app.include_router(audit.router, prefix="/api")
 
 
 @app.get("/api/health")

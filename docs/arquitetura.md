@@ -44,6 +44,7 @@ Princípios que guiam o desenho (constituição I–VII):
 | `GET/POST /api/cars` · `DELETE /api/cars/{car}` | ✓ | 001 | CARs do produtor; ao adicionar, verifica no MapBiomas |
 | `GET /api/cars/{car}/summary` · `/detail` | ✓ | 001 | Polígono, alertas e embargos (cache de 24 h, `?refresh=true`) |
 | `GET /api/cars/{car}/indicators` | ✓ | 003 | Indicadores socioambientais (riscos abertos e contexto) |
+| `POST /api/audit/generate-report` | ✓ | AI-Agent | Auditoria mensal consolidada de NFs x CARs e parecer do Consultor ESG |
 | `GET /api/dashboard` | ✓ | 001/002 | Totais da conta + `cnpj_status` / `cnpj_score` do CNPJ |
 | `GET /api/dashboard/overview` | ✓ | 005 | Números do CNPJ: CARs, alertas abertas/superadas (n.º, ha), embargos vigentes |
 | `GET /api/dashboard/report` | ✓ | 005 | Relatório do CNPJ (hoje um **exemplo escrito à mão**; depois o agente). `nivel` imposto pelas regras |
@@ -79,6 +80,7 @@ mudança de esquema numa tabela existente exige migração.
 | Indicadores do CAR | `services/car_indicators.py` (`build_indicators`, `get_indicators`) | Uma fonte por bloco; cache de 24 h; SINAFLOR é sempre lido na hora |
 | Números do CNPJ | `services/cnpj_overview.py` (`cnpj_overview`) | Reaproveita `get_indicators` (situação das alertas) e `get_detail` (embargos); alerta única por código, embargo vigente único por (órgão, processo) |
 | Relatório do CNPJ | `reports/__init__.py` (`get_report`) | Valida o formato e o vocabulário proibido; impõe `nivel` = `compute_status` |
+| Auditoria Mensal ESG & IA | `services/ai_auditor_service.py` (`audit_monthly_report`) | Cobertura de CARs, estouro volumétrico, CAR coringa, cruzamento com SINAFLOR e parecer |
 
 O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). Uma proposta
 para substituir a regra provisória (abertas × superadas, nível do CNPJ pelo pior CAR, agente de

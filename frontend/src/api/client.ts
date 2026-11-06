@@ -68,3 +68,6 @@ export const getIndicators = (code: string, refresh?: boolean) =>
 /** Feature 005: números e relatório do CNPJ do produtor autenticado. */
 export const getOverview = () => apiFetch<CnpjOverview>('/api/dashboard/overview')
 export const getReport = () => apiFetch<CnpjReport>('/api/dashboard/report')
+/** Gera relatório mensal de auditoria e conformidade ESG */
+export const generateMonthlyAuditReport = (reference_month?: string) =>
+  apiFetch<any>('/api/audit/generate-report', json({ reference_month }))

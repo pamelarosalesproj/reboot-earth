@@ -16,6 +16,12 @@ class Settings(BaseSettings):
     mapbiomas_api_url: str = "https://plataforma.alerta.mapbiomas.org/api/v2/graphql"
     mapbiomas_timeout_s: float = 20.0
 
+    # Configurações do Agente de IA (Consultor ESG)
+    llm_api_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+    llm_api_key: str = ""
+    llm_model: str = "gemini-2.5-flash"
+    llm_timeout_s: float = 10.0
+
     database_url: str = f"sqlite:///{BACKEND_DIR / 'data' / 'app.db'}"
     cache_ttl_hours: int = 24
     session_days: int = 7
