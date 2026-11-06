@@ -101,3 +101,66 @@ export interface ApiValidationError {
   field: string | null
   invalid_values: string[]
 }
+
+// Feature 003: indicadores del CAR (specs/003-car-indicators/contracts/openapi.yaml)
+export type Situacao =
+  | 'suspensa_judicial'
+  | 'embargo_vigente'
+  | 'autorizada'
+  | 'embargo_levantado'
+  | 'com_fiscalizacao'
+  | 'pendente'
+export type IndicatorSource = 'mapbiomas' | 'prodes' | 'deter' | 'focos' | 'sinaflor'
+export type SourceState = 'ok' | 'indisponivel' | 'nao_se_aplica'
+
+export interface SourceStatus {
+  status: SourceState
+  fetched_at: string | null
+  stale: boolean
+}
+
+export interface Count {
+  n: number
+  ha: number
+}
+
+export interface AlertIndicator {
+  alert_code: number
+  detected_at: string | null
+  area_in_car_ha: number
+  status: Situacao
+  post_2020: boolean
+  authorized_ha: number
+  legal_reserve_ha: number
+  touches_app: boolean
+  indigenous_land_ha: number
+  integral_protection_ha: number
+  sustainable_use_ha: number
+  conservation_units: string[]
+}
+
+export interface CarIndicators {
+  car_code: string
+  fetched_at: string
+  stale: boolean
+  sources: Record<IndicatorSource, SourceStatus>
+  alerts_by_status: Partial<Record<Situacao, Count>>
+  open: {
+    post_2020: Count | null
+    legal_reserve_ha: number | null
+    app_alerts: number | null
+    embargoes_active: number | null
+    indigenous_land_ha: number | null
+    integral_protection_ha: number | null
+  }
+  context: {
+    embargoes_lifted: number | null
+    sustainable_use_ha: number | null
+    sustainable_use_names: string[]
+    native_vegetation: { remaining_pct: number; deforested_ha: number; by_year: Record<string, number> } | null
+    deter: { by_class: Record<string, { n: number; ha: number; last: string | null }> } | null
+    hotspots_12m: { count: number; by_month: Record<string, number> } | null
+    forest_management: { authorizations: number; active: number; volume_m3: number; last_issued: string | null } | null
+  }
+  alerts: AlertIndicator[]
+}

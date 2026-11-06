@@ -160,6 +160,35 @@ e [`specs/002-cnpj-score-search/quickstart.md`](specs/002-cnpj-score-search/quic
 - **Limitação conhecida**: o limite de consultas fica na memória do processo; vale para um único
   processo do backend. Com vários workers ou réplicas, mover o contador para um armazenamento compartilhado.
 
+## Indicadores do CAR
+
+Cada cartão em "Meus CARs" mostra, além do mapa, alertas e embargos, dois blocos (spec:
+[`specs/003-car-indicators`](specs/003-car-indicators/spec.md)):
+
+- **Riscos abertos**: alertas por situação legal (embargo vigente, com fiscalização, sem autorização
+  registrada), desmatamento pós-2020 (corte EUDR), alertas abertas em reserva legal e APP, embargos
+  vigentes, sobreposição com terra indígena ou UC de proteção integral.
+- **Contexto**: alertas superadas (autorizadas, embargo levantado, suspensas judicialmente), embargos
+  levantados, UC de uso sustentável, % de vegetação nativa remanescente (INPE PRODES), degradação e
+  corte seletivo (INPE DETER, só bioma Amazônia), focos de calor em 12 meses (INPE Queimadas) e manejo
+  florestal autorizado (IBAMA SINAFLOR, só Amazônia Legal).
+
+Cada indicador distingue **valor** (inclusive 0), **Indisponível** (a fonte não respondeu e não há
+cache) e **Não se aplica**. Uma alerta sem autorização, fiscalização ou embargo aparece como
+"Sem autorização registrada", nunca como "ilegal". Os indicadores ficam em cache por 24 h e cada
+fonte falha de forma independente. **Ainda não alteram o nível Gold/Silver/Bronze.**
+
+O SINAFLOR é um CSV diário de ~90 MB do IBAMA, resumido por CAR numa tabela local. Rodar uma vez por
+dia (ex.: cron); até a primeira execução o indicador aparece como "Indisponível":
+
+```bash
+cd backend && uv run python -m app.sources.sinaflor
+```
+
+Limitações: reserva legal, APP e UCs vêm calculadas pelo MapBiomas sobre a área da alerta (limitadas à
+área dentro do CAR); o PRODES não registra regeneração; o volume do SINAFLOR é o da autorização, que
+pode abranger vários CARs.
+
 ## Comportamento quando o MapBiomas falha
 
 - Timeout de 20 s por consulta. Os dados ficam em cache por 24 h por CAR (botão "Atualizar" para forçar).

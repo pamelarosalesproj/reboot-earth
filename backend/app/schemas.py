@@ -131,3 +131,98 @@ class ValidationErrorOut(BaseModel):
     detail: str
     field: str | None = None
     invalid_values: list[str] = []
+
+
+# ---------------------------------------------------------------------------
+# Feature 003: indicadores del CAR (specs/003-car-indicators/contracts/openapi.yaml)
+# ---------------------------------------------------------------------------
+Situacao = Literal["suspensa_judicial", "embargo_vigente", "autorizada", "embargo_levantado",
+                   "com_fiscalizacao", "pendente"]
+SITUACOES: tuple[str, ...] = ("suspensa_judicial", "embargo_vigente", "autorizada", "embargo_levantado",
+                              "com_fiscalizacao", "pendente")
+OPEN_SITUACOES = ("embargo_vigente", "com_fiscalizacao", "pendente")
+SourceName = Literal["mapbiomas", "prodes", "deter", "focos", "sinaflor"]
+
+
+class SourceStatus(BaseModel):
+    status: Literal["ok", "indisponivel", "nao_se_aplica"]
+    fetched_at: datetime | None = None
+    stale: bool = False
+
+
+class Count(BaseModel):
+    n: int = 0
+    ha: float = 0.0
+
+
+class AlertIndicator(BaseModel):
+    alert_code: int
+    detected_at: date | None
+    area_in_car_ha: float
+    status: Situacao
+    post_2020: bool
+    authorized_ha: float
+    legal_reserve_ha: float
+    touches_app: bool
+    indigenous_land_ha: float
+    integral_protection_ha: float
+    sustainable_use_ha: float
+    conservation_units: list[str] = []
+
+
+class OpenRisks(BaseModel):
+    post_2020: Count | None = None
+    legal_reserve_ha: float | None = None
+    app_alerts: int | None = None
+    embargoes_active: int | None = None
+    indigenous_land_ha: float | None = None
+    integral_protection_ha: float | None = None
+
+
+class NativeVegetation(BaseModel):
+    remaining_pct: float
+    deforested_ha: float
+    by_year: dict[str, float] = {}
+
+
+class DeterClass(BaseModel):
+    n: int
+    ha: float
+    last: str | None = None
+
+
+class Deter(BaseModel):
+    by_class: dict[str, DeterClass] = {}
+
+
+class Hotspots(BaseModel):
+    count: int
+    by_month: dict[str, int] = {}
+
+
+class ForestManagement(BaseModel):
+    authorizations: int
+    active: int
+    volume_m3: float
+    last_issued: date | None = None
+
+
+class Context(BaseModel):
+    embargoes_lifted: int | None = None
+    sustainable_use_ha: float | None = None
+    sustainable_use_names: list[str] = []
+    native_vegetation: NativeVegetation | None = None
+    deter: Deter | None = None
+    hotspots_12m: Hotspots | None = None
+    forest_management: ForestManagement | None = None
+
+
+class CarIndicators(BaseModel):
+    car_code: str
+    fetched_at: datetime
+    stale: bool = False
+    sources: dict[SourceName, SourceStatus]
+    alerts_by_status: dict[Situacao, Count]
+    open: OpenRisks
+    context: Context
+    alerts: list[AlertIndicator] = []

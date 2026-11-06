@@ -671,3 +671,154 @@ th {
 .buyer-view .btn {
   align-self: flex-start;
 }
+
+/* ---- Indicadores del CAR (feature 003) ---- */
+.indicators {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.indicators p {
+  margin: 0;
+}
+
+.ind-block h4 {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.ind-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.9rem;
+}
+
+.ind-label {
+  min-width: 0;
+}
+
+.ind-hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.ind-val {
+  text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ind-risk .ind-val {
+  color: var(--danger);
+}
+
+.ind-na,
+.ind-unavailable {
+  color: var(--muted);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ind-context .ind-val {
+  font-weight: 500;
+}
+
+.ind-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: normal;
+}
+
+.ind-note {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.ind-status-open {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .ind-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ind-val {
+    text-align: left;
+    white-space: normal;
+  }
+}
+
+/* Ayuda de términos (APP…): hover, foco o toque; nunca depende solo de `title`. */
+.ind-help {
+  position: relative;
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.ind-help-btn {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+}
+
+.ind-help-btn:hover,
+.ind-help-btn:focus-visible {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ind-help-text {
+  display: none;
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: min(300px, 80vw);
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.18);
+}
+
+.ind-help:hover .ind-help-text,
+.ind-help-btn:focus-visible + .ind-help-text,
+.ind-help.open .ind-help-text {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .ind-help-text {
+    left: 0;
+    transform: none;
+  }
+}
