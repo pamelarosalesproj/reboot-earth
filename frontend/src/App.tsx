@@ -15,7 +15,7 @@ function Header() {
   const { producer } = useAuth()
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  if (pathname === '/' || pathname.startsWith('/painel')) return null
+  if (pathname === '/' || pathname === '/login' || pathname === '/registro' || pathname === '/consulta' || pathname.startsWith('/consulta/') || pathname.startsWith('/painel')) return null
 
   return (
     <header className="topbar">

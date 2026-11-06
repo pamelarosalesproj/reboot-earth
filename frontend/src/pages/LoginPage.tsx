@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ApiError, login } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { t } from '../i18n/pt-BR'
+import AuthLayout, { AuthArrow } from '../layout/AuthLayout'
 
 export default function LoginPage() {
   const { setProducer } = useAuth()
@@ -28,14 +29,15 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="auth-page">
-      <form className="card form" onSubmit={onSubmit}>
+    <AuthLayout mode="login">
+      <form className="producer-auth-form" onSubmit={onSubmit} aria-busy={busy}>
         <h1>{t.auth.loginTitle}</h1>
-        <label>
+        <p className="producer-auth-intro">{t.auth.loginIntro}</p>
+        <label className="producer-auth-field">
           {t.auth.email}
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" placeholder={t.auth.emailPlaceholder} />
         </label>
-        <label>
+        <label className="producer-auth-field">
           {t.auth.password}
           <input
             type="password"
@@ -43,16 +45,17 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
+            placeholder={t.auth.passwordPlaceholder}
           />
         </label>
-        {error && <p className="form-error">{error}</p>}
-        <button className="btn btn-primary" type="submit" disabled={busy}>
-          {t.auth.submitLogin}
+        {error && <p className="form-error" role="alert">{error}</p>}
+        <button className="producer-auth-submit" type="submit" disabled={busy}>
+          {busy ? t.auth.signingIn : t.auth.submitLogin}<span><AuthArrow /></span>
         </button>
-        <p className="muted center">
+        <p className="producer-auth-switch">
           {t.auth.noAccount} <Link to="/registro">{t.nav.register}</Link>
         </p>
       </form>
-    </main>
+    </AuthLayout>
   )
 }

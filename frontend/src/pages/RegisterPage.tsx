@@ -6,6 +6,7 @@ import { useAuth } from '../auth/AuthContext'
 import { t } from '../i18n/pt-BR'
 import { maskCnpj } from '../lib/car'
 import type { ApiValidationError } from '../types'
+import AuthLayout, { AuthArrow } from '../layout/AuthLayout'
 
 export default function RegisterPage() {
   const { setProducer } = useAuth()
@@ -45,62 +46,73 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="auth-page">
-      <form className="card form" onSubmit={onSubmit} noValidate>
+    <AuthLayout mode="register">
+      <form className="producer-auth-form" onSubmit={onSubmit} noValidate aria-busy={busy}>
         <h1>{t.auth.registerTitle}</h1>
-        <p className="muted form-intro">{t.auth.registerIntro}</p>
+        <p className="producer-auth-intro">{t.auth.registerIntro}</p>
 
-        <label>
+        <label className="producer-auth-field" htmlFor="register-email">
           {t.auth.email}
           <input
             type="email"
+            id="register-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
+            placeholder={t.auth.emailPlaceholder}
+            aria-invalid={fieldErrors.email ? true : undefined}
+            aria-describedby={fieldErrors.email ? 'register-email-error' : undefined}
             className={fieldErrors.email ? 'invalid' : ''}
           />
-          {fieldErrors.email && <span className="field-error">{fieldErrors.email}</span>}
+          {fieldErrors.email && <span className="field-error" id="register-email-error">{fieldErrors.email}</span>}
         </label>
 
-        <label>
+        <label className="producer-auth-field" htmlFor="register-cnpj">
           {t.auth.cnpj}
           <input
             inputMode="numeric"
+            id="register-cnpj"
             value={cnpj}
             onChange={(e) => setCnpj(maskCnpj(e.target.value))}
-            placeholder="00.000.000/0000-00"
+            placeholder={t.auth.cnpjPlaceholder}
+            aria-invalid={fieldErrors.cnpj ? true : undefined}
+            aria-describedby={`register-cnpj-hint${fieldErrors.cnpj ? ' register-cnpj-error' : ''}`}
             required
             className={fieldErrors.cnpj ? 'invalid' : ''}
           />
-          {fieldErrors.cnpj && <span className="field-error">{fieldErrors.cnpj}</span>}
-          <span className="field-hint">{t.auth.cnpjPublicNotice}</span>
+          {fieldErrors.cnpj && <span className="field-error" id="register-cnpj-error">{fieldErrors.cnpj}</span>}
+          <span className="field-hint" id="register-cnpj-hint">{t.auth.cnpjPublicNotice}</span>
         </label>
 
-        <label>
+        <label className="producer-auth-field" htmlFor="register-password">
           {t.auth.password}
           <input
             type="password"
+            id="register-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             minLength={8}
             required
             autoComplete="new-password"
+            placeholder={t.auth.newPasswordPlaceholder}
+            aria-invalid={fieldErrors.password ? true : undefined}
+            aria-describedby={`register-password-hint${fieldErrors.password ? ' register-password-error' : ''}`}
             className={fieldErrors.password ? 'invalid' : ''}
           />
-          <small className="muted">{t.auth.passwordHint}</small>
-          {fieldErrors.password && <span className="field-error">{fieldErrors.password}</span>}
+          <small className="field-hint" id="register-password-hint">{t.auth.passwordHint}</small>
+          {fieldErrors.password && <span className="field-error" id="register-password-error">{fieldErrors.password}</span>}
         </label>
 
-        {error && <p className="form-error">{error}</p>}
+        {error && <p className="form-error" role="alert">{error}</p>}
 
-        <button className="btn btn-primary" type="submit" disabled={busy}>
-          {t.auth.submitRegister}
+        <button className="producer-auth-submit" type="submit" disabled={busy}>
+          {busy ? t.auth.creatingAccount : t.auth.submitRegister}<span><AuthArrow /></span>
         </button>
-        <p className="muted center">
+        <p className="producer-auth-switch">
           {t.auth.hasAccount} <Link to="/login">{t.nav.login}</Link>
         </p>
       </form>
-    </main>
+    </AuthLayout>
   )
 }
