@@ -1,3 +1,4 @@
+import BrandMark from '../components/BrandMark'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ApiError, getPublicCnpj } from '../api/client'
@@ -57,7 +58,7 @@ export default function PublicCnpjPage({ basePath = '/consulta' }: { basePath?: 
     <div className={`cnpj-screen${inPanel ? ' cnpj-screen-in-panel' : ''}`}>
       {!inPanel && <header className="cnpj-header">
         <Link to="/" className="cnpj-brand" aria-label={t.appName}>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 4C9 2 3 7 5 14s14 9 14-10ZM4 21 15 10M9 16v-5m0 5h5" /></svg></span>{t.appName}
+          <BrandMark /><span className="elo-brand-name">{t.appName}</span>
         </Link>
         <nav aria-label={P.navigation}>
           <Link to="/" className="cnpj-back">{P.backHome}</Link>

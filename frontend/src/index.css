@@ -835,3 +835,9 @@ th {
 .detail-indicators .indicators > :not(.ind-block) {
   grid-column: 1 / -1;
 }
+
+/* Identidade Elo Rural: símbolo compartilhado em todas as telas. */
+.elo-brand-mark { display: block; width: 44px; height: 30px; object-fit: contain; flex-shrink: 0; }
+.elo-brand-name { text-transform: lowercase; font-weight: 650; letter-spacing: -.055em; white-space: nowrap; }
+.cnpj-brand > .elo-brand-name { display: inline; width: auto; height: auto; border-radius: 0; background: none; color: inherit; }
+@media (max-width: 480px) { .elo-brand-mark { width: 36px; height: 26px; } }

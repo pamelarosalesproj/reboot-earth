@@ -1,3 +1,4 @@
+import BrandMark from '../components/BrandMark'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import landscape from '../assets/landing-landscape.jpg'
@@ -18,7 +19,7 @@ function Icon({ name, className = '' }: { name: IconName; className?: string }) 
   return <svg className={`re-icon ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>
 }
 function Brand() {
-  return <Link to="/" className="re-brand" aria-label={t.appName}><span className="re-brand-mark"><Icon name="leaf" /></span><span>Reboot<span className="re-brand-light">Earth</span></span></Link>
+  return <Link to="/" className="re-brand" aria-label={t.appName}><BrandMark /><span className="elo-brand-name">{t.appName}</span></Link>
 }
 function ProducerCta({ label }: { label?: string }) {
   const { producer } = useAuth()

@@ -1,3 +1,4 @@
+import BrandMark from '../components/BrandMark'
 import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import loginLandscape from '../assets/auth-login-crops.jpg'
@@ -15,10 +16,8 @@ export default function AuthLayout({ mode, children }: { mode: 'login' | 'regist
     <div className={`producer-auth producer-auth-${mode}`}>
       <header className="producer-auth-header">
         <Link to="/" className="producer-auth-brand" aria-label={t.appName}>
-          <span className="producer-auth-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 4C9 2 3 7 5 14s14 9 14-10ZM4 21 15 10M9 16v-5m0 5h5" /></svg>
-          </span>
-          {t.appName}
+          <BrandMark />
+          <span className="elo-brand-name">{t.appName}</span>
         </Link>
         <Link to="/" className="producer-auth-back"><AuthArrow />{A.backHome}</Link>
       </header>

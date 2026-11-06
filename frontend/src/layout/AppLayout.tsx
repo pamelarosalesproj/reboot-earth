@@ -1,3 +1,4 @@
+import BrandMark from '../components/BrandMark'
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
@@ -23,7 +24,7 @@ export default function AppLayout() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="sidebar-brand"><span className="sidebar-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M19 4C9 2 3 7 5 14s14 9 14-10ZM4 21 15 10M9 16v-5m0 5h5" /></svg></span>{t.appName}</div>
+        <div className="sidebar-brand"><BrandMark inverse /><span className="elo-brand-name">{t.appName}</span></div>
         <span className="sidebar-section-label">{t.home.workspace}</span>
 
         <div className="profile">
