@@ -203,8 +203,11 @@ async def call_llm_api(
     api_url: str | None = None,
     api_key: str | None = None,
 ) -> dict[str, Any] | None:
+    key = api_key or os.getenv("LLM_API_KEY") or settings.llm_api_key
+    if not key or key in ("", "mock-key", "sua_chave_api_do_llm_aqui"):
+        return None
+
     endpoint = api_url or os.getenv("LLM_API_URL") or settings.llm_api_url
-    key = api_key or os.getenv("LLM_API_KEY") or settings.llm_api_key or "mock-key"
 
     headers = {
         "Authorization": f"Bearer {key}",
