@@ -1,6 +1,5 @@
-import { useEffect, useId, useState } from 'react'
+import { useId, useState } from 'react'
 import type { ReactNode } from 'react'
-import { getIndicators } from '../api/client'
 import { fmtDateTime, t } from '../i18n/pt-BR'
 import type { CarIndicators as Data, Count, Situacao, SourceState } from '../types'
 import IndicatorValue from './IndicatorValue'
@@ -164,23 +163,4 @@ export function IndicatorsView({ d }: { d: Data }) {
       <p className="muted small">{I.sources(fmtDateTime(d.fetched_at))}</p>
     </div>
   )
-}
-
-type State = { kind: 'loading' } | { kind: 'ok'; data: Data } | { kind: 'error' }
-
-/** Carga propia: si falla, la tarjeta sigue mostrando mapa y números (SC-304). */
-export default function CarIndicators({ code, refreshToken = 0 }: { code: string; refreshToken?: number }) {
-  const [result, setResult] = useState<{ key: string; state: State } | null>(null)
-  const key = `${code}:${refreshToken}`
-
-  useEffect(() => {
-    getIndicators(code, refreshToken > 0)
-      .then((data) => setResult({ key, state: { kind: 'ok', data } }))
-      .catch(() => setResult({ key, state: { kind: 'error' } }))
-  }, [code, refreshToken, key])
-
-  const state: State = result?.key === key ? result.state : { kind: 'loading' }
-  if (state.kind === 'loading') return <p className="muted small">{I.loading}</p>
-  if (state.kind === 'error') return <p className="muted small">{I.error}</p>
-  return <IndicatorsView d={state.data} />
 }

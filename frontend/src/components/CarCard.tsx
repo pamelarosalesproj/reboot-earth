@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { getSummary } from '../api/client'
 import { fmtDateTime, t } from '../i18n/pt-BR'
 import type { CarSummary, ProducerCar } from '../types'
-import CarIndicators from './CarIndicators'
 import CarMap from './CarMap'
 
 type State = { kind: 'loading' } | { kind: 'ok'; data: CarSummary } | { kind: 'unavailable' }
@@ -24,7 +23,6 @@ export default function CarCard({ car, onRemove }: Props) {
   const [state, setState] = useState<State>({ kind: 'loading' })
   const [confirming, setConfirming] = useState(false)
   const [removing, setRemoving] = useState(false)
-  const [refreshToken, setRefreshToken] = useState(0)
 
   // Cada tarjeta carga sus datos por separado: un fallo no afecta a las demás (FR-012).
   const load = useCallback(
@@ -88,20 +86,12 @@ export default function CarCard({ car, onRemove }: Props) {
         </>
       )}
 
-      <CarIndicators code={car.car_code} refreshToken={refreshToken} />
 
       <footer className="car-card-actions">
         <Link className="btn btn-primary btn-sm" to={`/painel/cars/${encodeURIComponent(car.car_code)}`}>
           {t.panel.details}
         </Link>
-        <button
-          className="btn btn-ghost btn-sm"
-          onClick={() => {
-            load(true)
-            setRefreshToken((n) => n + 1)
-          }}
-          disabled={state.kind === 'loading'}
-        >
+        <button className="btn btn-ghost btn-sm" onClick={() => load(true)} disabled={state.kind === 'loading'}>
           {t.panel.refresh}
         </button>
         {!confirming ? (

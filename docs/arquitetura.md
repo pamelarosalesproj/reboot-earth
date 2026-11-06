@@ -144,12 +144,12 @@ não foi implementada**.
 | Componente | Uso |
 |---|---|
 | `CarCard`, `CarMap` | Cartão do CAR (mapa, alertas, embargos) |
-| `CarIndicators`, `IndicatorValue` | Blocos "Riscos abertos" e "Contexto"; os três estados; ajuda de termos (ex.: APP) |
+| `CarIndicators` (`IndicatorsView`), `IndicatorValue` | Blocos "Riscos abertos" e "Contexto" no **detalhe do CAR** (o cartão não os mostra); os três estados; ajuda de termos (ex.: APP) |
 | `StatusBadge`, `CnpjReportCard`, `CnpjSearch` | Nível Gold/Silver/Bronze/Sem dados, ficha pública, busca com validação de CNPJ |
 | `LotOverview` | Visão de lotes do início (redesign). Sem fonte no backend: os campos aparecem como não disponíveis |
 
 - **Preview de design** (só em desenvolvimento): `/preview/painel` mostra o início com dados fictícios de 3 lotes, sem backend. Fica fora do build de produção. Notas e limites: [`frontend/design-dashboard.md`](../frontend/design-dashboard.md).
-- **Estilo**: `index.css` (tokens e componentes base) e CSS por página/layout (`LandingPage.css`, `HomePage.css`, `PublicCnpjPage.css`, `AppLayout.css`, `AuthLayout.css`). Os blocos de indicadores (003) ainda usam o estilo anterior ao redesign.
+- **Estilo**: `index.css` (tokens e componentes base) e CSS por página/layout (`LandingPage.css`, `HomePage.css`, `PublicCnpjPage.css`, `AppLayout.css`, `AuthLayout.css`). Os blocos de indicadores (003), no detalhe do CAR, ainda usam o estilo anterior ao redesign.
 
 ## 5. Testes
 

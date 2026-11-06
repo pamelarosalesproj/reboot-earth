@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ApiError, getDetail, getIndicators } from '../api/client'
 import { EmbargoesValue } from '../components/CarCard'
+import { IndicatorsView } from '../components/CarIndicators'
 import CarMap from '../components/CarMap'
 import { fmtDate, fmtDateTime, fmtNum, t } from '../i18n/pt-BR'
-import type { AlertIndicator, CarDetail } from '../types'
+import type { AlertIndicator, CarDetail, CarIndicators } from '../types'
 
 const OPEN = new Set(['embargo_vigente', 'com_fiscalizacao', 'pendente'])
 
@@ -14,7 +15,11 @@ export default function CarDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   // Indicadores por alerta (feature 003): si fallan, la tabla se muestra igual.
-  const [byAlert, setByAlert] = useState<Map<number, AlertIndicator> | null>(null)
+  const [indicators, setIndicators] = useState<CarIndicators | null>(null)
+  const [indicatorsError, setIndicatorsError] = useState(false)
+  const byAlert: Map<number, AlertIndicator> | null = indicators
+    ? new Map(indicators.alerts.map((a) => [a.alert_code, a]))
+    : null
 
   const load = useCallback(
     (refresh = false) => {
@@ -25,8 +30,14 @@ export default function CarDetailPage() {
         .catch((err) => setError(err instanceof ApiError && err.status === 404 ? err.message : t.panel.unavailable))
         .finally(() => setLoading(false))
       getIndicators(code, refresh)
-        .then((d) => setByAlert(new Map(d.alerts.map((a) => [a.alert_code, a]))))
-        .catch(() => setByAlert(null))
+        .then((d) => {
+          setIndicators(d)
+          setIndicatorsError(false)
+        })
+        .catch(() => {
+          setIndicators(null)
+          setIndicatorsError(true)
+        })
     },
     [code],
   )
@@ -84,6 +95,15 @@ export default function CarDetailPage() {
               </button>
             </p>
           </div>
+
+          <section className="card detail-indicators">
+            <h2>{I.title}</h2>
+            {indicators ? (
+              <IndicatorsView d={indicators} />
+            ) : (
+              <p className="muted small">{indicatorsError ? I.error : I.loading}</p>
+            )}
+          </section>
 
           <section className="card">
             <h2>{D.alertsTitle}</h2>

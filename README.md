@@ -60,10 +60,9 @@ apresenta de forma clara para cada público:
    - o polígono do imóvel no mapa;
    - o número de alertas de desmatamento que cruzam o imóvel;
    - o número de embargos (IBAMA, ICMBio, órgãos estaduais), sem duplicados;
-   - um detalhe com cada alerta (código, data de detecção, área dentro do CAR, embargos associados)
-     e cada embargo (órgão, processo, área, data);
-   - **indicadores do CAR** separados em *Riscos abertos* e *Contexto* (ver
-     [Indicadores do CAR](#indicadores-do-car)).
+   - um **"Ver detalhes"** com os **indicadores do CAR** separados em *Riscos abertos* e *Contexto*
+     (ver [Indicadores do CAR](#indicadores-do-car)), cada alerta (código, data, área dentro do CAR,
+     situação legal, embargos associados) e cada embargo (órgão, processo, área, data).
 2. **Consulta pública por CNPJ** (`specs/002-cnpj-score-search/`) — o comprador digita um CNPJ, sem
    cadastro, e vê uma ficha resumida:
    - **Gold**: nenhum alerta nem embargo em todos os imóveis, com dados completos;
@@ -182,7 +181,8 @@ Detalhes técnicos (endpoints, tabelas, fontes, testes): [`docs/arquitetura.md`]
 
 ## Indicadores do CAR
 
-Cada cartão em "Meus CARs" mostra, além do mapa, alertas e embargos, dois blocos (spec:
+O cartão de cada CAR em "Meus CARs" fica enxuto (mapa, alertas e embargos). Os indicadores aparecem
+no **"Ver detalhes"** do CAR, em dois blocos (spec:
 [`specs/003-car-indicators`](specs/003-car-indicators/spec.md)):
 
 - **Riscos abertos**: alertas por situação legal (embargo vigente, com fiscalização, sem autorização

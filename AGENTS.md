@@ -100,7 +100,8 @@ Features (todas em `main`):
 - `002-cnpj-score-search` — consulta pública por CNPJ com nível Gold/Silver/Bronze/Sem dados e
   regra **provisória** FR-111a (implementada).
 - `003-car-indicators` — indicadores do CAR: alertas por situação legal, riscos abertos e contexto,
-  com MapBiomas, INPE e SINAFLOR (implementada; **não altera o nível**).
+  com MapBiomas, INPE e SINAFLOR (implementada; **não altera o nível**). Aparecem só no detalhe do
+  CAR; o cartão de "Meus CARs" fica enxuto.
 - Redesign do frontend (sem spec própria; notas em `frontend/design-dashboard.md`). Os blocos de
   indicadores da 003 ainda usam o estilo anterior.
 
