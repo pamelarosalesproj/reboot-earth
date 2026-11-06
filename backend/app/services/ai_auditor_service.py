@@ -1,13 +1,10 @@
-"""Serviço de Auditoria e Consultoria ESG com IA para cruzamento NF x CAR/MapBiomas.
+"""Serviço de Auditoria e Consultoria ESG com IA para análise mensal de Notas Fiscais x CARs.
 
-Segue as diretrizes de AGENTS.md e constitution.md:
-- Tolerância a falhas: Chamadas com timeout rígido. Se o provedor de IA falhar ou estiver sem rede,
-  retorna status="indisponivel" sem quebrar o sistema.
-- Idioma estritamente em português do Brasil (pt-BR).
-- Consultor ESG: gera de 3 a 5 sugestões práticas de melhoria de transparência e processos.
-- Regra determinística preliminar:
-  1. Falta de CAR na NF compromete a rastreabilidade e penaliza Score.
-  2. Volume extraído na NF maior que o permitido no CAR invalida com status="nao_apto".
+Implementa as 4 regras de inteligência de conformidade:
+1. De-para de Cobertura Documental: CARs totais do CNPJ vs. CARs evidenciados nas NFs.
+2. Estouro Acumulado de Volume por CAR: Soma de várias NFs para o mesmo imóvel rural.
+3. Detecção de 'CAR Coringa' / Sobrecarga: Concentração anômala de volume em um único imóvel (>80%).
+4. Violação de Embargos: Emissão de NFs em imóveis com embargos ativos no MapBiomas.
 """
 
 from __future__ import annotations
@@ -20,26 +17,34 @@ from typing import Any
 
 import httpx
 
-from app.schemas_audit import AIAuditResult, AuditCrossCheckRequest
+from app.config import settings
+from app.schemas_audit import (
+    CarVolumeBalance,
+    MonthlyAuditReportResponse,
+    MonthlyInvoiceInput,
+)
 
 log = logging.getLogger("app.ai_auditor")
 
 DEFAULT_AI_TIMEOUT_S = 10.0
-AI_AUDITOR_PROMPT = """Você é um Consultor e Auditor Sênior Socioambiental/ESG especializado na cadeia de valor de madeira nativa e silvicultura no Brasil, com foco em rastreabilidade, compliance com o Código Florestal Brasileiro, CAR (Cadastro Ambiental Rural), DOF (Documento de Origem Florestal / IBAMA / Sisflora) e dados de desmatamento/embargos (MapBiomas).
+AI_AUDITOR_PROMPT = """Você é um Consultor e Auditor Sênior Socioambiental/ESG especializado na cadeia madeireira brasileira (Sinaflor, DOF, CAR, MapBiomas).
+Sua missão é emitir um parecer executivo sobre a auditoria mensal das Notas Fiscais (NFs) cruzadas com os CARs do produtor rural (CNPJ).
 
-Sua tarefa é auditar os dados de uma Nota Fiscal (NF) de madeira cruzados com os dados do imóvel rural no CAR (MapBiomas) e emitir um parecer estruturado.
-
-Regras centrais do negócio:
-1. Rastreabilidade e CAR: Se a NF NÃO contiver o número do CAR, a rastreabilidade está severamente comprometida. A empresa perde pontuação significativa no Score ESG.
-2. Limite de Volume: Se o volume total extraído/transportado na NF for MAIOR que o volume autorizado/permitido para o imóvel rural, o status de validação é estritamente "nao_apto".
-3. Status permitidos: "apto" ou "nao_apto".
-4. Score ESG: Número inteiro de 0 a 100 refletindo transparência e integridade da operação.
-5. Justificativa: Explicação técnica, clara e formal em português do Brasil (pt-BR).
-6. Sugestões de melhoria: OBRIGATORIAMENTE entre 3 e 5 sugestões práticas, focadas em governança florestal, auditoria de cadeia de custódia, conformidade documental e transparência para o produtor.
+Regras Mandatórias de Auditoria:
+1. Status Geral:
+   - "ilegal" se:
+     a) Algum CAR teve seu volume acumulado estourado (soma das NFs maior que a capacidade do imóvel).
+     b) Houve emissão de NF vinculada a CAR com embargo ambiental ativo.
+     c) Omissão severa de dados ou suspeita clara de "esquentamento" de saldo ("CAR coringa").
+   - "legal" se as operações respeitam as cotas de corte, sem embargos e com rastreabilidade adequada.
+2. Análise de Cobertura Documental: Se o CNPJ possui mais CARs do que os evidenciados nas NFs, aponte a falta de evidência dos imóveis inativos.
+3. Alerta de Concentração ("CAR Coringa"): Se >80% de todo o volume faturado veio de um único imóvel enquanto outros ficaram sem notas, sinalize o risco de uso de um único CAR como gerador artificial de saldo florestal.
+4. Idioma: Estritamente em português do Brasil (pt-BR).
+5. Sugestões práticas: OBRIGATORIAMENTE entre 3 e 5 sugestões acionáveis para o produtor regularizar sua governança florestal.
 
 Responda OBRIGATORIAMENTE em JSON válido com exatamente esta estrutura:
 {
-  "status": "apto" ou "nao_apto",
+  "status": "legal" ou "ilegal",
   "score": <número inteiro de 0 a 100>,
   "justification": "<texto detalhado em pt-BR>",
   "suggestions": [
@@ -55,76 +60,124 @@ def _now_utc() -> datetime:
     return datetime.now(UTC)
 
 
-def _build_deterministic_evaluation(req: AuditCrossCheckRequest) -> tuple[str, int, list[str]]:
-    """Gera avaliação base determinística em caso de indisponibilidade de LLM ou validação inicial."""
-    invoice = req.invoice
-    car = req.car_context
+def calculate_monthly_balances(
+    registered_cars: list[dict[str, Any]],
+    invoices: list[MonthlyInvoiceInput],
+) -> tuple[list[CarVolumeBalance], list[str], float, int, int]:
+    """Calcula a agregação de volume por CAR, cobertura e anomalias."""
+    registered_codes = {c["car_code"] for c in registered_cars}
+    invoices_by_car: dict[str, list[MonthlyInvoiceInput]] = {}
+    missing_car_count = 0
+    total_volume_all = 0.0
 
-    has_car = bool(invoice.car_code and invoice.car_code.strip())
-    volume_extracted = invoice.volume_extracted_m3
-    max_volume = car.max_volume_allowed_m3 if car else None
-    alerts_count = car.alerts_count if car else None
-    embargoes_count = car.embargoes_count if car else None
+    for inv in invoices:
+        total_volume_all += inv.volume_extracted_m3
+        if not inv.car_code or not inv.car_code.strip():
+            missing_car_count += 1
+            continue
+        code = inv.car_code.strip().upper()
+        invoices_by_car.setdefault(code, []).append(inv)
 
-    # Base score
+    evidenced_codes = set(invoices_by_car.keys())
+    omitted_codes = sorted(registered_codes - evidenced_codes)
+
+    # Detalhe do balanço para cada CAR evidenciado
+    car_info_map = {c["car_code"]: c for c in registered_cars}
+    balances: list[CarVolumeBalance] = []
+
+    for code, inv_list in invoices_by_car.items():
+        car_info = car_info_map.get(code, {})
+        area_ha = car_info.get("area_ha") or 30.0
+        # Volume máximo permitido mensal estimado (ex: ~1.5 m³/ha/mês de manejo sustentável ou cota fixa)
+        max_vol = car_info.get("max_volume_allowed_m3") or round(area_ha * 1.5, 2)
+        car_vol_sum = sum(i.volume_extracted_m3 for i in inv_list)
+        balance = round(max_vol - car_vol_sum, 2)
+        is_exceeded = car_vol_sum > max_vol
+        embargoes_count = car_info.get("embargoes_count") or 0
+        alerts_count = car_info.get("alerts_count") or 0
+        concentration = (
+            round((car_vol_sum / total_volume_all) * 100, 1) if total_volume_all > 0 else 0.0
+        )
+
+        balances.append(
+            CarVolumeBalance(
+                car_code=code,
+                invoices_count=len(inv_list),
+                total_volume_invoices_m3=round(car_vol_sum, 2),
+                max_volume_allowed_m3=max_vol,
+                balance_m3=balance,
+                is_exceeded=is_exceeded,
+                has_embargoes=embargoes_count > 0,
+                embargoes_count=embargoes_count,
+                alerts_count=alerts_count,
+                concentration_percentage=concentration,
+            )
+        )
+
+    return (
+        balances,
+        omitted_codes,
+        round(total_volume_all, 2),
+        missing_car_count,
+        len(evidenced_codes),
+    )
+
+
+def _build_deterministic_monthly_evaluation(
+    total_cars: int,
+    evidenced_cars: int,
+    omitted_cars: list[str],
+    balances: list[CarVolumeBalance],
+    missing_car_nfs: int,
+    has_concentration_anomaly: bool,
+) -> tuple[str, int, list[str]]:
+    """Gera o parecer determinístico de contingência caso o LLM esteja indisponível."""
     score = 100
-    reasons: list[str] = []
     suggestions: list[str] = []
 
-    # 1. Checagem de CAR
-    if not has_car:
+    # 1. Penalidade por CARs omitidos do CNPJ
+    if omitted_cars:
+        omission_penalty = min(25, len(omitted_cars) * 5)
+        score -= omission_penalty
+        suggestions.append(
+            f"Vincular operações florestais aos {len(omitted_cars)} CARs cadastrados no CNPJ que não apresentaram NFs no período."
+        )
+
+    # 2. Penalidade por NFs sem CAR
+    if missing_car_nfs > 0:
+        score -= min(30, missing_car_nfs * 10)
+        suggestions.append(
+            "Incluir obrigatoriamente a identificação do CAR nos dados adicionais de todas as NF-e de madeira emitida."
+        )
+
+    # 3. Estouro de cota volumétrica por CAR
+    exceeded_cars = [b for b in balances if b.is_exceeded]
+    if exceeded_cars:
         score -= 40
-        reasons.append(
-            "A Nota Fiscal não contém a identificação do código do CAR de origem, inviabilizando a rastreabilidade direta da madeira."
-        )
-        suggestions.append(
-            "Incluir obrigatoriamente a identificação do CAR nos dados adicionais da NF-e e na guia florestal (DOF/Sisflora)."
-        )
-    elif car and car.mapbiomas_status == "not_in_mapbiomas":
-        score -= 20
-        reasons.append(
-            "O CAR informado na NF não consta na base de polígonos validados do MapBiomas Alerta."
-        )
-        suggestions.append(
-            "Verificar a regularidade cadastral do imóvel no SICAR e a atualização dos polígonos geoespaciais."
-        )
+        for b in exceeded_cars:
+            suggestions.append(
+                f"Adequar o volume faturado no CAR {b.car_code[:18]}... (extrapolou {abs(b.balance_m3):.2f} m³ da cota permitida)."
+            )
 
-    # 2. Checagem de volume
-    volume_exceeded = False
-    if max_volume is not None and volume_extracted > max_volume:
-        volume_exceeded = True
+    # 4. Violação de Embargos
+    embargoed_cars = [b for b in balances if b.has_embargoes]
+    if embargoed_cars:
         score -= 50
-        reasons.append(
-            f"O volume declarado na NF ({volume_extracted:.2f} m³) ultrapassa o volume máximo autorizado para o imóvel ({max_volume:.2f} m³)."
-        )
         suggestions.append(
-            "Ajustar os planos de corte e remessas para que não superem os saldos autorizados pelo órgão ambiental competente."
-        )
-    elif max_volume is not None:
-        reasons.append(
-            f"Volume declarado ({volume_extracted:.2f} m³) compatível com a cota autorizada ({max_volume:.2f} m³)."
+            "Suspender imediatamente a comercialização de madeira vinculada a imóveis com embargos ambientais ativos."
         )
 
-    # 3. Alertas e embargos
-    if alerts_count and alerts_count > 0:
-        score -= min(30, alerts_count * 10)
-        reasons.append(f"Imóvel rural possui {alerts_count} alerta(s) de desmatamento registrado(s) no MapBiomas.")
+    # 5. Concentração anômala (CAR coringa)
+    if has_concentration_anomaly:
+        score -= 20
         suggestions.append(
-            "Realizar auditoria de sobreposição espacial entre as áreas de corte e os alertas de desmatamento recentes."
+            "Redistribuir o plano de extração entre os múltiplos imóveis do CNPJ para evitar sobrecarga de um único CAR."
         )
 
-    if embargoes_count and embargoes_count > 0:
-        score -= min(40, embargoes_count * 20)
-        reasons.append(f"Imóvel rural possui {embargoes_count} embargo(s) ativo(s) registrado(s).")
-        suggestions.append(
-            "Suspender imediatamente retiradas em parcelas com embargos administrativos ou judiciais vigentes."
-        )
-
-    # Sugestões gerais se faltarem itens para atingir o mínimo de 3
     default_suggestions = [
-        "Implantar sistema de custódia com código QR integrando a NF-e ao DOF e ao CAR.",
-        "Disponibilizar relatórios periódicos de conformidade florestal aos compradores na plataforma.",
-        "Adotar certificação voluntária de manejo florestal sustentável (ex.: FSC ou PEFC).",
+        "Implementar sistema integrado de conciliação de saldos DOF/Sinaflor antes da emissão da NF-e.",
+        "Disponibilizar relatórios periódicos de custódia florestal aos compradores na plataforma RebootEarth.",
+        "Buscar certificação florestal de cadeia de custódia para garantir transparência total aos compradores.",
     ]
     for s in default_suggestions:
         if len(suggestions) >= 5:
@@ -133,34 +186,14 @@ def _build_deterministic_evaluation(req: AuditCrossCheckRequest) -> tuple[str, i
             suggestions.append(s)
 
     score = max(0, min(100, score))
-    is_apto = has_car and not volume_exceeded and (embargoes_count or 0) == 0
-
-    status = "apto" if is_apto else "nao_apto"
+    is_legal = (
+        not exceeded_cars
+        and not embargoed_cars
+        and missing_car_nfs == 0
+        and score >= 60
+    )
+    status = "legal" if is_legal else "ilegal"
     return status, score, suggestions[:5]
-
-
-def _build_prompt_payload(req: AuditCrossCheckRequest) -> str:
-    """Prepara os dados em formato JSON textual para envio ao modelo."""
-    payload = {
-        "nota_fiscal": {
-            "numero": req.invoice.invoice_number,
-            "cnpj_emitente": req.invoice.issuer_cnpj,
-            "data_emissao": str(req.invoice.issue_date) if req.invoice.issue_date else None,
-            "car_declarado": req.invoice.car_code,
-            "volume_extraido_m3": req.invoice.volume_extracted_m3,
-            "itens": [item.model_dump() for item in req.invoice.items],
-        },
-        "contexto_imovel_car": {
-            "car_codigo": req.car_context.car_code if req.car_context else None,
-            "uf": req.car_context.state if req.car_context else None,
-            "area_ha": req.car_context.area_ha if req.car_context else None,
-            "alertas_desmatamento": req.car_context.alerts_count if req.car_context else None,
-            "embargos_ativos": req.car_context.embargoes_count if req.car_context else None,
-            "volume_maximo_permitido_m3": req.car_context.max_volume_allowed_m3 if req.car_context else None,
-            "status_mapbiomas": req.car_context.mapbiomas_status if req.car_context else None,
-        } if req.car_context else None,
-    }
-    return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
 async def call_llm_api(
@@ -170,16 +203,15 @@ async def call_llm_api(
     api_url: str | None = None,
     api_key: str | None = None,
 ) -> dict[str, Any] | None:
-    """Executa chamada assíncrona HTTP ao endpoint do LLM com timeout garantido."""
-    endpoint = api_url or os.getenv("LLM_API_URL") or "https://api.rebootearth.local/v1/chat/completions"
-    key = api_key or os.getenv("LLM_API_KEY") or "mock-key"
+    endpoint = api_url or os.getenv("LLM_API_URL") or settings.llm_api_url
+    key = api_key or os.getenv("LLM_API_KEY") or settings.llm_api_key or "mock-key"
 
     headers = {
         "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
     }
     data = {
-        "model": os.getenv("LLM_MODEL", "gemini-2.5-flash"),
+        "model": os.getenv("LLM_MODEL") or settings.llm_model,
         "messages": [
             {"role": "system", "content": system_instruction},
             {"role": "user", "content": prompt},
@@ -196,7 +228,6 @@ async def call_llm_api(
                 return None
             body = resp.json()
 
-            # Suporte para formato OpenAI/Gemini-compatible chat completions
             content = ""
             if body.get("choices"):
                 content = body["choices"][0]["message"]["content"]
@@ -207,7 +238,6 @@ async def call_llm_api(
             else:
                 content = json.dumps(body)
 
-            # Limpa possíveis blocos markdown ```json
             cleaned = content.strip()
             if cleaned.startswith("```"):
                 lines = cleaned.splitlines()
@@ -223,101 +253,174 @@ async def call_llm_api(
         return None
 
 
-async def audit_invoice_with_car(
-    req: AuditCrossCheckRequest,
+async def audit_monthly_report(
+    cnpj: str,
+    reference_period: str,
+    registered_cars: list[dict[str, Any]],
+    invoices: list[MonthlyInvoiceInput],
     timeout_s: float = DEFAULT_AI_TIMEOUT_S,
     llm_api_url: str | None = None,
     allow_fallback: bool = True,
-) -> AIAuditResult:
-    """Realiza a auditoria ESG cruzando NF e CAR.
-
-    Tolerância a falhas:
-    - Se a IA estiver disponível, extrai o julgamento enriquecido com sugestões.
-    - Se a API cair ou der timeout:
-        - Se allow_fallback=True e houver dados básicos, usa avaliação determinística segura.
-        - Caso contrário, retorna status="indisponivel" sem lançar erro 500.
-    """
+) -> MonthlyAuditReportResponse:
+    """Executa a auditoria mensal consolidada."""
     now = _now_utc()
-    invoice = req.invoice
-    car = req.car_context
 
-    # 1. Regra estrita mandatória: Sem CAR = penalização imediata no Score e perda de rastreabilidade
-    missing_car = not (invoice.car_code and invoice.car_code.strip())
+    (
+        balances,
+        omitted_codes,
+        total_vol,
+        missing_car_nfs,
+        evidenced_cars_count,
+    ) = calculate_monthly_balances(registered_cars, invoices)
 
-    # 2. Regra estrita mandatória: Volume NF > Volume CAR = Não Apto
-    volume_exceeded = False
-    if car and car.max_volume_allowed_m3 is not None and invoice.volume_extracted_m3 > car.max_volume_allowed_m3:
-        volume_exceeded = True
+    total_cars = len(registered_cars)
+    coverage_rate = (
+        round((evidenced_cars_count / total_cars) * 100, 1) if total_cars > 0 else 0.0
+    )
 
-    # Prepara prompt
-    user_prompt = f"Por favor audite a seguinte operação florestal:\n{_build_prompt_payload(req)}"
+    has_volume_exceeded = any(b.is_exceeded for b in balances)
+    has_embargo_violation = any(b.has_embargoes for b in balances)
+    has_concentration_anomaly = any(b.concentration_percentage >= 80.0 for b in balances) and len(registered_cars) > 1
 
+    payload_summary = {
+        "cnpj": cnpj,
+        "periodo_referencia": reference_period,
+        "total_cars_cadastrados": total_cars,
+        "total_cars_evidenciados": evidenced_cars_count,
+        "taxa_cobertura_percentual": coverage_rate,
+        "cars_omitidos_sem_nf": omitted_codes,
+        "total_nfs_analisadas": len(invoices),
+        "nfs_sem_car": missing_car_nfs,
+        "volume_total_m3": total_vol,
+        "balancos_por_car": [b.model_dump() for b in balances],
+        "houve_estouro_volume": has_volume_exceeded,
+        "houve_violacao_embargo": has_embargo_violation,
+        "anomalia_concentracao_car_coringa": has_concentration_anomaly,
+    }
+
+    user_prompt = f"Analise o seguinte consolidado mensal de NFs e CARs:\n{json.dumps(payload_summary, ensure_ascii=False, indent=2)}"
     llm_result = await call_llm_api(user_prompt, timeout_s=timeout_s, api_url=llm_api_url)
 
     if llm_result:
         raw_status = str(llm_result.get("status", "")).lower().strip()
-        status = "apto" if raw_status == "apto" else "nao_apto"
+        status = "legal" if raw_status == "legal" else "ilegal"
 
-        # Impor restrições invioláveis do negócio sobre a resposta do LLM:
-        if missing_car or volume_exceeded:
-            status = "nao_apto"
+        # Salvaguardas mandatórias de negócio
+        if has_volume_exceeded or has_embargo_violation or (missing_car_nfs > len(invoices) * 0.3):
+            status = "ilegal"
 
         score = llm_result.get("score")
-        if score is not None:
-            try:
-                score = int(score)
-                if missing_car and score > 50:
-                    score = 45  # penalidade de transparência
-                if volume_exceeded and score > 40:
-                    score = 30  # penalidade por excesso de cota
-                score = max(0, min(100, score))
-            except (ValueError, TypeError):
-                score = 30 if (missing_car or volume_exceeded) else 75
-        else:
-            score = 30 if (missing_car or volume_exceeded) else 80
+        try:
+            score = int(score) if score is not None else 65
+            if (has_volume_exceeded or has_embargo_violation) and score > 50:
+                score = 45
+            score = max(0, min(100, score))
+        except (ValueError, TypeError):
+            score = 40 if (has_volume_exceeded or has_embargo_violation) else 75
 
-        justification = llm_result.get("justification", "Auditoria concluída com sucesso.")
+        justification = llm_result.get("justification", "Auditoria mensal concluída com sucesso.")
         suggestions = llm_result.get("suggestions", [])
         if not isinstance(suggestions, list) or len(suggestions) < 3:
-            _, _, default_suggs = _build_deterministic_evaluation(req)
+            _, _, default_suggs = _build_deterministic_monthly_evaluation(
+                total_cars,
+                evidenced_cars_count,
+                omitted_codes,
+                balances,
+                missing_car_nfs,
+                has_concentration_anomaly,
+            )
             suggestions = default_suggs
 
-        return AIAuditResult(
+        return MonthlyAuditReportResponse(
             status=status,
             score=score,
+            cnpj=cnpj,
+            reference_period=reference_period,
+            total_cars_registered=total_cars,
+            cars_evidenced_count=evidenced_cars_count,
+            cars_omitted_count=len(omitted_codes),
+            omitted_car_codes=omitted_codes,
+            coverage_rate_percentage=coverage_rate,
+            total_invoices_count=len(invoices),
+            invoices_missing_car_count=missing_car_nfs,
+            total_volume_extracted_m3=total_vol,
+            car_balances=balances,
+            has_volume_exceeded=has_volume_exceeded,
+            has_embargo_violation=has_embargo_violation,
+            has_concentration_anomaly=has_concentration_anomaly,
             justification=justification,
             suggestions=suggestions[:5],
-            audited_at=now,
+            generated_at=now,
         )
 
-    # Caso o LLM esteja indisponível:
+    # Fallback
     if allow_fallback:
-        det_status, det_score, det_suggestions = _build_deterministic_evaluation(req)
-        justification_parts = [
-            "Auditoria preliminar processada via motor de contingência (serviço de IA indisponível no momento)."
+        det_status, det_score, det_suggestions = _build_deterministic_monthly_evaluation(
+            total_cars,
+            evidenced_cars_count,
+            omitted_codes,
+            balances,
+            missing_car_nfs,
+            has_concentration_anomaly,
+        )
+
+        parts = [
+            f"Relatório de auditoria mensal ({reference_period}) processado via motor analítico ESG."
         ]
-        if missing_car:
-            justification_parts.append(
-                "Aviso crítico: Ausência do código do CAR na NF compromete a rastreabilidade florestal."
+        if omitted_codes:
+            parts.append(
+                f"Atenção à transparência: de {total_cars} CARs registrados para este CNPJ, "
+                f"{len(omitted_codes)} não foram evidenciados em nenhuma Nota Fiscal emitida no mês."
             )
-        if volume_exceeded and car and car.max_volume_allowed_m3 is not None:
-            justification_parts.append(
-                f"Violação de volume: {invoice.volume_extracted_m3} m³ declarado excede {car.max_volume_allowed_m3} m³ permitido."
+        if has_volume_exceeded:
+            parts.append(
+                "Inconformidade crítica: Um ou mais imóveis rurais tiveram seu volume máximo de corte extrapolado pela soma das NFs."
+            )
+        if has_concentration_anomaly:
+            parts.append(
+                "Alerta de concentração: Mais de 80% de todo o volume faturado se concentrou em um único CAR ('CAR coringa')."
             )
 
-        return AIAuditResult(
+        return MonthlyAuditReportResponse(
             status=det_status,
             score=det_score,
-            justification=" ".join(justification_parts),
+            cnpj=cnpj,
+            reference_period=reference_period,
+            total_cars_registered=total_cars,
+            cars_evidenced_count=evidenced_cars_count,
+            cars_omitted_count=len(omitted_codes),
+            omitted_car_codes=omitted_codes,
+            coverage_rate_percentage=coverage_rate,
+            total_invoices_count=len(invoices),
+            invoices_missing_car_count=missing_car_nfs,
+            total_volume_extracted_m3=total_vol,
+            car_balances=balances,
+            has_volume_exceeded=has_volume_exceeded,
+            has_embargo_violation=has_embargo_violation,
+            has_concentration_anomaly=has_concentration_anomaly,
+            justification=" ".join(parts),
             suggestions=det_suggestions,
-            audited_at=now,
+            generated_at=now,
         )
 
-    # Se fallback não for permitido e a API de IA cair:
-    return AIAuditResult(
+    return MonthlyAuditReportResponse(
         status="indisponivel",
         score=None,
-        justification="O serviço de auditoria com IA está temporariamente indisponível. Tente novamente mais tarde.",
+        cnpj=cnpj,
+        reference_period=reference_period,
+        total_cars_registered=total_cars,
+        cars_evidenced_count=evidenced_cars_count,
+        cars_omitted_count=len(omitted_codes),
+        omitted_car_codes=omitted_codes,
+        coverage_rate_percentage=coverage_rate,
+        total_invoices_count=len(invoices),
+        invoices_missing_car_count=missing_car_nfs,
+        total_volume_extracted_m3=total_vol,
+        car_balances=balances,
+        has_volume_exceeded=has_volume_exceeded,
+        has_embargo_violation=has_embargo_violation,
+        has_concentration_anomaly=has_concentration_anomaly,
+        justification="Serviço de IA indisponível temporariamente.",
         suggestions=[],
-        audited_at=now,
+        generated_at=now,
     )

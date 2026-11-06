@@ -1,75 +1,154 @@
-"""Rota de auditoria e validação ESG para cruzamento NF x CAR/MapBiomas."""
+"""Rotas de auditoria e validação ESG para análise de Notas Fiscais x CARs."""
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session
+from datetime import date
+
+from fastapi import APIRouter, Depends
+from sqlmodel import Session, select
 
 from app.auth import current_producer
 from app.db import get_session
 from app.mapbiomas.client import MapBiomasClient, get_mapbiomas_client
-from app.models import Producer
-from app.schemas_audit import AIAuditResult, AuditCrossCheckRequest, CarAuditContext, InvoiceAuditInput
-from app.services.ai_auditor_service import audit_invoice_with_car
-from app.services.car_service import get_detail
-from app.validators import normalize_car, normalize_cnpj
+from app.models import Producer, ProducerCar
+from app.schemas_audit import (
+    InvoiceWoodItem,
+    MonthlyAuditReportRequest,
+    MonthlyAuditReportResponse,
+    MonthlyInvoiceInput,
+)
+from app.services.ai_auditor_service import audit_monthly_report
+from app.services.car_service import get_summary
 
 router = APIRouter(prefix="/audit", tags=["audit"])
 
 
-@router.post("/cross-check", response_model=AIAuditResult)
-async def audit_cross_check(
-    req: AuditCrossCheckRequest,
-    producer: Producer = Depends(current_producer),
-):
-    """Executa auditoria direta fornecendo a NF e o contexto do CAR explicitamente.
+def _generate_mock_monthly_invoices(cnpj: str, car_codes: list[str]) -> list[MonthlyInvoiceInput]:
+    """Gera dados realistas de NFs ajustados aos 3 casos de uso específicos:
 
-    Acesso restrito ao produtor autenticado.
+    1. 04654691000106 (Excelente): NFs bem distribuídas, volumes baixos, 100% de cobertura.
+    2. 11222333000181 (Atenção / Bom mas pode melhorar): Volume ok, mas omite 2 dos 4 CARs.
+    3. 33592510000154 (Crítico / Ruim): Estouro volumétrico violento e concentração massiva em 1 CAR ('CAR coringa').
     """
-    return await audit_invoice_with_car(req)
+    if not car_codes:
+        return []
+
+    clean_cnpj = "".join(filter(str.isdigit, cnpj))
+
+    # CASO 1: Produtor Excelente / OK
+    if clean_cnpj == "04654691000106":
+        return [
+            MonthlyInvoiceInput(
+                invoice_number="NF-OK-01",
+                issue_date=date(2026, 10, 5),
+                car_code=car_codes[0],
+                volume_extracted_m3=12.0,
+                items=[InvoiceWoodItem(species="Manejo Sustentável", volume_m3=12.0)],
+            ),
+            MonthlyInvoiceInput(
+                invoice_number="NF-OK-02",
+                issue_date=date(2026, 10, 20),
+                car_code=car_codes[1] if len(car_codes) > 1 else car_codes[0],
+                volume_extracted_m3=10.5,
+                items=[InvoiceWoodItem(species="Manejo Sustentável", volume_m3=10.5)],
+            ),
+        ]
+
+    # CASO 2: Produtor Atenção (Bom, mas pode melhorar - 2 CARs omitidos)
+    if clean_cnpj == "11222333000181":
+        return [
+            MonthlyInvoiceInput(
+                invoice_number="NF-ATENCAO-01",
+                issue_date=date(2026, 10, 8),
+                car_code=car_codes[0],
+                volume_extracted_m3=20.0,
+                items=[InvoiceWoodItem(species="Eucalipto", volume_m3=20.0)],
+            ),
+            MonthlyInvoiceInput(
+                invoice_number="NF-ATENCAO-02",
+                issue_date=date(2026, 10, 15),
+                car_code=car_codes[1] if len(car_codes) > 1 else car_codes[0],
+                volume_extracted_m3=18.0,
+                items=[InvoiceWoodItem(species="Pinus", volume_m3=18.0)],
+            ),
+        ]
+
+    # CASO 3: Produtor Crítico / Ruim (Estouro de cota de 180 m³ + concentração em 1 CAR)
+    primary_car = car_codes[0]
+    return [
+        MonthlyInvoiceInput(
+            invoice_number="NF-CRITICA-01",
+            issue_date=date(2026, 10, 3),
+            car_code=primary_car,
+            volume_extracted_m3=60.0,
+            items=[InvoiceWoodItem(species="Ipê-Roxo", volume_m3=60.0)],
+        ),
+        MonthlyInvoiceInput(
+            invoice_number="NF-CRITICA-02",
+            issue_date=date(2026, 10, 12),
+            car_code=primary_car,
+            volume_extracted_m3=75.0,
+            items=[InvoiceWoodItem(species="Jatobá", volume_m3=75.0)],
+        ),
+        MonthlyInvoiceInput(
+            invoice_number="NF-CRITICA-03",
+            issue_date=date(2026, 10, 22),
+            car_code=primary_car,
+            volume_extracted_m3=85.0,
+            items=[InvoiceWoodItem(species="Cedro Rosa", volume_m3=85.0)],
+        ),
+    ]
 
 
-@router.post("/invoice", response_model=AIAuditResult)
-async def audit_invoice_and_fetch_car(
-    invoice: InvoiceAuditInput,
+@router.post("/generate-report", response_model=MonthlyAuditReportResponse)
+async def generate_monthly_audit_report(
+    req: MonthlyAuditReportRequest | None = None,
     producer: Producer = Depends(current_producer),
     db: Session = Depends(get_session),
     client: MapBiomasClient = Depends(get_mapbiomas_client),
 ):
-    """Audita uma NF de madeira buscando automaticamente os dados do CAR no MapBiomas se informado."""
-    try:
-        normalize_cnpj(invoice.issuer_cnpj)
-    except ValueError as e:
-        raise HTTPException(status_code=422, detail=f"CNPJ do emitente inválido: {e}")
+    """Gera o relatório mensal de auditoria ESG do produtor logado."""
+    req = req or MonthlyAuditReportRequest()
+    ref_period = req.reference_month or "2026-10"
 
-    car_context: CarAuditContext | None = None
-    if invoice.car_code and invoice.car_code.strip():
+    producer_cars = db.exec(
+        select(ProducerCar).where(ProducerCar.producer_id == producer.id)
+    ).all()
+    car_codes = [c.car_code for c in producer_cars]
+
+    registered_cars_info = []
+    for code in car_codes:
         try:
-            norm_code = normalize_car(invoice.car_code)
-            # Busca dados do CAR no backend (com cache / MapBiomas)
-            try:
-                detail = await get_detail(db, client, norm_code)
-                summary = detail.summary
-                # Estimativa de cota autorizada baseada na área do CAR se não houver cota explícita
-                # (exemplo conservador: ~15 m³/ha para áreas sob plano de manejo)
-                estimated_max_volume = round(summary.area_ha * 15.0, 2) if summary.area_ha else 50.0
+            summary = await get_summary(db, client, code)
+            area = summary.area_ha or 30.0
+            max_vol = round(area * 1.5, 2)
+            registered_cars_info.append(
+                {
+                    "car_code": code,
+                    "area_ha": area,
+                    "max_volume_allowed_m3": max_vol,
+                    "embargoes_count": summary.embargoes_count or 0,
+                    "alerts_count": summary.alerts_count or 0,
+                }
+            )
+        except Exception:  # noqa: BLE001
+            registered_cars_info.append(
+                {
+                    "car_code": code,
+                    "area_ha": 30.0,
+                    "max_volume_allowed_m3": 45.0,
+                    "embargoes_count": 0,
+                    "alerts_count": 0,
+                }
+            )
 
-                car_context = CarAuditContext(
-                    car_code=summary.car_code,
-                    state=summary.state,
-                    area_ha=summary.area_ha,
-                    alerts_count=summary.alerts_count,
-                    embargoes_count=summary.embargoes_count,
-                    max_volume_allowed_m3=estimated_max_volume,
-                    mapbiomas_status="found",
-                )
-            except (HTTPException, Exception):  # noqa: BLE001
-                car_context = CarAuditContext(
-                    car_code=norm_code,
-                    mapbiomas_status="unavailable",
-                )
-        except ValueError:
-            # CAR com formato inválido: mantém nulo para penalizar transparência
-            car_context = None
+    invoices = (
+        req.invoices
+        if req.invoices is not None
+        else _generate_mock_monthly_invoices(producer.cnpj, car_codes)
+    )
 
-    req = AuditCrossCheckRequest(invoice=invoice, car_context=car_context)
-    return await audit_invoice_with_car(req)
-
+    return await audit_monthly_report(
+        cnpj=producer.cnpj,
+        reference_period=ref_period,
+        registered_cars=registered_cars_info,
+        invoices=invoices,
+    )
