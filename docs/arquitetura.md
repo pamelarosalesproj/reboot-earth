@@ -44,6 +44,7 @@ Princípios que guiam o desenho (constituição I–VII):
 | `GET/POST /api/cars` · `DELETE /api/cars/{car}` | ✓ | 001 | CARs do produtor; ao adicionar, verifica no MapBiomas |
 | `GET /api/cars/{car}/summary` · `/detail` | ✓ | 001 | Polígono, alertas e embargos (cache de 24 h, `?refresh=true`) |
 | `GET /api/cars/{car}/indicators` | ✓ | 003 | Indicadores socioambientais (riscos abertos e contexto) |
+| `POST /api/audit/generate-report` | ✓ | AI-Agent | Auditoria mensal consolidada de NFs x CARs e parecer do Consultor ESG |
 | `GET /api/dashboard` | ✓ | 001/002 | Totais da conta + `cnpj_status` / `cnpj_score` do CNPJ |
 | `GET /api/public/cnpj/{cnpj}` | — | 002 | Ficha pública agregada; rate limit de 30/h por IP |
 | `GET /api/health` | — | — | Saúde |
@@ -75,6 +76,7 @@ mudança de esquema numa tabela existente exige migração.
 | Score | `services/cnpj_report.py` (`get_score`) | Hoje só o estado (`em_calculo` / `nao_calculavel`); ponto de substituição do método |
 | Situação de cada alerta | `services/car_indicators.py` (`classify_alert`) | Suspensa judicial > embargo vigente > autorizada > embargo levantado > com fiscalização > pendente |
 | Indicadores do CAR | `services/car_indicators.py` (`build_indicators`, `get_indicators`) | Uma fonte por bloco; cache de 24 h; SINAFLOR é sempre lido na hora |
+| Auditoria Mensal ESG & IA | `services/ai_auditor_service.py` (`audit_monthly_report`) | Cobertura de CARs, estouro volumétrico, CAR coringa, cruzamento com SINAFLOR e parecer |
 
 O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). Uma proposta
 para substituir a regra provisória (abertas × superadas, nível do CNPJ pelo pior CAR, agente de
