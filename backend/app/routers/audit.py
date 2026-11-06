@@ -8,7 +8,7 @@ from sqlmodel import Session, select
 from app.auth import current_producer
 from app.db import get_session
 from app.mapbiomas.client import MapBiomasClient, get_mapbiomas_client
-from app.models import Producer, ProducerCar
+from app.models import Producer, ProducerCar, SinaflorCar
 from app.schemas_audit import (
     InvoiceWoodItem,
     MonthlyAuditReportRequest,
@@ -120,21 +120,32 @@ async def generate_monthly_audit_report(
             summary = await get_summary(db, client, code)
             area = summary.area_ha or 30.0
             max_vol = round(area * 1.5, 2)
+            embargoes_count = summary.embargoes_count or 0
+            alerts_count = summary.alerts_count or 0
+
+            # Consulta dados oficiais do SINAFLOR e Indicadores Socioambientais se disponíveis
+            sinaflor_db = db.get(SinaflorCar, code)
+            if sinaflor_db and sinaflor_db.vigentes > 0 and sinaflor_db.volume_m3 > 0:
+                max_vol = round(sinaflor_db.volume_m3, 2)
+
             registered_cars_info.append(
                 {
                     "car_code": code,
                     "area_ha": area,
                     "max_volume_allowed_m3": max_vol,
-                    "embargoes_count": summary.embargoes_count or 0,
-                    "alerts_count": summary.alerts_count or 0,
+                    "embargoes_count": embargoes_count,
+                    "alerts_count": alerts_count,
                 }
             )
         except Exception:  # noqa: BLE001
+            # Fallback seguro para contingência
+            sinaflor_db = db.get(SinaflorCar, code)
+            max_vol = round(sinaflor_db.volume_m3, 2) if (sinaflor_db and sinaflor_db.vigentes > 0 and sinaflor_db.volume_m3 > 0) else 45.0
             registered_cars_info.append(
                 {
                     "car_code": code,
                     "area_ha": 30.0,
-                    "max_volume_allowed_m3": 45.0,
+                    "max_volume_allowed_m3": max_vol,
                     "embargoes_count": 0,
                     "alerts_count": 0,
                 }
