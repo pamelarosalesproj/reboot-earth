@@ -42,6 +42,10 @@ class CarSummary(BaseModel):
     alerts_count: int | None
     embargoes_count: int | None
     embargoes_status: Literal["ok", "not_determinable", "unavailable"]
+    # Feature 007: quem determinou os embargos, quando, e se vêm de uma cópia anterior (nenhuma fonte respondeu).
+    embargoes_source: Literal["mapbiomas", "ibama"] | None = None
+    embargoes_checked_at: datetime | None = None
+    embargoes_stale: bool = False
     fetched_at: datetime
     stale: bool = False
     # Nível do CAR: a mesma regra do CNPJ aplicada só a este imóvel (o painel o preenche; nunca é público).
@@ -63,6 +67,10 @@ class Embargo(BaseModel):
     registered_at: date | None
     expired_at: date | None
     descriptions: list[str]
+    # Feature 007 (só IBAMA): termo de embargo "<número>/<série>" e ha sobrepostos ao CAR.
+    # Nunca nome nem CPF/CNPJ do embargado (princípio III).
+    term: str | None = None
+    overlap_ha: float | None = None
 
 
 class CarDetail(BaseModel):

@@ -72,7 +72,8 @@ mudança de esquema numa tabela existente exige migração.
 | Regra | Arquivo | Resumo |
 |---|---|---|
 | Validação de CNPJ e CAR | `app/validators.py` | CNPJ com dígitos verificadores; CAR `UF-NNNNNNN-<32 hex>` |
-| Deduplicação | `services/car_service.py` · `services/cnpj_report.py` | Alertas únicas por código; embargos únicos por (órgão, processo) |
+| Deduplicação | `services/car_service.py` (`merge_embargo_items`) · `services/cnpj_report.py` | Alertas únicas por código; embargos únicos por (órgão, processo), a mesma função para MapBiomas e IBAMA (007) |
+| Embargos de respaldo (007) | `sources/ibama.py` · `car_service.build_detail` | Se o MapBiomas não determina os embargos e o CAR tem polígono, usa as áreas embargadas do IBAMA que se sobrepõem ≥ 0,1 ha (`IBAMA_MIN_OVERLAP_HA`); todas vigentes. A regra de nível não muda |
 | Agregação por CNPJ | `services/cnpj_report.py` (`aggregate_cars`, `cnpj_aggregate`) | CARs sem repetição de todas as contas com o mesmo CNPJ |
 | Nível do CAR (006) | `services/level_rules.py` (`car_level`) | Sem dados → Bronze (embargo vigente, alerta aberta em TI/UC integral, RL/APP pós-2020 ≥ 1 % do CAR, DETER `CS_DESORDENADO`/`MINERACAO` em 24 meses) → Silver (alerta aberta, `DEGRADACAO` em 24 meses, dados parciais) → Gold. Entradas: `get_detail` + `get_indicators`. Lista todos os motivos com números e o sinal `eudr_attention` |
 | Nível do CNPJ (006) | `services/level_rules.py` (`cnpj_level`), via `cnpj_report.cnpj_status` | O pior CAR com dados; Sem dados + Gold → Silver; motivos contam CARs (`cars`) — só onde o motivo tem a gravidade do nível do CNPJ —, sem somar números; `cars_by_level`. Usado no painel, na ficha pública e no relatório |
@@ -83,10 +84,9 @@ mudança de esquema numa tabela existente exige migração.
 | Relatório do CNPJ | `reports/__init__.py` (`get_report`) | Valida o formato e o vocabulário proibido; impõe `nivel` = `cnpj_status` |
 | Auditoria Mensal ESG & IA | `services/ai_auditor_service.py` (`audit_monthly_report`) | Cobertura de CARs, estouro volumétrico, CAR coringa, cruzamento com SINAFLOR e parecer |
 
-O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). Uma proposta
-para substituir a regra provisória (abertas × superadas, nível do CNPJ pelo pior CAR, agente de
-resumos) está em [`proposta-regras-nivel-e-agente.md`](proposta-regras-nivel-e-agente.md) e **ainda
-não foi implementada**.
+O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). As regras de
+nível em uso estão descritas em [`proposta-regras-nivel.md`](proposta-regras-nivel.md);
+a proposta do agente de resumos (ainda não implementada) está em [`proposta-agente.md`](proposta-agente.md).
 
 ### Relatório do CNPJ: exemplo hoje, agente depois
 
@@ -97,12 +97,13 @@ não foi implementada**.
   - a regra de que `nivel` vem de `cnpj_status` (regras da 006);
   - `origem="agente"` (a interface muda o aviso automaticamente).
 
-  Regras do prompt: [`proposta-regras-nivel-e-agente.md`](proposta-regras-nivel-e-agente.md).
+  Regras do prompt: [`proposta-agente.md`](proposta-agente.md).
 
 ### Tolerância a falhas e cache
 
 - **MapBiomas**: timeout de 20 s, cache de 24 h por CAR. Se a fonte cai, serve o cache com `stale=true`; sem cache, "indisponível".
 - **Indicadores**: cada fonte (`mapbiomas`, `prodes`, `deter`, `focos`, `sinaflor`) tem seu próprio `SourceStatus` (`ok` / `indisponivel` / `nao_se_aplica`, `fetched_at`, `stale`). Se uma falha, reaproveita-se o bloco dela do cache anterior com `stale=true`.
+- **Embargos (007)**: o resumo traz `embargoes_source` (`mapbiomas`/`ibama`) e `embargoes_checked_at`. Se numa recarga nenhuma fonte determina os embargos mas o cache anterior sim, mantêm-se os embargos anteriores com `embargoes_stale=true` e a data original (`keep_previous_embargoes`). IBAMA: timeout de 5 s.
 - **Três estados sempre distintos**: valor (inclusive 0), "Indisponível" e "Não se aplica". `null` nunca é mostrado como 0.
 
 ## 3. Fontes externas
@@ -114,6 +115,7 @@ não foi implementada**.
   - `ruralProperty` (polígono e alertas);
   - `alerts(propertyCodes: [ID!])` (embargos e, na 003, os campos `crossed*` de autorização, reserva legal, APP, TI e UCs, além de `actionsList`);
   - `findSuspendedJudicialAlert(carCode: String!)`.
+- **`pointInformation` não serve para embargos (verificado em 2026-11-08)**: responde HTTP 500 com corpo vazio sempre que se pedem `embargoedAreasCount` ou `embargoedAreas` (só `carCode` funciona). Como é a única via para CARs sem alertas, esses CARs usam o respaldo do IBAMA (feature 007). `ruralProperty` não tem campos de embargo.
 - **Tipos importam**: `propertyCodes` é `[ID!]` e `carCode` é `String!`; com outro tipo, a API devolve erro.
 - Reserva legal, APP e UCs vêm calculadas **sobre a alerta inteira**. O backend limita cada valor à área da alerta dentro do CAR.
 - Schema completo: [`SCHEMA.md`](../SCHEMA.md) e `schema.json`.
@@ -138,6 +140,15 @@ não foi implementada**.
   - O filtro manda a envoltória convexa simplificada do CAR (um superconjunto). A interseção exata e a união das camadas que se sobrepõem entre biomas são feitas localmente com `shapely`. As áreas são calculadas por aproximação equirretangular, com erro < 1 %.
 - O DETER só se aplica se o CAR cruzar o bioma Amazônia. Classes: `CS_GEOMETRICO` (padrão de manejo), `CS_DESORDENADO`, `DEGRADACAO`, `CICATRIZ_DE_QUEIMADA`, `MINERACAO`, `DESMATAMENTO_CR`/`_VEG`.
 - O PRODES **não registra regeneração**: uma área desmatada e regenerada continua contando como desmatada.
+
+### IBAMA – áreas embargadas (ArcGIS público, `app/sources/ibama.py`, feature 007)
+
+- Endpoint: `https://pamgia.ibama.gov.br/server/rest/services/01_Publicacoes_Bases/adm_embargos_ibama_a/FeatureServer/0/query` (`settings.ibama_embargoes_url`). Sem credenciais; ~92 mil polígonos, atualizada diariamente.
+- Consulta: `POST` (form) com `f=geojson`, `geometryType=esriGeometryPolygon`, `geometry` = envoltória convexa simplificada do CAR em anéis ESRI, `inSR=outSR=4326`, `spatialRel=esriSpatialRelIntersects`, `returnGeometry=true`, `resultRecordCount=2000`. A sobreposição exata com o CAR é calculada localmente com `shapely`.
+- `outFields=num_tad,serie_tad,num_processo,dat_embargo,qtd_area_embargada,des_tad`. **Nunca peça `cpf_cnpj_embargado` nem `nome_embargado`** (dados pessoais; princípio III).
+- `dat_embargo` chega em epoch ms. A camada **não tem campo de levantado/cancelado**: todo embargo que conta é vigente (decisão da 007).
+- Resposta com `exceededTransferLimit` (na raiz ou em `properties`) = indisponível: nunca uma lista parcial como completa.
+- Só embargos do IBAMA: a camada do ICMBio (`adm_embargo_icmbio_a`) é uma foto de 2022 e não é usada. Os endpoints `siscom.ibama.gov.br/geoserver` e `embargos_siscom_brasil` respondem 404.
 
 ### IBAMA SINAFLOR (CSV diário, `app/sources/sinaflor.py`)
 
@@ -177,7 +188,7 @@ não foi implementada**.
 |---|---|
 | `backend/tests/unit/` | Funções puras: validadores, agregação, `car_level`/`cnpj_level` (`test_level_rules.py`), `classify_alert`, geometria do INPE, agregação do SINAFLOR, rate limit |
 | `backend/tests/integration/` | API com fontes simuladas: autenticação, CARs, dashboard, ficha pública (privacidade, falhas, 429), indicadores (falha por fonte, 401/404, cache) |
-| `backend/tests/conftest.py` | `FakeMapBiomas` (`properties`, `embargoes`, `alert_extra`, `judicial`, `down`) e `FakeInpe` (fixture `inpe`: `layers`, `down`), via `respx` |
+| `backend/tests/conftest.py` | `FakeMapBiomas` (`properties`, `embargoes`, `alert_extra`, `judicial`, `down`) (além de `point_down`: o 500 real do `pointInformation`), `FakeInpe` (fixture `inpe`: `layers`, `down`) e `FakeIbama` (fixture `ibama`: `features`, `down` — **caído por padrão**, `truncated`, `calls`), via `respx` |
 | `backend/tests/fixtures/` | Resposta real do MapBiomas para o CAR PE-2607505 e amostra do CSV do SINAFLOR |
 | `frontend/tests/` | Componentes e páginas com `fetch` simulado |
 
@@ -186,7 +197,7 @@ rede.
 
 ## 6. Operação
 
-- **Configuração**: `.env` na raiz (veja o README). Valores relevantes:
+- **Configuração**: `.env` na raiz (veja [`desenvolvimento.md`](desenvolvimento.md#configuração)). Valores relevantes:
   - `CACHE_TTL_HOURS` (24);
   - `PUBLIC_SEARCH_LIMIT_PER_HOUR` (30);
   - `TRUST_PROXY_HEADERS` (só atrás de um proxy confiável);

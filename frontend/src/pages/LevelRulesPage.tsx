@@ -4,13 +4,32 @@ import './LevelRulesPage.css'
 
 const R = t.rules
 
-function Terms({ items }: { items: readonly { term: string; text: string }[] }) {
+type TermLink = { label: string; url: string }
+
+function Links({ links }: { links?: readonly TermLink[] }) {
+  if (!links?.length) return null
+  return (
+    <span className="rules-links">
+      {links.map((l) => (
+        <a key={l.url} href={l.url} target="_blank" rel="noreferrer">
+          {l.label}
+          <span className="rules-sr-only"> {t.rules.newTab}</span>
+        </a>
+      ))}
+    </span>
+  )
+}
+
+function Terms({ items }: { items: readonly { term: string; text: string; links?: readonly TermLink[] }[] }) {
   return (
     <dl className="rules-terms">
       {items.map((i) => (
         <div key={i.term}>
           <dt>{i.term}</dt>
-          <dd>{i.text}</dd>
+          <dd>
+            {i.text}
+            <Links links={i.links} />
+          </dd>
         </div>
       ))}
     </dl>
@@ -91,6 +110,9 @@ export default function LevelRulesPage() {
       <section className="card" aria-labelledby="rules-eudr">
         <h2 id="rules-eudr">{R.eudrTitle}</h2>
         <p>{R.eudr}</p>
+        <p>
+          <Links links={R.eudrLinks} />
+        </p>
       </section>
 
       <section className="card" aria-labelledby="rules-improve">

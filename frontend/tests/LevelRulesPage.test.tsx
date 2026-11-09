@@ -17,4 +17,16 @@ describe('Entenda o nível (feature 006, US4)', () => {
     expect(text).toMatch(/imóvel em pior situação/)
     expect(text).not.toMatch(/ilegal|crime/i)
   })
+
+  it('enlaza las fuentes y el reglamento EUDR, abriendo en una pestaña nueva', () => {
+    render(<LevelRulesPage />)
+    const eurlex = screen.getAllByRole('link', { name: /Regulamento \(UE\) 2023\/1115/ })
+    expect(eurlex.length).toBe(2) // seção EUDR + glossário
+    expect(eurlex[0]).toHaveAttribute('href', 'https://eur-lex.europa.eu/eli/reg/2023/1115/oj')
+    for (const name of [/Plataforma MapBiomas Alerta/, /TerraBrasilis – DETER/, /Pamgia/, /SINAFLOR/]) {
+      const link = screen.getByRole('link', { name })
+      expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAttribute('rel', 'noreferrer')
+    }
+  })
 })

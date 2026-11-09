@@ -18,6 +18,7 @@ from app.mapbiomas.queries import (
 )
 from app.models import CarSnapshot
 from app.schemas import Alert, CarDetail, CarSummary, Embargo
+from app.sources import SourceUnavailable, ibama
 
 log = logging.getLogger("app.cars")
 
@@ -42,27 +43,39 @@ async def verify_car_exists(client: MapBiomasClient, code: str) -> Literal["foun
 # --------------------------------------------------------------------------- #
 # Embargos
 # --------------------------------------------------------------------------- #
-def dedupe_embargoes(rural_properties: list[dict], car_code: str) -> list[Embargo]:
-    """Agrupa por (órgano, nº de proceso); la API repite el mismo embargo con otros `code`."""
+def merge_embargo_items(items: list[dict]) -> list[Embargo]:
+    """Única deduplicación de embargos (princípio IV), para MapBiomas e IBAMA.
+
+    Cada item tem o formato de `embargoedAreas` do MapBiomas (`source`, `processCode`, `code`, `areaHa`,
+    `sourceRegisteredAt`, `sourceExpiredAt`, `description`) e, do IBAMA, `term` e `overlap_ha`.
+    Agrupa por (órgão, nº de processo) ou (órgão, código) sem processo; junta descrições e soma `overlap_ha`.
+    """
     by_process: dict[tuple, dict] = {}
-    for rp in rural_properties or []:
-        if rp.get("carCode") != car_code:
-            continue
-        for e in rp.get("embargoedAreas") or []:
-            key = (e.get("source"), e.get("processCode") or f"code:{e.get('code')}")
-            item = by_process.setdefault(key, {
-                "source": e.get("source"),
-                "process_code": e.get("processCode"),
-                "area_ha": e.get("areaHa"),
-                "registered_at": e.get("sourceRegisteredAt"),
-                "expired_at": e.get("sourceExpiredAt"),
-                "descriptions": [],
-            })
-            desc = (e.get("description") or "").strip()
-            if desc and desc not in item["descriptions"]:
-                item["descriptions"].append(desc)
-    items = sorted(by_process.values(), key=lambda x: x["registered_at"] or "")
-    return [Embargo(**i) for i in items]
+    for e in items:
+        key = (e.get("source"), e.get("processCode") or f"code:{e.get('code')}")
+        item = by_process.setdefault(key, {
+            "source": e.get("source"),
+            "process_code": e.get("processCode"),
+            "area_ha": e.get("areaHa"),
+            "registered_at": e.get("sourceRegisteredAt"),
+            "expired_at": e.get("sourceExpiredAt"),
+            "descriptions": [],
+            "term": e.get("term"),
+            "overlap_ha": None,
+        })
+        if e.get("overlap_ha") is not None:
+            item["overlap_ha"] = round((item["overlap_ha"] or 0) + e["overlap_ha"], 2)
+        desc = (e.get("description") or "").strip()
+        if desc and desc not in item["descriptions"]:
+            item["descriptions"].append(desc)
+    items_out = sorted(by_process.values(), key=lambda x: str(x["registered_at"] or ""))
+    return [Embargo(**i) for i in items_out]
+
+
+def dedupe_embargoes(rural_properties: list[dict], car_code: str) -> list[Embargo]:
+    """Embargos do CAR nas `ruralProperties` do MapBiomas; a API repete o mesmo embargo com outros `code`."""
+    return merge_embargo_items([e for rp in rural_properties or [] if rp.get("carCode") == car_code
+                                for e in rp.get("embargoedAreas") or []])
 
 
 async def fetch_car_embargoes(
@@ -141,6 +154,13 @@ async def build_detail(client: MapBiomasClient, code: str) -> CarDetail:
     alerts.sort(key=lambda x: x.detected_at.isoformat() if x.detected_at else "", reverse=True)
 
     embargoes, emb_status = await fetch_car_embargoes(client, code, geometry)
+    emb_source = "mapbiomas" if emb_status == "ok" else None
+    if emb_status != "ok" and geometry:
+        # Feature 007: respaldo com as áreas embargadas do IBAMA (mesma regra de nível, outra fonte).
+        try:
+            embargoes, emb_status, emb_source = await ibama.fetch_embargoes(geometry), "ok", "ibama"
+        except SourceUnavailable as e:
+            log.info("embargos IBAMA %s indisponíveis: %s", code, e)
     summary = CarSummary(
         car_code=code,
         state=prop.get("stateAcronym"),
@@ -151,9 +171,24 @@ async def build_detail(client: MapBiomasClient, code: str) -> CarDetail:
         # FR-011: 0 solo si es un dato confirmado.
         embargoes_count=len(embargoes) if emb_status == "ok" and embargoes is not None else None,
         embargoes_status=emb_status,
+        embargoes_source=emb_source,
+        embargoes_checked_at=now if emb_status == "ok" else None,
         fetched_at=now,
     )
     return CarDetail(summary=summary, alerts=alerts, embargoes=embargoes or [])
+
+
+def keep_previous_embargoes(new: CarDetail, prev: CarDetail) -> CarDetail:
+    """Princípio II: se agora nenhuma fonte determinou os embargos e a cópia anterior sim, mantém a cópia
+    anterior marcada como desatualizada (com a data original) em vez de voltar a "indisponível"."""
+    if new.summary.embargoes_status == "ok" or prev.summary.embargoes_status != "ok":
+        return new
+    p = prev.summary
+    summary = new.summary.model_copy(update={
+        "embargoes_status": "ok", "embargoes_count": p.embargoes_count, "embargoes_stale": True,
+        "embargoes_source": p.embargoes_source, "embargoes_checked_at": p.embargoes_checked_at or p.fetched_at,
+    })
+    return new.model_copy(update={"summary": summary, "embargoes": prev.embargoes})
 
 
 async def get_detail(db: Session, client: MapBiomasClient, code: str, refresh: bool = False) -> CarDetail:
@@ -170,6 +205,8 @@ async def get_detail(db: Session, client: MapBiomasClient, code: str, refresh: b
             cached.summary.stale = True
             return cached
         raise
+    if snap and snap.detail_json:
+        detail = keep_previous_embargoes(detail, CarDetail.model_validate(snap.detail_json))
     payload = detail.model_dump(mode="json")
     if snap:
         snap.summary_json, snap.detail_json, snap.fetched_at = payload["summary"], payload, detail.summary.fetched_at

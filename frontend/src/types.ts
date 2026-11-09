@@ -25,6 +25,11 @@ export interface CarSummary {
   alerts_count: number | null
   embargoes_count: number | null
   embargoes_status: EmbargoesStatus
+  /** Feature 007: quem determinou os embargos (o IBAMA é o respaldo quando o MapBiomas falha). */
+  embargoes_source?: 'mapbiomas' | 'ibama' | null
+  embargoes_checked_at?: string | null
+  /** Embargos de uma consulta anterior: nenhuma fonte respondeu agora. */
+  embargoes_stale?: boolean
   fetched_at: string
   stale: boolean
   /** Nível deste CAR (mesma regra do CNPJ, só este imóvel). */
@@ -46,6 +51,9 @@ export interface Embargo {
   registered_at: string | null
   expired_at: string | null
   descriptions: string[]
+  /** Só IBAMA (feature 007): termo "<número>/<série>" e ha sobrepostos ao CAR. */
+  term?: string | null
+  overlap_ha?: number | null
 }
 
 export interface CarDetail {

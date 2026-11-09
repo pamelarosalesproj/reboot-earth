@@ -44,6 +44,8 @@ class FakeMapBiomas:
         self.alert_extra: dict[int, dict] = {}
         self.judicial: dict[str, list[int]] = {}
         self.judicial_error = False
+        # Feature 007: pointInformation responde 500 al pedir embargos (comportamiento real desde 2026-11-08).
+        self.point_down = False
 
     def handler(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
@@ -64,7 +66,7 @@ class FakeMapBiomas:
             return httpx.Response(200, json={"data": {"ruralProperty": self.properties.get(v["code"])}})
         if op == "CarEmbargoesViaAlerts":
             code = v["code"]
-            if code not in self.properties:
+            if code not in self.properties or not self.properties[code].get("alerts"):
                 return httpx.Response(200, json={"data": {"alerts": {"collection": []}}})
             rp = {"carCode": code, "embargoedAreas": self.embargoes.get(code, [])}
             return httpx.Response(200, json={"data": {"alerts": {"collection": [{"ruralProperties": [rp]}]}}})
@@ -79,6 +81,8 @@ class FakeMapBiomas:
             return httpx.Response(200, json={"data": {"findSuspendedJudicialAlert":
                                                       [{"alertCode": c} for c in codes]}})
         if op == "CarEmbargoesViaPoint":
+            if self.point_down:
+                return httpx.Response(500, text="")
             return httpx.Response(200, json={"data": {"pointInformation": {"ruralProperties": []}}})
         return httpx.Response(400, json={"errors": [{"message": "unknown op"}]})
 
@@ -102,19 +106,47 @@ class FakeInpe:
         return httpx.Response(200, json={"type": "FeatureCollection", "features": self.layers.get(layer, [])})
 
 
+class FakeIbama:
+    """Áreas embargadas do IBAMA simuladas (feature 007). Caído por defecto: los tests existentes
+    conservan su comportamiento; los de la 007 lo encienden con `down = False`."""
+
+    def __init__(self):
+        self.features: list[dict] = []
+        self.down = True
+        self.truncated = False
+        self.calls: list[dict] = []
+
+    def handler(self, request: httpx.Request) -> httpx.Response:
+        form = dict(httpx.QueryParams(request.content.decode()))
+        self.calls.append(form)
+        if self.down:
+            return httpx.Response(500, text="Internal error")
+        body: dict = {"type": "FeatureCollection", "features": self.features}
+        if self.truncated:
+            body["properties"] = {"exceededTransferLimit": True}
+        return httpx.Response(200, json=body)
+
+
 @pytest.fixture
 def mapbiomas_mock():
     fake = FakeMapBiomas()
     fake.inpe = FakeInpe()
+    fake.ibama = FakeIbama()
     with respx.mock(assert_all_called=False) as router:
         router.post(API_URL).mock(side_effect=fake.handler)
         router.get(url__startswith="https://terrabrasilis.dpi.inpe.br/").mock(side_effect=fake.inpe.handler)
+        router.post(url__startswith="https://pamgia.ibama.gov.br/").mock(side_effect=fake.ibama.handler)
         yield fake
 
 
 @pytest.fixture
 def inpe(mapbiomas_mock):
     return mapbiomas_mock.inpe
+
+
+@pytest.fixture
+def ibama(mapbiomas_mock):
+    return mapbiomas_mock.ibama
 
 
 @pytest.fixture(autouse=True)

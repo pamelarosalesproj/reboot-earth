@@ -59,7 +59,7 @@ Hay que sustituir `_example_report()` en `app/reports/__init__.py` por la genera
 - que `nivel` lo impone el backend;
 - la validación (palabras prohibidas, máximo de 3 riesgos y 3 elementos de contexto).
 
-Las reglas del prompt y los controles están en [`docs/proposta-regras-nivel-e-agente.md`](../../docs/proposta-regras-nivel-e-agente.md).
+Las reglas del prompt y los controles están en [`docs/proposta-agente.md`](../../docs/proposta-agente.md).
 
 ## Complexity Tracking
 

@@ -1,13 +1,17 @@
-# RebootEarth
+# Elo Rural
 
-Plataforma que mostra, de forma simples e rastreável, a situação socioambiental de produtores
-rurais brasileiros: **polígono de cada imóvel (CAR), alertas de desmatamento, embargos e indicadores
-socioambientais**, com dados do **MapBiomas Alerta**, do **INPE** (PRODES, DETER, Queimadas) e do
-**IBAMA** (SINAFLOR). Atende dois públicos:
+**Elo Rural** é uma plataforma que mostra, de forma simples e rastreável, a situação socioambiental de
+produtores rurais brasileiros: **o polígono de cada imóvel (CAR), alertas de desmatamento, embargos e
+indicadores socioambientais**, com dados públicos do **MapBiomas Alerta**, do **INPE** (PRODES, DETER,
+Queimadas) e do **IBAMA** (áreas embargadas e SINAFLOR). Atende dois públicos:
 
 - **Produtor rural** (com conta): cadastra seu CNPJ e seus CARs e acompanha cada imóvel em um painel.
 - **Comprador** (sem conta): frigorífico, trading, cooperativa ou varejista que consulta o CNPJ de um
-  fornecedor e vê um status resumido (**Gold**, **Silver**, **Bronze** ou **Sem dados**).
+  fornecedor e vê um nível resumido (**Gold**, **Silver**, **Bronze** ou **Sem dados**).
+
+<img src="docs/screenshots/1-LandingPage.jpg" alt="Página inicial do Elo Rural com o título 'O futuro do campo começa com clareza' e os botões 'Sou produtor' e 'Consultar CNPJ'" width="100%">
+
+*A página inicial do Elo Rural: o produtor entra no painel e o comprador consulta um CNPJ.*
 
 ---
 
@@ -21,10 +25,10 @@ EUDR (União Europeia) transformaram a origem socioambiental em condição para 
 As informações necessárias para essa verificação **existem e são públicas**, mas estão espalhadas,
 são técnicas e difíceis de cruzar:
 
-- alertas de desmatamento validados (MapBiomas Alerta, API GraphQL com autenticação);
+- alertas de desmatamento validados, em plataformas que exigem conhecimento técnico;
 - embargos do IBAMA, do ICMBio e de órgãos estaduais, cada um com seu formato;
 - o CAR (Cadastro Ambiental Rural), que liga um polígono a um imóvel, mas não diretamente a um CNPJ;
-- bases abertas enormes (p. ex. o DOF do IBAMA, um ZIP de ~4,6 GB com um CSV por ano e UF).
+- bases abertas enormes, difíceis de baixar e de interpretar.
 
 ## As dores
 
@@ -41,7 +45,7 @@ são técnicas e difíceis de cruzar:
 
 ### Do comprador
 
-- **Due diligence cara e manual.** Verificar cada fornecedor exige analistas, ferramentas GIS e
+- **Due diligence cara e manual.** Verificar cada fornecedor exige analistas, ferramentas de mapas e
   acesso a várias bases.
 - **Risco jurídico e de reputação.** Comprar de uma área embargada ou desmatada pode gerar multas,
   perda de mercado e danos à marca.
@@ -50,176 +54,107 @@ são técnicas e difíceis de cruzar:
 - **Precisa de uma resposta rápida.** Antes de fechar uma compra, quer saber em segundos se o
   fornecedor apresenta risco, sem precisar criar conta nem pedir dados ao produtor.
 
-## A solução que propomos
+## A solução
 
 Uma plataforma que **organiza por imóvel e por CNPJ** os dados ambientais que já são públicos e os
-apresenta de forma clara para cada público:
+apresenta de forma clara para cada público.
 
-1. **Painel do produtor** — cadastro curto (email, CNPJ e senha); depois o produtor adiciona seus
-   CARs. Cada CAR aparece em um cartão com:
-   - o polígono do imóvel no mapa;
-   - o número de alertas de desmatamento que cruzam o imóvel;
-   - o número de embargos (IBAMA, ICMBio, órgãos estaduais), sem duplicados;
-   - um **"Ver detalhes"** com os **indicadores do CAR** separados em *Riscos abertos* e *Contexto*
-     (ver [Indicadores do CAR](#indicadores-do-car)), cada alerta (código, data, área dentro do CAR,
-     situação legal, embargos associados) e cada embargo (órgão, processo, área, data).
-2. **Consulta pública por CNPJ** (`specs/002-cnpj-score-search/`) — o comprador digita um CNPJ, sem
-   cadastro, e vê uma ficha resumida:
-   - **Bronze**: algum imóvel com risco grave em aberto — embargo vigente, alerta em terra indígena
-     ou UC de proteção integral, desmatamento após 2020 em reserva legal/APP (≥ 1 % do imóvel) ou
-     corte seletivo desordenado/mineração no DETER nos últimos 24 meses;
-   - **Silver**: alertas em aberto sem gravidade alta, degradação recente ou dados parciais;
-   - **Gold**: nenhum risco em aberto (alertas já autorizadas, com embargo levantado ou suspensas
-     não penalizam);
-   - **Sem dados**: CNPJ não cadastrado, sem imóveis informados ou dados indisponíveis.
+### Para o produtor: o painel
 
-   O nível do CNPJ é o do **imóvel em pior situação**, com os motivos e o sinal **"Atenção EUDR"**
-   (desmatamento após 2020, mesmo autorizado). As regras estão em `specs/006-nivel-regras/` e são
-   explicadas ao produtor na página **"Entenda o nível"** do painel.
-3. **Transparência para os dois lados** — o produtor vê no seu painel exatamente o mesmo status
-   que o comprador vê, para saber como é percebido e corrigir o que falta.
-4. **Início como resumo do CNPJ** (`specs/005-dashboard-init/`) — status do CNPJ, três números
-   (CARs, alertas abertas, embargos vigentes) e um relatório do CNPJ. Por enquanto o relatório é
-   um **exemplo escrito à mão**; a geração automática por um agente está em desenvolvimento.
+- **Cadastro curto** (email, CNPJ e senha); depois o produtor adiciona seus CARs.
+- **Início**: o nível do CNPJ, três números (imóveis, alertas em aberto e embargos vigentes) e um
+  relatório do CNPJ. A geração automática do relatório por um agente está em desenvolvimento.
+- **Meus CARs**: cada imóvel em um cartão com o mapa, o número de alertas de desmatamento e de embargos,
+  e o nível do imóvel.
+- **Detalhe de cada CAR**: os indicadores separados em *Riscos abertos* (o que pesa no nível) e
+  *Contexto* (vegetação nativa, focos de calor, manejo florestal autorizado…), cada alerta com sua data,
+  área e situação ("sem autorização registrada", "autorizada", "com embargo"…) e cada embargo com o órgão,
+  o processo e a fonte do dado.
+- **Entenda o nível**: uma página que explica, em linguagem simples, como o nível é calculado e o que
+  fazer para melhorá-lo.
 
-### Princípios da solução
+<img src="docs/screenshots/2-Produtor.jpg" alt="Tela 'Meus CARs' do painel do produtor com seis imóveis, cada um com mapa, nível Gold, Silver ou Bronze, sinal 'Atenção EUDR', número de alertas e de embargos" width="100%">
 
-- **Privacidade por agregação:** o comprador vê só dados agregados por CNPJ (nível, score,
-  contagens, datas). Códigos de CAR, polígonos e dados da conta continuam privados.
-- **Honestidade nos dados:** "0" significa dado confirmado; quando a fonte não responde, a
-  plataforma mostra "dados indisponíveis" ou os últimos dados salvos, marcados como desatualizados.
-  Nunca um zero falso.
-- **Fidelidade à fonte:** polígonos, alertas e embargos aparecem como a fonte os entrega. Todo dado
-  derivado indica em que se baseia e a data dos dados usados.
-- **Credenciais só no servidor:** o navegador nunca chama o MapBiomas diretamente.
+*"Meus CARs": cada imóvel com mapa, nível, alertas, embargos e o sinal "Atenção EUDR" (dados de exemplo).*
 
-As regras completas estão na constituição do projeto: [`.specify/memory/constitution.md`](.specify/memory/constitution.md).
+### Para o comprador: a consulta pública por CNPJ
 
----
+O comprador digita um CNPJ, **sem cadastro**, e vê uma ficha resumida: o nível, quantos imóveis em cada
+nível, os motivos e a data dos dados. Nunca vê códigos de CAR, mapas nem dados da conta do produtor.
 
-## Estrutura do repositório
+<img src="docs/screenshots/3-Comprador.jpg" alt="Tela pública 'Consultar CNPJ' mostrando um CNPJ de exemplo em nível Bronze, com o sinal 'Atenção EUDR' e os motivos" width="100%">
 
-| Caminho | Conteúdo |
-| --- | --- |
-| `backend/` | API em Python 3.12 (FastAPI + SQLModel/SQLite), intermediária para MapBiomas, INPE e IBAMA |
-| `frontend/` | SPA em TypeScript (React + Vite + Leaflet): landing em `/`, consulta em `/consulta`, painel em `/painel` |
-| `frontend/design-dashboard.md` | Notas e limites do redesign do início do painel (preview em `/preview/painel`, só em dev) |
-| `docs/arquitetura.md` | **Documentação técnica**: endpoints, tabelas, regras, fontes externas, testes e operação |
-| `docs/proposta-regras-nivel-e-agente.md` | Regra de nível (implementada na 006) e proposta do agente de resumos |
-| `specs/001-producer-car-dashboard/` | Spec, plano, contrato (`contracts/openapi.yaml`) e tarefas do painel do produtor |
-| `specs/002-cnpj-score-search/` | Spec, plano e tarefas da consulta pública por CNPJ |
-| `specs/003-car-indicators/` | Spec, plano e tarefas dos indicadores socioambientais do CAR |
-| `specs/005-dashboard-init/` | Spec, plano, contrato e tarefas do Início como resumo do CNPJ |
-| `data/cars_ejemplo/` | Respostas reais do MapBiomas para CARs de vários estados (**local, não versionado**) |
-| `mapbiomas_api.py`, `dof_ibama.py` | Scripts de exploração das fontes (não são usados pela aplicação) |
-| `SCHEMA.md`, `schema.json` | Documentação do schema GraphQL do MapBiomas Alerta |
+*Consulta pública, sem cadastro: o nível do CNPJ e os motivos, só com dados agregados (CNPJ de exemplo).*
 
-## Requisitos
+### Transparência para os dois lados
 
-- [`uv`](https://docs.astral.sh/uv/) (instala o Python 3.12 automaticamente)
-- Node 24 e npm
+O produtor vê no seu painel **exatamente o mesmo nível** que o comprador vê, para saber como é percebido
+e corrigir o que falta antes de uma venda.
 
-## Configuração
+## Como funciona o nível
 
-`.env` na raiz do repositório (não é versionado):
+| Nível | Significado |
+|---|---|
+| **Gold** | Nenhum risco em aberto. |
+| **Silver** | Há riscos em aberto, mas nenhum grave (por exemplo, alertas sem autorização registrada), ou parte dos dados não pôde ser verificada. |
+| **Bronze** | Há pelo menos um risco grave em aberto: embargo vigente, alerta em terra indígena ou unidade de conservação de proteção integral, desmatamento recente em reserva legal ou APP, ou corte seletivo desordenado e mineração na Amazônia. |
+| **Sem dados** | Não foi possível obter os dados. |
 
-```env
-MAPBIOMAS_EMAIL=seu@email.com
-MAPBIOMAS_PASSWORD=...
-MAPBIOMAS_API_URL=https://plataforma.alerta.mapbiomas.org/api/v2/graphql
-# Opcionais
-# DATABASE_URL=sqlite:////caminho/absoluto/app.db   (padrão: backend/data/app.db)
-# COOKIE_SECURE=true                                (obrigatório em produção com HTTPS)
-# CORS_ORIGINS=["http://localhost:5173"]
-# PUBLIC_SEARCH_LIMIT_PER_HOUR=30                    (consultas públicas por CNPJ, por IP e por hora)
-# TRUST_PROXY_HEADERS=false                          (true só atrás de um proxy confiável: usa X-Forwarded-For)
-# CACHE_TTL_HOURS=24                                 (cache por CAR do MapBiomas e dos indicadores)
-# INPE_TIMEOUT_S=30                                  (timeout por consulta aos WFS do INPE)
-# MOCK_REPORTS_DIR=backend/data/mock_reports         (relatórios de exemplo por CNPJ, fora do git)
-```
+- O nível do **CNPJ é o do imóvel em pior situação**, porque quem compra não sabe de qual imóvel vem o
+  produto.
+- O que já foi resolvido (alertas autorizadas, embargos levantados) e as informações de contexto **não
+  rebaixam o nível**.
+- O sinal **"Atenção EUDR"** aparece, separado do nível, quando há desmatamento detectado depois de
+  31/12/2020, mesmo que autorizado.
+- O nível é calculado por **regras fixas, iguais para todos**. Nenhuma inteligência artificial escolhe
+  o nível.
 
-INPE e IBAMA são fontes públicas: não precisam de credenciais.
+As regras completas, com todos os critérios e limites, estão em
+[`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md).
 
-As credenciais do MapBiomas são usadas só no backend; nunca chegam ao navegador.
+## Visão de futuro: o nível como porta de acesso a benefícios
 
-## Como rodar
+Hoje o nível Gold/Silver/Bronze é um **indicador informativo**: ajuda o produtor a saber como é visto
+e o comprador a avaliar um fornecedor. No futuro, ele **poderá ser usado para que o produtor obtenha
+benefícios ou créditos**, por exemplo:
 
-```bash
-# Backend → http://localhost:8000 (documentação interativa em /docs)
-cd backend && uv sync && uv run uvicorn app.main:app --reload --port 8000
+- condições melhores em linhas de **crédito rural** ou financiamentos verdes, junto a bancos e
+  cooperativas de crédito;
+- acesso preferencial ou **bonificações** em programas de compra de frigoríficos, tradings e
+  cooperativas;
+- comprovação simples da situação socioambiental exigida por mercados como o europeu (EUDR).
 
-# Frontend → http://localhost:5173 (proxy /api → :8000)
-cd frontend && npm install && npm run dev
+Isso dependeria de parcerias com instituições financeiras e compradores, e de um método de score
+transparente. Até lá, o nível **não é uma certificação ambiental nem garante crédito**: é calculado por
+regras fixas a partir de dados públicos e pode mudar quando as fontes são atualizadas.
 
-# Uma vez por dia (indicador de manejo florestal): resumo do SINAFLOR por CAR
-cd backend && uv run python -m app.sources.sinaflor
-```
+## Nossos princípios
 
-## Testes
+- **Privacidade por agregação:** o comprador vê só dados agregados por CNPJ (nível, contagens, datas).
+  Códigos de CAR, mapas, dados da conta e dados pessoais de terceiros continuam privados.
+- **Honestidade nos dados:** "0" significa dado confirmado. Quando uma fonte não responde, a plataforma
+  mostra "indisponível" ou os últimos dados salvos, marcados como desatualizados. Nunca um zero falso.
+- **Fidelidade à fonte:** mapas, alertas e embargos aparecem como a fonte os entrega, e todo dado
+  calculado indica em que se baseia e a data.
+- **Linguagem responsável:** uma alerta sem autorização registrada não é chamada de "ilegal"; o nível é
+  um indicador, não um julgamento.
 
-```bash
-cd backend && uv run ruff check . && uv run pytest
-cd frontend && npm run build && npm test
-```
+## Fontes de dados
 
-Testes sem rede: MapBiomas e INPE simulados com `respx`, SINAFLOR com um CSV de amostra.
+| Fonte | O que traz |
+|---|---|
+| [MapBiomas Alerta](https://plataforma.alerta.mapbiomas.org) | Alertas de desmatamento validados, autorizações, embargos, reserva legal, APP, terras indígenas e unidades de conservação |
+| [IBAMA – áreas embargadas](https://pamgia.ibama.gov.br) | Embargos do IBAMA, usados quando o MapBiomas não consegue informá-los |
+| [INPE – DETER](https://terrabrasilis.dpi.inpe.br/app/dashboard/alerts/legal/amazon/aggregated/) | Degradação, corte seletivo e mineração na Amazônia |
+| [INPE – PRODES](https://terrabrasilis.dpi.inpe.br/app/dashboard/deforestation/biomes/legal_amazon/rates) e [Queimadas](https://terrabrasilis.dpi.inpe.br/queimadas/portal/) | Vegetação nativa remanescente e focos de calor (contexto) |
+| [IBAMA – SINAFLOR](https://dadosabertos.ibama.gov.br/dataset/sinaflor-poa-amazonia-legal) | Manejo florestal autorizado na Amazônia Legal (contexto) |
 
-Validação manual de ponta a ponta: [`001`](specs/001-producer-car-dashboard/quickstart.md),
-[`002`](specs/002-cnpj-score-search/quickstart.md) e [`003`](specs/003-car-indicators/quickstart.md).
-Detalhes técnicos (endpoints, tabelas, fontes, testes): [`docs/arquitetura.md`](docs/arquitetura.md).
+## Documentação
 
-## Consulta pública por CNPJ
-
-- **Telas**: `/consulta` e `/consulta/:cnpj` (link compartilhável), sem login. Acesso pela aba
-  "Consultar CNPJ" da barra superior, pelo botão "É comprador? Consulte o status do seu produtor" da
-  página inicial e, para produtores logados, pela barra lateral do painel (`/painel/consulta`).
-- **API**: `GET /api/public/cnpj/{cnpj}` (com ou sem máscara). Responde 200 também para CNPJ não
-  cadastrado (`Sem dados`), 422 para CNPJ inválido e 429 com `Retry-After` ao passar do limite.
-  Contrato: [`specs/002-cnpj-score-search/contracts/openapi.yaml`](specs/002-cnpj-score-search/contracts/openapi.yaml).
-- **O que mostra**: nível (Gold / Silver / Bronze / Sem dados), estado do score ("Score em cálculo"
-  enquanto o método não existe), número de propriedades e data dos dados. **Nunca** códigos de CAR,
-  mapas ou dados da conta.
-- **Regra provisória do nível**: Sem dados (não cadastrado, sem CARs ou sem dados) → Bronze (≥1
-  embargo) → Silver (alertas, ou dados parciais) → Gold. Um CAR sem registro no MapBiomas conta como
-  dado parcial e impede o Gold. Detalhes: [`data-model.md`](specs/002-cnpj-score-search/data-model.md#status).
-- **Limitação conhecida**: o limite de consultas fica na memória do processo; vale para um único
-  processo do backend. Com vários workers ou réplicas, mover o contador para um armazenamento compartilhado.
-
-## Indicadores do CAR
-
-O cartão de cada CAR em "Meus CARs" fica enxuto (mapa, alertas e embargos). Os indicadores aparecem
-no **"Ver detalhes"** do CAR, em dois blocos (spec:
-[`specs/003-car-indicators`](specs/003-car-indicators/spec.md)):
-
-- **Riscos abertos**: alertas por situação legal (embargo vigente, com fiscalização, sem autorização
-  registrada), desmatamento pós-2020 (corte EUDR), alertas abertas em reserva legal e APP, embargos
-  vigentes, sobreposição com terra indígena ou UC de proteção integral.
-- **Contexto**: alertas superadas (autorizadas, embargo levantado, suspensas judicialmente), embargos
-  levantados, UC de uso sustentável, % de vegetação nativa remanescente (INPE PRODES), degradação e
-  corte seletivo (INPE DETER, só bioma Amazônia), focos de calor em 12 meses (INPE Queimadas) e manejo
-  florestal autorizado (IBAMA SINAFLOR, só Amazônia Legal).
-
-Cada indicador distingue **valor** (inclusive 0), **Indisponível** (a fonte não respondeu e não há
-cache) e **Não se aplica**. Uma alerta sem autorização, fiscalização ou embargo aparece como
-"Sem autorização registrada", nunca como "ilegal". Os indicadores ficam em cache por 24 h e cada
-fonte falha de forma independente. **Ainda não alteram o nível Gold/Silver/Bronze.**
-
-O SINAFLOR é um CSV diário de ~90 MB do IBAMA, resumido por CAR numa tabela local. Rodar uma vez por
-dia (ex.: cron); até a primeira execução o indicador aparece como "Indisponível":
-
-```bash
-cd backend && uv run python -m app.sources.sinaflor
-```
-
-Limitações: reserva legal, APP e UCs vêm calculadas pelo MapBiomas sobre a área da alerta (limitadas à
-área dentro do CAR); o PRODES não registra regeneração; o volume do SINAFLOR é o da autorização, que
-pode abranger vários CARs.
-
-## Comportamento quando o MapBiomas falha
-
-- Timeout de 20 s por consulta. Os dados ficam em cache por 24 h por CAR (botão "Atualizar" para forçar).
-- Se o MapBiomas não responde: aparece a última consulta marcada como "desatualizado", ou
-  "dados indisponíveis" + "Tentar novamente" se nunca foi consultado. Cada cartão é independente.
-- O cadastro (email, CNPJ e senha) não depende do MapBiomas. Os CARs são adicionados depois no
-  painel; para isso o MapBiomas é consultado e, se não responder, pede-se para tentar mais tarde.
-- Um CAR que o MapBiomas não tem registrado (sem alertas) é aceito e marcado como tal.
+| Documento | Para quem | Conteúdo |
+|---|---|---|
+| [`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md) | Todos | Regras completas do nível Gold, Silver e Bronze |
+| [`docs/desenvolvimento.md`](docs/desenvolvimento.md) | Desenvolvimento | Como rodar, configurar e testar; estrutura do repositório; comportamento técnico de cada funcionalidade |
+| [`docs/arquitetura.md`](docs/arquitetura.md) | Desenvolvimento | Endpoints, tabelas, regras no código, fontes externas e suas armadilhas, testes e operação |
+| [`docs/proposta-agente.md`](docs/proposta-agente.md) | Produto e desenvolvimento | Proposta do agente de resumos (ainda não implementada) |
+| [`AGENTS.md`](AGENTS.md) | Agentes de IA | Guia para assistentes de código que trabalham no repositório |

@@ -39,6 +39,12 @@ class Settings(BaseSettings):
     inpe_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/geoserver/ows"
     inpe_fire_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/queimadas/geoserver/wfs"
     inpe_timeout_s: float = 3.0
+    # Feature 007: áreas embargadas do IBAMA (Pamgia), respaldo quando o MapBiomas não dá os embargos.
+    ibama_embargoes_url: str = (
+        "https://pamgia.ibama.gov.br/server/rest/services/01_Publicacoes_Bases/"
+        "adm_embargos_ibama_a/FeatureServer/0/query"
+    )
+    ibama_timeout_s: float = 5.0
     # Feature 005: relatório do CNPJ de exemplo (escrito à mão), fora do repositório (backend/data é ignorado).
     mock_reports_dir: str = str(BACKEND_DIR / "data" / "mock_reports")
     sinaflor_poa_url: str = (
