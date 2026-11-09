@@ -47,10 +47,11 @@ MAPBIOMAS_API_URL=https://plataforma.alerta.mapbiomas.org/api/v2/graphql
 # CACHE_TTL_HOURS=24                                 (cache por CAR do MapBiomas e dos indicadores)
 # INPE_TIMEOUT_S=3                                   (timeout por consulta aos WFS do INPE)
 # LLM_API_KEY=...                                    (opcional: relatório e auditoria com IA; sem ela, texto determinístico)
-# LLM_API_URL / LLM_MODEL / LLM_TIMEOUT_S            (padrão: Gemini gemini-2.5-flash, 10 s)
+# LLM_API_URL / LLM_MODEL / LLM_TIMEOUT_S            (padrão: Gemini gemini-3.5-flash, 30 s)
 # AUDIT_ENABLED=false                                (auditoria mensal de NFs; desligada porque as NFs ainda são simuladas)
 # IBAMA_TIMEOUT_S=5                                  (timeout da consulta às áreas embargadas do IBAMA)
 # MOCK_REPORTS_DIR=backend/data/mock_reports         (relatórios de exemplo por CNPJ, fora do git)
+# REPORT_DEMO_MODE=false                             (true: usa o relatório de exemplo em vez da IA)
 ```
 
 INPE e IBAMA são fontes públicas: não precisam de credenciais. As credenciais do MapBiomas são usadas só

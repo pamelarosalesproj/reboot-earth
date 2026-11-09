@@ -77,7 +77,10 @@ describe('Início como resumo do CNPJ (feature 005)', () => {
       '/api/dashboard/report': { body: report },
     }))
     const { container } = renderHome()
-    expect(await screen.findByRole('heading', { name: 'Status do CNPJ' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Relatório do CNPJ' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Status do CNPJ' })).toBeNull() // o nível foi para o relatório
+    expect(screen.getByText('Bronze')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Entenda os níveis Gold, Silver e Bronze/ })).toHaveAttribute('href', '/painel/nivel')
     expect(screen.queryByRole('link', { name: /comprador vê/ })).toBeNull()
     expect(await screen.findByText('36 · 376,1 ha')).toBeInTheDocument()
     expect(screen.getByText('de 38 · 2 superadas')).toBeInTheDocument()

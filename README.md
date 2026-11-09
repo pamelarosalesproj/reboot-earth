@@ -62,8 +62,9 @@ apresenta de forma clara para cada público.
 ### Para o produtor: o painel
 
 - **Cadastro curto** (email, CNPJ e senha); depois o produtor adiciona seus CARs.
-- **Início**: o nível do CNPJ, três números (imóveis, alertas em aberto e embargos vigentes) e um
-  relatório do CNPJ. A geração automática do relatório por um agente está em desenvolvimento.
+- **Início**: três números (imóveis, alertas em aberto e embargos vigentes) e o **relatório do CNPJ**:
+  o nível do CNPJ, o sinal "Atenção EUDR", um resumo em linguagem simples e o nível e a situação de cada
+  imóvel (ver [Onde usamos IA](#onde-usamos-ia)).
 - **Meus CARs**: cada imóvel em um cartão com o mapa, o número de alertas de desmatamento e de embargos,
   e o nível do imóvel.
 - **Detalhe de cada CAR**: os indicadores separados em *Riscos abertos* (o que pesa no nível) e
@@ -111,6 +112,18 @@ e corrigir o que falta antes de uma venda.
 
 As regras completas, com todos os critérios e limites, estão em
 [`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md).
+
+## Onde usamos IA
+
+Só em um lugar: o **relatório do CNPJ**, no Início do produtor. A IA lê os dados que a plataforma já
+calculou para cada imóvel e os transforma em um resumo fácil de entender: o que pesa no nível, o que é só
+contexto e o que significam os termos técnicos.
+
+- A IA **não decide o nível** nem calcula nada: o nível vem sempre das regras fixas.
+- A IA **não recebe** os códigos dos imóveis, o CNPJ nem dados pessoais.
+- Todo número citado é conferido com os dados; se algo não bate, o texto é descartado e o relatório é
+  montado automaticamente por regras.
+- O relatório indica sempre quem o escreveu ("Gerado por IA" ou "Gerado automaticamente por regras").
 
 ## Visão de futuro: o nível como porta de acesso a benefícios
 

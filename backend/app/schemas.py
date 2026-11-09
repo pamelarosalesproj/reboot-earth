@@ -293,13 +293,15 @@ class ReportProperty(BaseModel):
 
     car_code: str
     resumo: str
+    # 008: nível do imóvel pelas regras (preenchido pelo backend, nunca pela IA nem pelo exemplo).
+    nivel: Literal["gold", "silver", "bronze", "sem_dados"] | None = None
 
 
 class CnpjReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     status: Literal["ok", "indisponivel"]
-    origem: Literal["exemplo", "agente"] | None = None
+    origem: Literal["exemplo", "agente", "regras"] | None = None  # 008: "regras" = texto sem IA
     nivel: Literal["gold", "silver", "bronze", "sem_dados"] | None = None
     titulo: str | None = None
     riscos: list[str] = Field(default_factory=list, max_length=3)

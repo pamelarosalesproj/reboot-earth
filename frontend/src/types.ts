@@ -222,13 +222,15 @@ export interface CnpjOverview {
 
 export interface CnpjReport {
   status: 'ok' | 'indisponivel'
-  origem?: 'exemplo' | 'agente' | null
+  /** Quem escreveu o texto (feature 008): IA, regras (sem IA) ou exemplo de demonstração. */
+  origem?: 'exemplo' | 'agente' | 'regras' | null
   nivel?: StatusLevel | null
   titulo?: string | null
   riscos?: string[]
   contexto?: string[]
   ressalvas?: string[]
-  imoveis?: { car_code: string; resumo: string }[]
+  /** `nivel`: nível do imóvel pelas regras (feature 008). */
+  imoveis?: { car_code: string; resumo: string; nivel?: StatusLevel | null }[]
   data_dos_dados?: string | null
   gerado_em?: string | null
 }

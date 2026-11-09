@@ -1,7 +1,19 @@
 # Proposta: agente de resumos
 
-**Status**: proposta, **ainda não implementada** · **Data**: 2026-11-06 (separada das regras de nível em
-2026-11-08)
+**Status**: **implementada na feature 008** (`specs/008-relatorio-ia/`) em 2026-11-08, com diferenças · **Data**:
+2026-11-06
+
+Diferenças em relação a esta proposta:
+- **Uma só chamada por CNPJ** (não uma por CAR): a IA recebe os dados já calculados de todos os imóveis e
+  devolve o relatório inteiro, inclusive a frase de cada imóvel.
+- **Pseudônimos** ("Imóvel A"…) no lugar dos códigos de CAR, e sem o CNPJ.
+- O formato de saída é o `CnpjReport` da feature 005 (`titulo`, `riscos`, `contexto`, `ressalvas`,
+  `imoveis`); não há `data_dos_dados` no texto da IA (o backend o preenche).
+- Se os controles falham duas vezes, o texto é montado por regras (`origem="regras"`).
+- O modelo é o configurado no `.env` (padrão Gemini `gemini-3.5-flash`).
+
+O funcionamento atual está em [`arquitetura.md`](arquitetura.md#relatório-do-cnpj-features-005-e-008). O
+restante deste documento é a proposta original.
 
 As regras de nível que o agente recebe estão em
 [`proposta-regras-nivel.md`](proposta-regras-nivel.md).

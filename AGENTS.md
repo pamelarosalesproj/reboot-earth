@@ -108,10 +108,8 @@ Features (todas em `main`):
   CAR; o cartão de "Meus CARs" fica enxuto.
 - Redesign do frontend (sem spec própria; notas em `frontend/design-dashboard.md`). Os blocos de
   indicadores da 003 ainda usam o estilo anterior.
-- `005-dashboard-init` — Início como resumo do CNPJ: status, 3 números e relatório. O relatório é
-  hoje um **exemplo escrito à mão** em `backend/data/mock_reports/<cnpj>.json` (fora do git); a
-  geração pelo agente entra em `app/reports/__init__.py` sem mudar o formato (ver
-  `docs/arquitetura.md`). Os módulos de lotes saíram do Início (só em `/preview/lotes`).
+- `005-dashboard-init` — Início como resumo do CNPJ: status, 3 números e relatório. Os módulos de lotes
+  saíram do Início (só em `/preview/lotes`).
 
 - `006-nivel-regras` — regra de nível por CAR e por CNPJ (pior CAR), com motivos, sinal "Atenção EUDR"
   e a página "Entenda o nível" (`/painel/nivel`). A regra fica só em `services/level_rules.py`; se
@@ -121,9 +119,13 @@ Features (todas em `main`):
   alertas: `pointInformation` responde 500), usa as áreas embargadas do IBAMA que se sobrepõem ≥ 0,1 ha
   (`sources/ibama.py`). Todas contam como vigentes; nunca peça nome nem CPF/CNPJ do embargado.
 
-Pendente: o agente de resumos ([`docs/proposta-agente.md`](docs/proposta-agente.md)). As regras de
-nível em uso estão em [`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md). Mudar a regra de
-nível afeta o painel **e** a ficha pública e exige confirmação antes de implementar.
+- `008-relatorio-ia` — o relatório do CNPJ é escrito pela IA do `.env` **só para consolidar e explicar**
+  os dados já calculados (`app/reports/`): pseudônimos no lugar dos códigos de CAR (nunca envie códigos
+  de CAR, CNPJ nem dados pessoais à IA), controle de números e de vocabulário, cache em memória e texto
+  por regras como reserva (`origem="regras"`). O relatório de exemplo só vale com `REPORT_DEMO_MODE=true`.
+
+As regras de nível em uso estão em [`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md). Mudar a
+regra de nível afeta o painel **e** a ficha pública e exige confirmação antes de implementar.
 
 ## Idioma
 

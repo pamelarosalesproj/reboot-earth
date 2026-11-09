@@ -24,11 +24,14 @@ export default function StatusBadge({
   compact = false,
   scope = 'cnpj',
   learnMore = false,
+  eudrHelp = false,
 }: {
   status: Status
   compact?: boolean
   scope?: 'cnpj' | 'car'
   learnMore?: boolean
+  /** Na versão compacta, mostra a ajuda "?" do sinal EUDR (cabeçalho do relatório do CNPJ). */
+  eudrHelp?: boolean
 }) {
   const badge = (
     <span className={`status-badge ${status.level}`} aria-label={`${scope === 'car' ? S.carTitle : S.title}: ${S.level[status.level]}`}>
@@ -41,7 +44,7 @@ export default function StatusBadge({
     return (
       <span className="status-compact">
         {badge}
-        {eudr && <EudrTag withHelp={false} />}
+        {eudr && <EudrTag withHelp={eudrHelp} />}
       </span>
     )
   }

@@ -18,7 +18,7 @@ FastAPI (backend/app)
    ├─ routers/        auth · cars · dashboard · public · audit
    ├─ services/       car_service · car_indicators · level_rules · cnpj_report · cnpj_overview
    │                  · ai_auditor_service                     ← regras de negócio
-   ├─ reports/        relatório do CNPJ (exemplo local → LLM → texto determinístico)
+   ├─ reports/        relatório do CNPJ: dados com pseudônimos → IA → controles (ou texto por regras)
    ├─ mapbiomas/      cliente GraphQL + queries (credenciais só aqui)
    ├─ sources/        inpe (WFS) · ibama (áreas embargadas) · sinaflor (CSV diário) · geo (shapely)
    ├─ rate_limit.py   limite das consultas públicas
@@ -52,7 +52,7 @@ Princípios que guiam o desenho (constituição I–VII):
 | `GET /api/cars/{car}/indicators` | ✓ | 003 | Indicadores socioambientais (riscos abertos e contexto) |
 | `GET /api/dashboard` | ✓ | 001/006 | Totais da conta + `cnpj_status` / `cnpj_score` do CNPJ |
 | `GET /api/dashboard/overview` | ✓ | 005 | Números do CNPJ: CARs, alertas abertas/superadas (n.º, ha), embargos vigentes |
-| `GET /api/dashboard/report` | ✓ | 005 | Relatório do CNPJ (ver [Relatório do CNPJ](#relatório-do-cnpj)). `nivel` sempre imposto pelas regras |
+| `GET /api/dashboard/report` | ✓ | 005/008 | Relatório do CNPJ explicado pela IA, ou por regras (ver [Relatório do CNPJ](#relatório-do-cnpj-features-005-e-008)). `nivel` sempre imposto pelas regras |
 | `POST /api/audit/generate-report` | ✓ | Auditoria | Auditoria mensal de notas fiscais × CARs. **Desligada por padrão** (404 sem `AUDIT_ENABLED=true`; ver [Auditoria mensal](#auditoria-mensal-com-ia)) |
 | `GET /api/public/cnpj/{cnpj}` | — | 002/006 | Ficha pública agregada; rate limit de 30/h por IP |
 | `GET /api/health` | — | — | Saúde |
@@ -92,37 +92,44 @@ SQLite (`backend/data/app.db` por padrão), tabelas criadas por `create_all` no 
 | Agregação por CNPJ | `services/cnpj_report.py` (`cnpj_codes`, `aggregate_cars`) | CARs sem repetição de todas as contas com o mesmo CNPJ; alertas únicas por código |
 | Score | `services/cnpj_report.py` (`get_score`) | Hoje só o estado (`em_calculo` / `nao_calculavel`); ponto de substituição do método |
 | Números do CNPJ | `services/cnpj_overview.py` (`cnpj_overview`) | Reaproveita `get_indicators` (situação das alertas) e `get_detail` (embargos); embargo vigente único por (órgão, processo) |
-| Relatório do CNPJ | `reports/__init__.py` (`get_report`) | Valida formato e vocabulário proibido; impõe `nivel` = `cnpj_status` |
+| Relatório do CNPJ | `reports/` (`get_report`, `facts.py`, `prompt.py`) | Dados já calculados com pseudônimos → IA → controles (números, pseudônimos, vocabulário); reserva por regras; impõe `nivel` = regras |
 | Auditoria mensal | `services/ai_auditor_service.py` (`audit_monthly_report`) | Cobertura de CARs nas NFs, estouro de volume por CAR, "CAR coringa", embargos e parecer |
 
 O painel e a ficha pública usam **o mesmo código** para o nível (há teste de paridade). Se uma regra de
 nível mudar, atualize também [`proposta-regras-nivel.md`](proposta-regras-nivel.md) e os textos de
 "Entenda o nível" (`t.rules` em `pt-BR.ts`).
 
-### Relatório do CNPJ
+### Relatório do CNPJ (features 005 e 008)
 
-`get_report` escolhe, nesta ordem:
+A IA **só consolida e explica** dados que o sistema já calculou; não calcula nem decide o nível.
 
-1. **Exemplo local**: se existe `MOCK_REPORTS_DIR/<cnpj>.json` (padrão `backend/data/mock_reports/`,
-   **fora do git** porque associa CARs reais a um CNPJ), usa-o com `origem="exemplo"`. Se o arquivo não
-   passa em `_validate()`, responde `status=indisponivel`.
-2. **LLM**: sem exemplo, junta detalhe e indicadores de cada CAR e chama o LLM configurado
-   (`LLM_API_URL`, `LLM_API_KEY`, `LLM_MODEL`, `LLM_TIMEOUT_S`; padrão Gemini `gemini-2.5-flash`). Se a
-   resposta passa em `_validate()`, usa-a com `origem="agente"`.
-3. **Texto determinístico**: sem chave de LLM, ou se o LLM falha ou responde algo inválido, monta um
-   relatório por regras (`_build_deterministic_report`).
+1. **Modo demonstração** (`REPORT_DEMO_MODE=true`): se existe `MOCK_REPORTS_DIR/<cnpj>.json` (padrão
+   `backend/data/mock_reports/`, **fora do git**), usa-o com `origem="exemplo"` (inválido →
+   `indisponivel`). Sem o modo, o arquivo é ignorado.
+2. **Dados**: `car_inputs` carrega detalhe e indicadores de cada CAR (uma vez), `car_level`/`cnpj_level`
+   dão nível e motivos, e `reports/facts.py` (`build_report_facts`, puro) monta o JSON enviado à IA:
+   totais do CNPJ já somados e, por imóvel, UF, área, nível, motivos, alertas por situação, embargos com
+   fonte e estado, contexto (vegetação nativa, DETER 24 meses, focos, SINAFLOR, UCs de uso sustentável) e
+   fontes indisponíveis. Valores desconhecidos vão como texto (`indisponivel`, `nao_determinavel`), nunca 0.
+   Hectares e % com 1 decimal; no máximo 40 imóveis (do mais grave ao menos grave).
+3. **Pseudônimos**: a IA recebe "Imóvel A", "Imóvel B"… e **nunca** os códigos de CAR nem o CNPJ. Na
+   volta, o texto corrido recebe o prefixo `UF-MUNICÍPIO` do CAR (ou o código completo se o prefixo se
+   repete) e `imoveis[].car_code` recebe o código completo.
+4. **IA** (`call_llm`): `reports/prompt.py` (`SYSTEM_PROMPT`, `PROMPT_VERSION`), JSON de dados como mensagem
+   do usuário, `temperature` 0,2, timeout `LLM_TIMEOUT_S`.
+5. **Controles** (`_validate_llm`): corta riscos/contexto em 3; título obrigatório; sem "ilegal"/"crime";
+   cada número do texto tem de existir nos dados (`allowed_numbers`: valores com 1 decimal ou inteiro
+   arredondado, datas dos dados e os números das regras 2020, 31, 12, 24, 1 e 0,1; lê formatos pt-BR); só
+   pseudônimos existentes. Imóvel que a IA esqueceu recebe a frase por regras. Falhou → **um** retry; erro
+   de rede ou timeout → sem retry.
+6. **Reserva**: sem chave, ou se a IA falha, `_build_deterministic_report` com `origem="regras"`.
+7. **Cache em memória** (`_cache`): chave = SHA-256 dos dados + `PROMPT_VERSION` + modelo. Texto da IA vale
+   até os dados mudarem; texto por regras, 15 min (para tentar a IA de novo). Máximo 256 entradas; some ao
+   reiniciar.
 
-Sempre: `nivel` vem de `cnpj_status` (regras da 006), nunca do texto; `_validate()` exige no máximo 3
-riscos e 3 itens de contexto e rejeita "ilegal" e "crime". CNPJ não cadastrado ou sem CARs →
-`status=indisponivel`.
-
-Pontos de atenção:
-- O texto determinístico também sai com `origem="agente"`, então a interface não distingue um relatório
-  do LLM de um gerado por regras.
-- Os dados enviados ao LLM incluem os códigos de CAR, as alertas e os embargos do CNPJ: um terceiro
-  passa a receber a associação CNPJ ↔ CARs.
-- O teste `test_missing_report_is_unavailable` ainda espera `indisponivel` quando não há exemplo, o que
-  deixou de ser verdade com a geração em tempo real; está falhando.
+Sempre: `nivel` = regras da 006; CNPJ não cadastrado ou sem CARs → `status=indisponivel`. Na interface,
+`origem="agente"` mostra o aviso **"Gerado por IA"** no topo do relatório; `regras` e `exemplo` têm notas
+próprias.
 
 A proposta original do agente (regras do prompt, controles) está em [`proposta-agente.md`](proposta-agente.md).
 
@@ -153,7 +160,7 @@ A proposta original do agente (regras do prompt, controles) está em [`proposta-
 - **Indicadores**: cada fonte (`mapbiomas`, `prodes`, `deter`, `focos`, `sinaflor`) tem seu próprio
   `SourceStatus` (`ok` / `indisponivel` / `nao_se_aplica`, `fetched_at`, `stale`). Se uma falha,
   reaproveita-se o bloco dela do cache anterior com `stale=true`. INPE: timeout de 3 s por consulta.
-- **LLM**: timeout de 10 s; qualquer falha cai no texto determinístico.
+- **LLM**: timeout `LLM_TIMEOUT_S` (30 s); qualquer falha cai no texto por regras; o relatório fica em cache em memória.
 - **Três estados sempre distintos**: valor (inclusive 0), "Indisponível" e "Não se aplica". `null` nunca
   é mostrado como 0.
 
@@ -215,7 +222,7 @@ A proposta original do agente (regras do prompt, controles) está em [`proposta-
 
 ### LLM (opcional, `app/reports/__init__.py` e `app/services/ai_auditor_service.py`)
 
-- API compatível com a da OpenAI (`/chat/completions`); padrão: Gemini `gemini-2.5-flash` via
+- API compatível com a da OpenAI (`/chat/completions`); padrão: Gemini `gemini-3.5-flash` via
   `generativelanguage.googleapis.com`. Configuração em `LLM_API_URL`, `LLM_API_KEY`, `LLM_MODEL` e
   `LLM_TIMEOUT_S`.
 - Sem `LLM_API_KEY` (ou com o valor de exemplo do `.env.example`), o LLM não é chamado e tudo usa o
@@ -244,7 +251,7 @@ A proposta original do agente (regras do prompt, controles) está em [`proposta-
 | `LotOverview` | Módulo de lotes do redesign. **Fora do Início** (não há fonte de lotes); só na prévia `/preview/lotes` |
 | `BrandMark` | Logotipo |
 
-- **Início** (`/painel`, feature 005): status do CNPJ, 3 números (CARs, alertas abertas, embargos vigentes) e relatório. Números e relatório carregam à parte; se falharem, o status continua visível.
+- **Início** (`/painel`, features 005 e 008): 3 números (CARs, alertas abertas, embargos vigentes) e o relatório do CNPJ. O cabeçalho do relatório mostra o nível do CNPJ, o sinal "Atenção EUDR" e os imóveis por nível, vindos de `/api/dashboard` (regras), e não do texto: aparecem mesmo se o relatório falhar. Embaixo, o link "Entenda os níveis". Números e relatório carregam à parte. (O antigo cartão "Status do CNPJ" saiu em 2026-11-08.)
 - **Preview de design** (só em desenvolvimento, sem backend, fora do build de produção): `/preview/painel` mostra o Início com dados fictícios; `/preview/lotes` mostra o módulo de lotes. Notas e limites: [`frontend/design-dashboard.md`](../frontend/design-dashboard.md).
 - **Estilo**: `index.css` (tokens e componentes base) e CSS por página/layout (`LandingPage.css`, `HomePage.css`, `PublicCnpjPage.css`, `LevelRulesPage.css`, `AppLayout.css`, `AuthLayout.css`). Os blocos de indicadores (003), no detalhe do CAR, ainda usam o estilo anterior ao redesign.
 
@@ -252,9 +259,9 @@ A proposta original do agente (regras do prompt, controles) está em [`proposta-
 
 | Onde | O quê |
 |---|---|
-| `backend/tests/unit/` | Funções puras: validadores, agregação, `car_level`/`cnpj_level` (`test_level_rules.py`), `classify_alert`, deduplicação de embargos, embargos do IBAMA (`test_ibama.py`), geometria, agregação do SINAFLOR, rate limit, auditoria (regras puras) e o `NullPool` do engine |
-| `backend/tests/integration/` | API com fontes simuladas: autenticação, CARs, resumo e detalhe, nível por CAR e público, dashboard, overview, relatório, ficha pública (privacidade, falhas, 429), indicadores (falha por fonte, 401/404, cache), respaldo do IBAMA (`test_embargoes_ibama.py`) e auditoria |
-| `backend/tests/conftest.py` | Via `respx`: `FakeMapBiomas` (`properties`, `embargoes`, `alert_extra`, `judicial`, `down`, `point_down` = o 500 real do `pointInformation`), `FakeInpe` (fixture `inpe`: `layers`, `down`) e `FakeIbama` (fixture `ibama`: `features`, `down` — **caído por padrão**, `truncated`, `calls`) |
+| `backend/tests/unit/` | Funções puras: validadores, agregação, `car_level`/`cnpj_level` (`test_level_rules.py`), `classify_alert`, deduplicação de embargos, embargos do IBAMA (`test_ibama.py`), geometria, agregação do SINAFLOR, rate limit, auditoria (regras puras), dados e controles do relatório (`test_report_facts.py`) e o `NullPool` do engine |
+| `backend/tests/integration/` | API com fontes simuladas: autenticação, CARs, resumo e detalhe, nível por CAR e público, dashboard, overview, relatório, ficha pública (privacidade, falhas, 429), indicadores (falha por fonte, 401/404, cache), respaldo do IBAMA (`test_embargoes_ibama.py`), relatório com IA simulada (`test_dashboard_report.py`) e auditoria |
+| `backend/tests/conftest.py` | Via `respx`: `FakeMapBiomas` (`properties`, `embargoes`, `alert_extra`, `judicial`, `down`, `point_down` = o 500 real do `pointInformation`), `FakeInpe` (fixture `inpe`: `layers`, `down`) `FakeIbama` (fixture `ibama`: `features`, `down` — **caído por padrão**, `truncated`, `calls`) e `FakeLlm` (fixture `llm`: `response`, `status`, `timeout`, `bodies`). Fixtures autouse: sem chave de LLM real e cache do relatório limpo |
 | `backend/tests/fixtures/` | Resposta real do MapBiomas para o CAR PE-2607505 e amostra do CSV do SINAFLOR |
 | `frontend/tests/` | Componentes e páginas com `fetch` simulado |
 
@@ -267,8 +274,9 @@ rede. Os testes usam um engine próprio em memória (`StaticPool`), então não 
   - `CACHE_TTL_HOURS` (24);
   - `PUBLIC_SEARCH_LIMIT_PER_HOUR` (30);
   - `TRUST_PROXY_HEADERS` (só atrás de um proxy confiável);
-  - `INPE_TIMEOUT_S` (3), `IBAMA_TIMEOUT_S` (5), `LLM_TIMEOUT_S` (10);
+  - `INPE_TIMEOUT_S` (3), `IBAMA_TIMEOUT_S` (5), `LLM_TIMEOUT_S` (30);
   - `LLM_API_KEY` (opcional: sem ela, relatório e auditoria usam texto determinístico);
+  - `REPORT_DEMO_MODE` (padrão `false`: o relatório de exemplo escrito à mão só aparece com `true`);
   - `AUDIT_ENABLED` (padrão `false`: auditoria mensal oculta enquanto as NFs forem simuladas);
   - `COOKIE_SECURE=true` em produção.
 - **Tarefa diária**: `cd backend && uv run python -m app.sources.sinaflor` (por exemplo, via cron).

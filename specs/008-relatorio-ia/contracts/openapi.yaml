@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: Elo Rural – Relatório do CNPJ explicado pela IA (feature 008)
+  version: 0.8.0
+  description: >
+    Cambia solo el enum `origem` de `CnpjReport` en GET /api/dashboard/report (con sesión). El endpoint y el
+    resto del esquema (specs/005-dashboard-init/contracts/openapi.yaml) no cambian. `origem` indica quién
+    escribió el texto: `agente` (IA), `regras` (armado por reglas, sin IA) o `exemplo` (solo con
+    REPORT_DEMO_MODE=true). `nivel` sigue siendo siempre el de las reglas de nivel (feature 006).
+components:
+  schemas:
+    CnpjReportOrigem:
+      type: [string, "null"]
+      enum: [exemplo, agente, regras, null]
+    ReportProperty:
+      description: Item de `imoveis` (2026-11-08). `nivel` é novo e vem das regras, nunca do texto.
+      type: object
+      additionalProperties: false
+      required: [car_code, resumo]
+      properties:
+        car_code: { type: string }
+        resumo: { type: string }
+        nivel: { type: [string, "null"], enum: [gold, silver, bronze, sem_dados, null] }

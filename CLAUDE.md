@@ -21,9 +21,12 @@ As instruções para agentes estão em [`AGENTS.md`](AGENTS.md) e valem integral
   Os indicadores ficam em cache 24 h por CAR: use `?refresh=true` para recalcular.
 - O Início pode ser visto sem backend em `http://localhost:5173/preview/painel` e o módulo de lotes
   em `/preview/lotes` (dados fictícios, só em desenvolvimento).
-- O relatório do CNPJ é um exemplo local em `backend/data/mock_reports/<cnpj>.json` (fora do git).
-  Se escrever um novo, use só números que existam nos indicadores do CNPJ e nunca "ilegal"/"crime":
-  o backend rejeita o arquivo e mostra "Relatório ainda não disponível".
+- O relatório do CNPJ é escrito pela IA do `.env` a partir dos dados já calculados (feature 008); sem
+  `LLM_API_KEY`, sai o texto por regras. Os testes nunca usam a chave real (fixture autouse) e simulam a IA
+  com a fixture `llm`. Ao mudar `reports/prompt.py`, aumente `PROMPT_VERSION`.
+- O relatório de exemplo local (`backend/data/mock_reports/<cnpj>.json`, fora do git) só aparece com
+  `REPORT_DEMO_MODE=true`. Se escrever um novo, use só números que existam nos indicadores do CNPJ e
+  nunca "ilegal"/"crime": o backend rejeita o arquivo e mostra "Relatório ainda não disponível".
 - Documentação técnica: [`docs/arquitetura.md`](docs/arquitetura.md) e
   [`docs/desenvolvimento.md`](docs/desenvolvimento.md). Ao mudar endpoints, tabelas, fontes ou regras,
   atualize esses arquivos junto com a spec da feature.

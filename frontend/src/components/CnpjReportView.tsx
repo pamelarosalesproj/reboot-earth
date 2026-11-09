@@ -1,9 +1,30 @@
 import { Link } from 'react-router-dom'
 import { fmtDate, t } from '../i18n/pt-BR'
-import type { CnpjReport } from '../types'
+import type { CnpjReport, Status } from '../types'
 import StatusBadge from './StatusBadge'
 
 const R = t.home.report
+const S = t.status
+
+/** Nível do CNPJ (regras), sinal EUDR e imóveis por nível. Vem do painel, não do texto: aparece mesmo se o
+ *  relatório falhar (substitui o antigo cartão "Status do CNPJ"). */
+function LevelLine({ status }: { status: Status }) {
+  const by = status.cars_by_level
+  return (
+    <div className="report-level">
+      <StatusBadge status={status} compact eudrHelp />
+      {by && by.gold + by.silver + by.bronze + by.sem_dados > 0 && <span className="report-level-cars">{S.carsByLevel(by)}</span>}
+    </div>
+  )
+}
+
+function LearnLevels() {
+  return (
+    <Link className="report-learn-levels" to="/painel/nivel">
+      {R.learnLevels} →
+    </Link>
+  )
+}
 
 /** Botão visual: a exportação ainda não existe (aria-disabled + aviso "Em breve"). */
 function ExportButton() {
@@ -35,34 +56,43 @@ function List({ title, items }: { title: string; items?: string[] }) {
 }
 
 /** "Relatório do CNPJ" (FR-505/507). O nível vem do backend (regras), nunca do texto. */
-export default function CnpjReportView({ report }: { report: CnpjReport | 'loading' | 'error' }) {
-  if (report === 'loading') {
+export default function CnpjReportView({
+  report,
+  status,
+}: {
+  report: CnpjReport | 'loading' | 'error'
+  status?: Status | null
+}) {
+  if (report === 'loading' || report === 'error' || report.status !== 'ok') {
     return (
       <section className="overview-report">
         <h2>{R.title}</h2>
-        <p className="muted small">{R.loading}</p>
+        {status && <LevelLine status={status} />}
+        {report === 'loading' ? (
+          <p className="muted small">{R.loading}</p>
+        ) : (
+          <p className="report-unavailable">{R.unavailable}</p>
+        )}
+        {status && <LearnLevels />}
       </section>
     )
   }
-  if (report === 'error' || report.status !== 'ok') {
-    return (
-      <section className="overview-report">
-        <h2>{R.title}</h2>
-        <p className="report-unavailable">{R.unavailable}</p>
-      </section>
-    )
-  }
+  const level: Status | null =
+    status ?? (report.nivel ? { level: report.nivel, reason: null, partial: false, basis: 'regras' } : null)
   return (
     <section className="overview-report" aria-labelledby="report-title">
+      {report.origem === 'agente' && (
+        <p className="report-ai-badge">
+          <span aria-hidden="true">✦</span> {R.aiBadge}
+        </p>
+      )}
       <div className="report-heading">
         <h2 id="report-title">{R.title}</h2>
-        {report.nivel && (
-          <StatusBadge status={{ level: report.nivel, reason: null, partial: false, basis: 'regras' }} compact />
-        )}
         <ExportButton />
       </div>
+      {level && <LevelLine status={level} />}
       <p className="report-origin" role="note">
-        {report.origem === 'agente' ? R.originAgent : R.originExample}
+        {report.origem === 'agente' ? R.originAgent : report.origem === 'regras' ? R.originRules : R.originExample}
         {report.data_dos_dados && <> · {R.dataAsOf(fmtDate(report.data_dos_dados))}</>}
       </p>
       {report.titulo && <p className="report-headline">{report.titulo}</p>}
@@ -77,6 +107,11 @@ export default function CnpjReportView({ report }: { report: CnpjReport | 'loadi
             {report.imoveis.map((p) => (
               <li key={p.car_code}>
                 <span className="report-car">{p.car_code}</span>
+                <span className="report-car-level">
+                  {p.nivel && (
+                    <StatusBadge status={{ level: p.nivel, reason: null, partial: false, basis: 'regras' }} compact scope="car" />
+                  )}
+                </span>
                 <span className="report-car-text">{p.resumo}</span>
                 <Link to={`/painel/cars/${encodeURIComponent(p.car_code)}`}>{R.seeCar} →</Link>
               </li>
@@ -85,6 +120,7 @@ export default function CnpjReportView({ report }: { report: CnpjReport | 'loadi
         </div>
       )}
       <List title={R.caveats} items={report.ressalvas} />
+      <LearnLevels />
     </section>
   )
 }

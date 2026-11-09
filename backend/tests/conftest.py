@@ -133,6 +133,7 @@ def mapbiomas_mock():
     fake.inpe = FakeInpe()
     fake.ibama = FakeIbama()
     with respx.mock(assert_all_called=False) as router:
+        fake.router = router
         router.post(API_URL).mock(side_effect=fake.handler)
         router.get(url__startswith="https://terrabrasilis.dpi.inpe.br/").mock(side_effect=fake.inpe.handler)
         router.post(url__startswith="https://pamgia.ibama.gov.br/").mock(side_effect=fake.ibama.handler)
@@ -147,6 +148,61 @@ def inpe(mapbiomas_mock):
 @pytest.fixture
 def ibama(mapbiomas_mock):
     return mapbiomas_mock.ibama
+
+
+class FakeLlm:
+    """LLM compatível com a API da OpenAI, simulado (feature 008). `response` é o JSON que o modelo "escreve";
+    pode ser uma lista para respostas diferentes em chamadas seguidas."""
+
+    def __init__(self):
+        self.response: dict | list | str = {}
+        self.status = 200
+        self.timeout = False
+        self.bodies: list[dict] = []
+
+    @property
+    def calls(self) -> int:
+        return len(self.bodies)
+
+    def handler(self, request: httpx.Request) -> httpx.Response:
+        self.bodies.append(json.loads(request.content))
+        if self.timeout:
+            raise httpx.ReadTimeout("slow", request=request)
+        if self.status != 200:
+            return httpx.Response(self.status, text="error")
+        resp = self.response
+        if isinstance(resp, list):
+            resp = resp[min(len(self.bodies), len(resp)) - 1]
+        content = resp if isinstance(resp, str) else json.dumps(resp, ensure_ascii=False)
+        return httpx.Response(200, json={"choices": [{"message": {"content": content}}]})
+
+
+@pytest.fixture(autouse=True)
+def _no_real_llm(monkeypatch):
+    """Nenhum teste usa a chave real do .env: sem fixture `llm`, o relatório usa o texto por regras."""
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "llm_api_key", "")
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+
+
+@pytest.fixture(autouse=True)
+def _clear_report_cache():
+    from app.reports import clear_report_cache
+
+    clear_report_cache()
+    yield
+    clear_report_cache()
+
+
+@pytest.fixture
+def llm(mapbiomas_mock, monkeypatch):
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "llm_api_key", "test-key")
+    fake = FakeLlm()
+    mapbiomas_mock.router.post(settings.llm_api_url).mock(side_effect=fake.handler)
+    return fake
 
 
 @pytest.fixture(autouse=True)
