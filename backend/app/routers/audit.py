@@ -2,10 +2,11 @@
 
 from datetime import date
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 
 from app.auth import current_producer
+from app.config import settings
 from app.db import get_session
 from app.mapbiomas.client import MapBiomasClient, get_mapbiomas_client
 from app.models import Producer, ProducerCar, SinaflorCar
@@ -106,6 +107,10 @@ async def generate_monthly_audit_report(
     client: MapBiomasClient = Depends(get_mapbiomas_client),
 ):
     """Gera o relatório mensal de auditoria ESG do produtor logado."""
+    # As NFs ainda são simuladas: sem AUDIT_ENABLED, o endpoint fica oculto (404) para não mostrar
+    # pareceres fictícios a produtores reais. A autenticação continua sendo verificada antes.
+    if not settings.audit_enabled:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Not Found")
     req = req or MonthlyAuditReportRequest()
     ref_period = req.reference_month or "2026-10"
 

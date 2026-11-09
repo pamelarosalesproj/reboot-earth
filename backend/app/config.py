@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     llm_model: str = "gemini-2.5-flash"
     llm_timeout_s: float = 10.0
+    # Auditoria mensal NFs × CARs: desligada até haver fonte real de notas fiscais (hoje são simuladas).
+    audit_enabled: bool = False
 
     database_url: str = f"sqlite:///{BACKEND_DIR / 'data' / 'app.db'}"
     cache_ttl_hours: int = 24
