@@ -1,0 +1,135 @@
+.rules-page {
+  max-width: 860px;
+}
+
+.rules-page .card {
+  margin-top: 16px;
+}
+
+.rules-page h2 {
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
+.rules-page h3 {
+  font-size: 0.95rem;
+  margin: 16px 0 6px;
+}
+
+.rules-intro {
+  max-width: 70ch;
+}
+
+.rules-levels {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.rules-levels li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rules-levels .status-badge {
+  font-size: 0.85rem;
+  padding: 3px 12px;
+  min-width: 108px;
+}
+
+.rules-terms {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.rules-terms dt {
+  font-weight: 700;
+}
+
+.rules-terms dd {
+  margin: 2px 0 0;
+}
+
+/* Links das fontes e do EUDR (abrem em nova aba). */
+.rules-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 4px;
+}
+
+.rules-links a {
+  overflow-wrap: anywhere;
+}
+
+.rules-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.rules-page ul {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+}
+
+.rules-page .rules-levels {
+  padding-left: 0;
+}
+
+/* Critérios por nível em colunas (Bronze · Silver · Gold); empilham em telas estreitas */
+.rules-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.rules-column {
+  border: 1px solid var(--border, #dfe5da);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rules-column h3 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.rules-column .status-badge {
+  font-size: 0.85rem;
+  padding: 3px 12px;
+}
+
+.rules-column .rules-terms {
+  gap: 12px;
+}
+
+.rules-column .rules-terms dt {
+  font-size: 0.9rem;
+}
+
+.rules-column .rules-terms dd,
+.rules-column p {
+  font-size: 0.88rem;
+  margin: 2px 0 0;
+}
+
+@media (max-width: 860px) {
+  .rules-columns {
+    grid-template-columns: 1fr;
+  }
+}

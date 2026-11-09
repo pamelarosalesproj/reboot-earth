@@ -44,6 +44,8 @@ class FakeMapBiomas:
         self.alert_extra: dict[int, dict] = {}
         self.judicial: dict[str, list[int]] = {}
         self.judicial_error = False
+        # Feature 007: pointInformation responde 500 al pedir embargos (comportamiento real desde 2026-11-08).
+        self.point_down = False
 
     def handler(self, request: httpx.Request) -> httpx.Response:
         body = json.loads(request.content)
@@ -64,7 +66,7 @@ class FakeMapBiomas:
             return httpx.Response(200, json={"data": {"ruralProperty": self.properties.get(v["code"])}})
         if op == "CarEmbargoesViaAlerts":
             code = v["code"]
-            if code not in self.properties:
+            if code not in self.properties or not self.properties[code].get("alerts"):
                 return httpx.Response(200, json={"data": {"alerts": {"collection": []}}})
             rp = {"carCode": code, "embargoedAreas": self.embargoes.get(code, [])}
             return httpx.Response(200, json={"data": {"alerts": {"collection": [{"ruralProperties": [rp]}]}}})
@@ -79,6 +81,8 @@ class FakeMapBiomas:
             return httpx.Response(200, json={"data": {"findSuspendedJudicialAlert":
                                                       [{"alertCode": c} for c in codes]}})
         if op == "CarEmbargoesViaPoint":
+            if self.point_down:
+                return httpx.Response(500, text="")
             return httpx.Response(200, json={"data": {"pointInformation": {"ruralProperties": []}}})
         return httpx.Response(400, json={"errors": [{"message": "unknown op"}]})
 
@@ -102,19 +106,103 @@ class FakeInpe:
         return httpx.Response(200, json={"type": "FeatureCollection", "features": self.layers.get(layer, [])})
 
 
+class FakeIbama:
+    """Áreas embargadas do IBAMA simuladas (feature 007). Caído por defecto: los tests existentes
+    conservan su comportamiento; los de la 007 lo encienden con `down = False`."""
+
+    def __init__(self):
+        self.features: list[dict] = []
+        self.down = True
+        self.truncated = False
+        self.calls: list[dict] = []
+
+    def handler(self, request: httpx.Request) -> httpx.Response:
+        form = dict(httpx.QueryParams(request.content.decode()))
+        self.calls.append(form)
+        if self.down:
+            return httpx.Response(500, text="Internal error")
+        body: dict = {"type": "FeatureCollection", "features": self.features}
+        if self.truncated:
+            body["properties"] = {"exceededTransferLimit": True}
+        return httpx.Response(200, json=body)
+
+
 @pytest.fixture
 def mapbiomas_mock():
     fake = FakeMapBiomas()
     fake.inpe = FakeInpe()
+    fake.ibama = FakeIbama()
     with respx.mock(assert_all_called=False) as router:
+        fake.router = router
         router.post(API_URL).mock(side_effect=fake.handler)
         router.get(url__startswith="https://terrabrasilis.dpi.inpe.br/").mock(side_effect=fake.inpe.handler)
+        router.post(url__startswith="https://pamgia.ibama.gov.br/").mock(side_effect=fake.ibama.handler)
         yield fake
 
 
 @pytest.fixture
 def inpe(mapbiomas_mock):
     return mapbiomas_mock.inpe
+
+
+@pytest.fixture
+def ibama(mapbiomas_mock):
+    return mapbiomas_mock.ibama
+
+
+class FakeLlm:
+    """LLM compatível com a API da OpenAI, simulado (feature 008). `response` é o JSON que o modelo "escreve";
+    pode ser uma lista para respostas diferentes em chamadas seguidas."""
+
+    def __init__(self):
+        self.response: dict | list | str = {}
+        self.status = 200
+        self.timeout = False
+        self.bodies: list[dict] = []
+
+    @property
+    def calls(self) -> int:
+        return len(self.bodies)
+
+    def handler(self, request: httpx.Request) -> httpx.Response:
+        self.bodies.append(json.loads(request.content))
+        if self.timeout:
+            raise httpx.ReadTimeout("slow", request=request)
+        if self.status != 200:
+            return httpx.Response(self.status, text="error")
+        resp = self.response
+        if isinstance(resp, list):
+            resp = resp[min(len(self.bodies), len(resp)) - 1]
+        content = resp if isinstance(resp, str) else json.dumps(resp, ensure_ascii=False)
+        return httpx.Response(200, json={"choices": [{"message": {"content": content}}]})
+
+
+@pytest.fixture(autouse=True)
+def _no_real_llm(monkeypatch):
+    """Nenhum teste usa a chave real do .env: sem fixture `llm`, o relatório usa o texto por regras."""
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "llm_api_key", "")
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+
+
+@pytest.fixture(autouse=True)
+def _clear_report_cache():
+    from app.reports import clear_report_cache
+
+    clear_report_cache()
+    yield
+    clear_report_cache()
+
+
+@pytest.fixture
+def llm(mapbiomas_mock, monkeypatch):
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "llm_api_key", "test-key")
+    fake = FakeLlm()
+    mapbiomas_mock.router.post(settings.llm_api_url).mock(side_effect=fake.handler)
+    return fake
 
 
 @pytest.fixture(autouse=True)

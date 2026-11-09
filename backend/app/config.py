@@ -19,8 +19,10 @@ class Settings(BaseSettings):
     # Configurações do Agente de IA (Consultor ESG)
     llm_api_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
     llm_api_key: str = ""
-    llm_model: str = "gemini-2.5-flash"
-    llm_timeout_s: float = 10.0
+    llm_model: str = "gemini-3.5-flash"  # gemini-2.5-flash já não está disponível para contas novas (404)
+    llm_timeout_s: float = 30.0
+    # Auditoria mensal NFs × CARs: desligada até haver fonte real de notas fiscais (hoje são simuladas).
+    audit_enabled: bool = False
 
     database_url: str = f"sqlite:///{BACKEND_DIR / 'data' / 'app.db'}"
     cache_ttl_hours: int = 24
@@ -39,8 +41,16 @@ class Settings(BaseSettings):
     inpe_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/geoserver/ows"
     inpe_fire_wfs_url: str = "https://terrabrasilis.dpi.inpe.br/queimadas/geoserver/wfs"
     inpe_timeout_s: float = 3.0
+    # Feature 007: áreas embargadas do IBAMA (Pamgia), respaldo quando o MapBiomas não dá os embargos.
+    ibama_embargoes_url: str = (
+        "https://pamgia.ibama.gov.br/server/rest/services/01_Publicacoes_Bases/"
+        "adm_embargos_ibama_a/FeatureServer/0/query"
+    )
+    ibama_timeout_s: float = 5.0
     # Feature 005: relatório do CNPJ de exemplo (escrito à mão), fora do repositório (backend/data é ignorado).
     mock_reports_dir: str = str(BACKEND_DIR / "data" / "mock_reports")
+    # Feature 008: o relatório de exemplo escrito à mão só é usado em modo demonstração; senão, IA ou regras.
+    report_demo_mode: bool = False
     sinaflor_poa_url: str = (
         "https://stibamadadosabertosprd.blob.core.windows.net/dados-abertos/dados/SINAFLOR/"
         "poaAmazoniaLegal/sinaflor-poa-amazonia-legal.csv"

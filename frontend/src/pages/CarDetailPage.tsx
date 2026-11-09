@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ApiError, getDetail, getIndicators } from '../api/client'
 import { EmbargoesValue } from '../components/CarCard'
-import { IndicatorsView } from '../components/CarIndicators'
+import { Help, IndicatorsView } from '../components/CarIndicators'
 import CarMap from '../components/CarMap'
+import StatusBadge from '../components/StatusBadge'
 import { fmtDate, fmtDateTime, fmtNum, t } from '../i18n/pt-BR'
 import type { AlertIndicator, CarDetail, CarIndicators } from '../types'
 
@@ -47,6 +48,9 @@ export default function CarDetailPage() {
   const s = detail?.summary
   const D = t.detail
   const I = t.indicators
+  // Colunas do IBAMA (feature 007) só quando algum embargo as tem.
+  const hasTerm = !!detail?.embargoes.some((e) => e.term)
+  const hasOverlap = !!detail?.embargoes.some((e) => e.overlap_ha != null)
 
   return (
     <main className="page">
@@ -68,6 +72,12 @@ export default function CarDetailPage() {
       {detail && s && (
         <>
           {s.stale && <p className="notice">{t.panel.stale}</p>}
+          {s.status && (
+            <section className="card car-status" aria-labelledby="car-status-title">
+              <h2 id="car-status-title">{t.status.carTitle}</h2>
+              <StatusBadge status={s.status} scope="car" learnMore />
+            </section>
+          )}
           <div className="detail-head card">
             <CarMap geometry={s.geometry} height={340} />
             <div className="stats">
@@ -164,6 +174,16 @@ export default function CarDetailPage() {
 
           <section className="card">
             <h2>{D.embargoesTitle}</h2>
+            {s.embargoes_status === 'ok' && s.embargoes_source && (
+              <p className="muted">
+                {D.embargoesSource(
+                  D.embargoesSourceNames[s.embargoes_source],
+                  fmtDateTime(s.embargoes_checked_at ?? s.fetched_at),
+                )}
+                {s.embargoes_source === 'ibama' && <Help term={D.ibamaHelpTerm} text={D.ibamaHelp} />}
+                {s.embargoes_stale && <> · {D.embargoesStale}</>}
+              </p>
+            )}
             {s.embargoes_status !== 'ok' ? (
               <p className="muted">
                 <EmbargoesValue s={s} />
@@ -176,8 +196,10 @@ export default function CarDetailPage() {
                   <thead>
                     <tr>
                       <th>{D.cols.source}</th>
+                      {hasTerm && <th>{D.cols.term}</th>}
                       <th>{D.cols.process}</th>
                       <th className="num">{D.cols.area}</th>
+                      {hasOverlap && <th className="num">{D.cols.overlap}</th>}
                       <th>{D.cols.registered}</th>
                       <th>{D.cols.descriptions}</th>
                     </tr>
@@ -186,8 +208,10 @@ export default function CarDetailPage() {
                     {detail.embargoes.map((e, i) => (
                       <tr key={`${e.source}-${e.process_code}-${i}`}>
                         <td>{e.source ?? '—'}</td>
+                        {hasTerm && <td>{e.term ?? '—'}</td>}
                         <td>{e.process_code ?? '—'}</td>
                         <td className="num">{fmtNum(e.area_ha)}</td>
+                        {hasOverlap && <td className="num">{fmtNum(e.overlap_ha ?? null)}</td>}
                         <td>{fmtDate(e.registered_at)}</td>
                         <td>{e.descriptions.join(' · ') || '—'}</td>
                       </tr>

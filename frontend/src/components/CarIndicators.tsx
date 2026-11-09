@@ -9,7 +9,7 @@ const OPEN: Situacao[] = ['embargo_vigente', 'com_fiscalizacao', 'pendente']
 const SUPERSEDED: Situacao[] = ['autorizada', 'embargo_levantado', 'suspensa_judicial']
 
 /** Explicación de un término: se abre al pasar el ratón, con el teclado (foco) o tocando (móvil). */
-function Help({ term, text }: { term: string; text: string }) {
+export function Help({ term, text }: { term: string; text: string }) {
   const id = useId()
   const [open, setOpen] = useState(false)
   return (

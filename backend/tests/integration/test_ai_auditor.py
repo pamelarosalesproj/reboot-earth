@@ -54,3 +54,22 @@ async def test_audit_monthly_report_unit_mock():
     assert report.total_volume_extracted_m3 == 20.0
     assert report.has_volume_exceeded is False
     assert len(report.suggestions) >= 3
+
+
+def test_audit_hidden_by_default(client):
+    """NFs ainda simuladas: com sessão, o endpoint responde 404 enquanto AUDIT_ENABLED estiver desligado."""
+    from tests.conftest import register
+
+    register(client)
+    assert client.post("/api/audit/generate-report", json={}).status_code == 404
+
+
+def test_audit_available_when_enabled(client, monkeypatch):
+    from app.config import settings
+    from tests.conftest import register
+
+    monkeypatch.setattr(settings, "audit_enabled", True)
+    monkeypatch.setattr(settings, "llm_api_key", "")
+    monkeypatch.delenv("LLM_API_KEY", raising=False)
+    register(client)
+    assert client.post("/api/audit/generate-report", json={}).status_code == 200

@@ -17,7 +17,7 @@ describe('initials', () => {
 })
 
 describe('barra lateral', () => {
-  it('incluye Consultar CNPJ con enlace a /painel/consulta (FR-101)', () => {
+  it('no incluye Consultar CNPJ ni Gerar Relatório ESG (quitados del menú del productor)', () => {
     const value: AuthState = {
       producer: { email: 'a@b.com', cnpj: '04654691000106', cars: [] },
       loading: false,
@@ -31,6 +31,7 @@ describe('barra lateral', () => {
         </MemoryRouter>
       </AuthContext.Provider>,
     )
-    expect(screen.getByRole('link', { name: /Consultar CNPJ/ })).toHaveAttribute('href', '/painel/consulta')
+    expect(screen.queryByRole('link', { name: /Consultar CNPJ/ })).toBeNull()
+    expect(screen.queryByRole('link', { name: /Relatório ESG/i })).toBeNull()
   })
 })

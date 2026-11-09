@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { afterEach, describe, expect, it } from 'vitest'
 import StatusBadge from '../src/components/StatusBadge'
 import type { Status, StatusLevel } from '../src/types'
@@ -8,13 +9,13 @@ const st = (level: StatusLevel, extra: Partial<Status> = {}): Status => ({
   level,
   reason: null,
   partial: false,
-  basis: 'provisional',
+  basis: 'regras',
   ...extra,
 })
 
 afterEach(cleanup)
 
-describe('StatusBadge (FR-111/112)', () => {
+describe('StatusBadge (FR-111 / feature 006)', () => {
   it.each([
     ['gold', 'Gold'],
     ['silver', 'Silver'],
@@ -30,25 +31,71 @@ describe('StatusBadge (FR-111/112)', () => {
     expect(screen.getByText('Dados indisponíveis')).toBeInTheDocument()
   })
 
-  it('explica el nivel y avisa que es provisional', () => {
-    render(<StatusBadge status={st('bronze')} />)
-    expect(screen.getByText('Porque há embargos registrados nos imóveis do CNPJ.')).toBeInTheDocument()
-    expect(screen.getByText(/Nível provisório/)).toBeInTheDocument()
+  it('motivos del CAR con números y umbral', () => {
+    render(
+      <StatusBadge
+        scope="car"
+        status={st('bronze', {
+          reasons: [
+            { code: 'EMBARGO_VIGENTE', severity: 'bronze', n: 1 },
+            { code: 'RL_APP_POS2020', severity: 'silver', n: 2, ha: 3.5, pct: 0.4 },
+          ],
+        })}
+      />,
+    )
+    expect(screen.getByText('Embargo vigente: 1 embargo')).toBeInTheDocument()
+    expect(
+      screen.getByText('Alertas em aberto após 2020 em reserva legal ou APP: 2 alertas · 3,5 ha · 0,4 % do imóvel · abaixo de 1 % do imóvel'),
+    ).toBeInTheDocument()
+    expect(screen.getByLabelText('Nível do imóvel: Bronze')).toBeInTheDocument()
+    expect(screen.getByText(/regras fixas/)).toBeInTheDocument()
   })
 
-  it('sin aviso provisional cuando el nivel viene del score', () => {
-    render(<StatusBadge status={st('gold', { basis: 'score' })} />)
-    expect(screen.queryByText(/Nível provisório/)).toBeNull()
+  it('CNPJ: motivos por imóveis, distribución y EUDR', () => {
+    render(
+      <StatusBadge
+        status={st('bronze', {
+          reasons: [{ code: 'EMBARGO_VIGENTE', severity: 'bronze', cars: 2 }],
+          cars_by_level: { gold: 1, silver: 0, bronze: 2, sem_dados: 0 },
+          eudr_attention: true,
+        })}
+      />,
+    )
+    expect(screen.getByText('Embargo vigente — em 2 imóveis')).toBeInTheDocument()
+    expect(screen.getByText('Imóveis: 2 Bronze · 1 Gold')).toBeInTheDocument()
+    expect(screen.getByText('Atenção EUDR')).toBeInTheDocument()
   })
 
-  it.each([
-    [{ level: 'bronze', embargoes_count: 7 }, 'Porque há 7 embargos registrados nos imóveis do CNPJ.'],
-    [{ level: 'bronze', embargoes_count: 1 }, 'Porque há 1 embargo registrado nos imóveis do CNPJ.'],
-    [{ level: 'silver', alerts_count: 3 }, 'Porque há 3 alertas de desmatamento nos imóveis do CNPJ.'],
-    [{ level: 'silver', alerts_count: 3, partial: true }, 'Porque há 3 alertas de desmatamento nos imóveis do CNPJ. Parte dos dados não pôde ser verificada.'],
-    [{ level: 'silver', alerts_count: 0, partial: true }, 'Porque parte dos dados não pôde ser verificada.'],
-  ] as const)('explica o nível com os números da regra: %o', (extra, text) => {
-    render(<StatusBadge status={st(extra.level, extra)} />)
-    expect(screen.getByText(text)).toBeInTheDocument()
+  it('EUDR indeterminado no se muestra; compacto muestra el sello', () => {
+    render(<StatusBadge status={st('gold', { eudr_attention: null })} />)
+    expect(screen.queryByText('Atenção EUDR')).toBeNull()
+    cleanup()
+    render(<StatusBadge compact status={st('gold', { eudr_attention: true })} />)
+    expect(screen.getByText('Atenção EUDR')).toBeInTheDocument()
+  })
+
+  it('enlace "Entenda o nível" solo cuando se pide (panel)', () => {
+    render(<StatusBadge status={st('silver')} />)
+    expect(screen.queryByRole('link')).toBeNull()
+    cleanup()
+    render(
+      <MemoryRouter>
+        <StatusBadge status={st('silver')} learnMore />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('link', { name: /Entenda o nível/ })).toHaveAttribute('href', '/painel/nivel')
+  })
+
+  it('nunca usa "ilegal" ni "crime"', () => {
+    const { container } = render(
+      <StatusBadge
+        status={st('bronze', {
+          reasons: (['EMBARGO_VIGENTE', 'TI_UC_INTEGRAL', 'RL_APP_POS2020', 'DETER_GRAVE', 'ALERTA_ABERTA', 'DETER_DEGRADACAO', 'DADOS_PARCIAIS'] as const).map(
+            (code) => ({ code, severity: 'silver' as const, n: 1, ha: 1 }),
+          ),
+        })}
+      />,
+    )
+    expect(container.textContent).not.toMatch(/ilegal|crime/i)
   })
 })

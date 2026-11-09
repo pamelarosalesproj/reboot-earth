@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  title: ELO Rural – Embargos del IBAMA como respaldo (feature 007)
+  version: 0.7.0
+  description: >
+    Amplía los esquemas `CarSummary` y `Embargo` de /api/cars/{car}/summary y /api/cars/{car}/detail
+    (solo con sesión). Los endpoints no cambian. Los campos nuevos son opcionales y compatibles hacia
+    atrás. La respuesta pública (/api/public/cnpj/{cnpj}) NO cambia de forma: solo puede cambiar el
+    nivel, porque los embargos del IBAMA entran en la misma regla.
+components:
+  schemas:
+    Embargo:
+      type: object
+      additionalProperties: false
+      required: [source, process_code, area_ha, registered_at, expired_at, descriptions]
+      properties:
+        source: { type: [string, "null"], description: "Órgano; 'IBAMA' para la capa del IBAMA" }
+        process_code: { type: [string, "null"] }
+        area_ha: { type: [number, "null"], description: "Área embargada total" }
+        registered_at: { type: [string, "null"], format: date }
+        expired_at: { type: [string, "null"], format: date, description: "Siempre null para el IBAMA" }
+        descriptions: { type: array, items: { type: string } }
+        term: { type: [string, "null"], description: "Nuevo. Termo de embargo '<número>/<série>' (IBAMA)" }
+        overlap_ha: { type: [number, "null"], description: "Nuevo. ha superpuestas con el CAR (IBAMA, ≥ 0,1)" }
+      # Nunca contiene nombre ni CPF/CNPJ del embargado.
+    CarSummaryEmbargoFields:
+      description: Campos de embargos de `CarSummary` (el resto del esquema no cambia).
+      type: object
+      properties:
+        embargoes_status: { type: string, enum: [ok, not_determinable, unavailable] }
+        embargoes_count: { type: [integer, "null"] }
+        embargoes_source: { type: [string, "null"], enum: [mapbiomas, ibama, null], description: "Nuevo" }
+        embargoes_checked_at: { type: [string, "null"], format: date-time, description: "Nuevo" }
+        embargoes_stale: { type: boolean, default: false, description: "Nuevo" }

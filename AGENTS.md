@@ -1,13 +1,15 @@
 # AGENTS.md
 
 Guia para agentes de IA (Claude Code, Copilot, Codex, Antigravity, etc.) que trabalham neste repositório.
-Para o contexto de produto (problema, dores e solução), leia o [`README.md`](README.md). Para os
-detalhes técnicos (endpoints, tabelas, regras, fontes externas e as armadilhas delas, testes e
-operação), leia [`docs/arquitetura.md`](docs/arquitetura.md).
+Para o contexto de produto (problema, dores e solução), leia o [`README.md`](README.md). Para rodar,
+configurar e testar, leia [`docs/desenvolvimento.md`](docs/desenvolvimento.md); para os detalhes técnicos
+(endpoints, tabelas, regras, fontes externas e as armadilhas delas, testes e operação), leia
+[`docs/arquitetura.md`](docs/arquitetura.md). As regras de nível estão em
+[`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md).
 
 ## O projeto em uma frase
 
-RebootEarth mostra a situação socioambiental de produtores rurais brasileiros por imóvel (CAR) e por
+Elo Rural mostra a situação socioambiental de produtores rurais brasileiros por imóvel (CAR) e por
 CNPJ — polígono, alertas de desmatamento por situação legal, embargos e indicadores (vegetação
 nativa, DETER, focos de calor, manejo florestal) — com dados do MapBiomas Alerta, do INPE e do IBAMA,
 para o **produtor** (com conta) e para o **comprador** (sem conta, só vê dados agregados).
@@ -59,7 +61,9 @@ princípios I–VII. Resumo:
     (ver `frontend/design-dashboard.md`).
 - **Specs** (`specs/NNN-*/`): spec, plan, research, data-model, contratos, tasks e quickstart de
   cada feature.
-- **Docs** (`docs/`): `arquitetura.md` (técnica) e propostas ainda não implementadas.
+- **Docs** (`docs/`): `desenvolvimento.md` (rodar, configurar, testar), `arquitetura.md` (técnica),
+  `proposta-regras-nivel.md` (regras de nível em uso) e `proposta-agente.md` (agente, ainda não
+  implementado).
 - **Scripts de exploração** (`mapbiomas_api.py`, `dof_ibama.py`) e dados de exemplo
   (`data/cars_ejemplo/`, `*.geojson`, `*_completo.json`): não fazem parte da aplicação.
   `data/` contém dados reais de CARs, **não é versionado e nunca deve entrar em commits**.
@@ -98,20 +102,30 @@ Features (todas em `main`):
 
 - `001-producer-car-dashboard` — cadastro, painel e detalhe por CAR (implementada).
 - `002-cnpj-score-search` — consulta pública por CNPJ com nível Gold/Silver/Bronze/Sem dados e
-  regra **provisória** FR-111a (implementada).
+  regra provisória FR-111a (implementada; substituída pela 006).
 - `003-car-indicators` — indicadores do CAR: alertas por situação legal, riscos abertos e contexto,
   com MapBiomas, INPE e SINAFLOR (implementada; **não altera o nível**). Aparecem só no detalhe do
   CAR; o cartão de "Meus CARs" fica enxuto.
 - Redesign do frontend (sem spec própria; notas em `frontend/design-dashboard.md`). Os blocos de
   indicadores da 003 ainda usam o estilo anterior.
-- `005-dashboard-init` — Início como resumo do CNPJ: status, 3 números e relatório. O relatório é
-  hoje um **exemplo escrito à mão** em `backend/data/mock_reports/<cnpj>.json` (fora do git); a
-  geração pelo agente entra em `app/reports/__init__.py` sem mudar o formato (ver
-  `docs/arquitetura.md`). Os módulos de lotes saíram do Início (só em `/preview/lotes`).
+- `005-dashboard-init` — Início como resumo do CNPJ: status, 3 números e relatório. Os módulos de lotes
+  saíram do Início (só em `/preview/lotes`).
 
-Pendente de decisão: a nova regra de nível e o agente de resumos em
-[`docs/proposta-regras-nivel-e-agente.md`](docs/proposta-regras-nivel-e-agente.md). Mudar a regra de
-nível afeta o painel **e** a ficha pública e exige confirmação antes de implementar.
+- `006-nivel-regras` — regra de nível por CAR e por CNPJ (pior CAR), com motivos, sinal "Atenção EUDR"
+  e a página "Entenda o nível" (`/painel/nivel`). A regra fica só em `services/level_rules.py`; se
+  ela mudar, siga a regra prática "Mudou uma regra de nível?" abaixo.
+
+- `007-embargos-ibama` — quando o MapBiomas não determina os embargos de um CAR (hoje, os CARs sem
+  alertas: `pointInformation` responde 500), usa as áreas embargadas do IBAMA que se sobrepõem ≥ 0,1 ha
+  (`sources/ibama.py`). Todas contam como vigentes; nunca peça nome nem CPF/CNPJ do embargado.
+
+- `008-relatorio-ia` — o relatório do CNPJ é escrito pela IA do `.env` **só para consolidar e explicar**
+  os dados já calculados (`app/reports/`): pseudônimos no lugar dos códigos de CAR (nunca envie códigos
+  de CAR, CNPJ nem dados pessoais à IA), controle de números e de vocabulário, cache em memória e texto
+  por regras como reserva (`origem="regras"`). O relatório de exemplo só vale com `REPORT_DEMO_MODE=true`.
+
+As regras de nível em uso estão em [`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md). Mudar a
+regra de nível afeta o painel **e** a ficha pública e exige confirmação antes de implementar.
 
 ## Idioma
 
@@ -122,6 +136,18 @@ nível afeta o painel **e** a ficha pública e exige confirmação antes de impl
 
 ## Regras práticas
 
+- **Mudou uma regra de nível?** Qualquer mudança em `services/level_rules.py` (critérios, motivos,
+  limites como 1 %, 24 meses, 31/12/2020), em `classify_alert` (`services/car_indicators.py`), no limite
+  de 0,1 ha de `sources/ibama.py` ou nas fontes que alimentam o nível exige atualizar, **na mesma
+  mudança**:
+  1. [`docs/proposta-regras-nivel.md`](docs/proposta-regras-nivel.md) (documentação completa das regras);
+  2. os textos de "Entenda o nível" (`t.rules` em `frontend/src/i18n/pt-BR.ts`);
+  3. o resumo "Como funciona o nível" do [`README.md`](README.md), se o resumo deixar de ser verdade.
+
+  Lembre que mudar a regra afeta o painel **e** a ficha pública e exige confirmação antes de implementar.
+- **README é de negócio.** O `README.md` fala de problema, solução, nível, visão e fontes, sem
+  referências a specs nem detalhes técnicos. Comandos, configuração, endpoints e comportamento técnico
+  vão em `docs/desenvolvimento.md` ou `docs/arquitetura.md`, e o README só aponta para eles.
 - Valide e normalize CNPJ (com dígitos verificadores) e CAR **no backend**, sempre, mesmo que o
   frontend já valide.
 - Senhas com hash não recuperável (`pwdlib[argon2]`); sessão por cookie `HttpOnly`;

@@ -25,8 +25,15 @@ export interface CarSummary {
   alerts_count: number | null
   embargoes_count: number | null
   embargoes_status: EmbargoesStatus
+  /** Feature 007: quem determinou os embargos (o IBAMA é o respaldo quando o MapBiomas falha). */
+  embargoes_source?: 'mapbiomas' | 'ibama' | null
+  embargoes_checked_at?: string | null
+  /** Embargos de uma consulta anterior: nenhuma fonte respondeu agora. */
+  embargoes_stale?: boolean
   fetched_at: string
   stale: boolean
+  /** Nível deste CAR (mesma regra do CNPJ, só este imóvel). */
+  status?: Status | null
 }
 
 export interface Alert {
@@ -44,6 +51,9 @@ export interface Embargo {
   registered_at: string | null
   expired_at: string | null
   descriptions: string[]
+  /** Só IBAMA (feature 007): termo "<número>/<série>" e ha sobrepostos ao CAR. */
+  term?: string | null
+  overlap_ha?: number | null
 }
 
 export interface CarDetail {
@@ -70,11 +80,41 @@ export interface DashboardSummary {
 export type StatusLevel = 'gold' | 'silver' | 'bronze' | 'sem_dados'
 export type StatusReason = 'not_registered' | 'no_properties' | 'data_unavailable'
 
+export type ReasonCode =
+  | 'EMBARGO_VIGENTE'
+  | 'TI_UC_INTEGRAL'
+  | 'RL_APP_POS2020'
+  | 'DETER_GRAVE'
+  | 'ALERTA_ABERTA'
+  | 'DETER_DEGRADACAO'
+  | 'DADOS_PARCIAIS'
+
+export interface Reason {
+  code: ReasonCode
+  severity: 'bronze' | 'silver'
+  n?: number | null
+  ha?: number | null
+  pct?: number | null
+  /** Só no CNPJ: em quantos imóveis. */
+  cars?: number | null
+}
+
+export interface CarsByLevel {
+  gold: number
+  silver: number
+  bronze: number
+  sem_dados: number
+}
+
 export interface Status {
   level: StatusLevel
   reason: StatusReason | null
   partial: boolean
-  basis: 'provisional' | 'score'
+  basis: 'provisional' | 'regras' | 'score'
+  /** Feature 006: motivos do nível, imóveis por nível (CNPJ) e sinal EUDR (null = indeterminado). */
+  reasons?: Reason[]
+  cars_by_level?: CarsByLevel | null
+  eudr_attention?: boolean | null
   /** Conteos que usou a regra (agregados): explicam o nível com números. */
   alerts_count?: number | null
   embargoes_count?: number | null
@@ -182,13 +222,15 @@ export interface CnpjOverview {
 
 export interface CnpjReport {
   status: 'ok' | 'indisponivel'
-  origem?: 'exemplo' | 'agente' | null
+  /** Quem escreveu o texto (feature 008): IA, regras (sem IA) ou exemplo de demonstração. */
+  origem?: 'exemplo' | 'agente' | 'regras' | null
   nivel?: StatusLevel | null
   titulo?: string | null
   riscos?: string[]
   contexto?: string[]
   ressalvas?: string[]
-  imoveis?: { car_code: string; resumo: string }[]
+  /** `nivel`: nível do imóvel pelas regras (feature 008). */
+  imoveis?: { car_code: string; resumo: string; nivel?: StatusLevel | null }[]
   data_dos_dados?: string | null
   gerado_em?: string | null
 }

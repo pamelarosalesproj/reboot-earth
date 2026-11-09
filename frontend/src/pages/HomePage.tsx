@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom'
 import { getDashboard, getOverview, getReport } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import CnpjReportView from '../components/CnpjReportView'
-import StatusBadge from '../components/StatusBadge'
 import { fmtDateTime, t } from '../i18n/pt-BR'
 import { maskCnpj } from '../lib/car'
-import { scoreText } from '../lib/status'
 import type { CnpjOverview, CnpjReport, DashboardSummary } from '../types'
 import './HomePage.css'
 
@@ -116,16 +114,7 @@ export default function HomePage({ previewData, previewOverview, previewReport }
 
       {!data && !error && <p className="muted">{t.panel.loading}</p>}
 
-      {data && producer && (
-        <section className="overview-buyer-view overview-status" aria-labelledby="status-title">
-          <div className="overview-buyer-heading">
-            <h2 id="status-title">{H.statusTitle}</h2>
-          </div>
-          <StatusBadge status={data.cnpj_status} />
-          {scoreText(data.cnpj_score) && <p className="cnpj-report-score">{scoreText(data.cnpj_score)}</p>}
-          {data.stale && <p className="notice">{t.panel.stale}</p>}
-        </section>
-      )}
+      {data && data.stale && <p className="notice">{t.panel.stale}</p>}
 
       {data && data.cars_count === 0 && (
         <section className="card empty-state">
@@ -146,7 +135,7 @@ export default function HomePage({ previewData, previewOverview, previewReport }
             </div>
             <Numbers o={overview} />
           </section>
-          <CnpjReportView report={report} />
+          <CnpjReportView report={report} status={data.cnpj_status} />
         </>
       )}
     </main>

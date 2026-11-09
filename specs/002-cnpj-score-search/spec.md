@@ -10,6 +10,10 @@
 
 > **Cambio (2026-11-06, solicitado por el usuario):** la explicación del nivel era confusa ("Há embargos registrados." + "Indicador preliminar… não é o score definitivo." + "Score em cálculo"). Ahora: (1) el motivo usa los números de la regla, por ejemplo "Porque há 7 embargos registrados nos imóveis do CNPJ." (`Status` añade los agregados `alerts_count` y `embargoes_count`); (2) el aviso pasa a "Nível provisório: considera apenas alertas e embargos do MapBiomas Alerta."; (3) **el score solo se muestra cuando existe** (`disponivel`). Mientras tanto no aparece "Score em cálculo". Afecta a FR-103 y FR-112 y vale para el panel y la ficha pública.
 
+> **Cambio (2026-11-06, solicitado por el usuario):** el **nivel por CAR** se muestra en la tarjeta de "Meus CARs" (sello) y en el detalle del CAR (sello y explicación "…neste imóvel"). Es la misma regla FR-111a (`compute_status`) aplicada a un solo imóvel (`car_status`), viaja en `CarSummary.status` y **solo para el productor autenticado**: la ficha pública sigue mostrando únicamente el nivel del CNPJ. El nivel del CNPJ no cambia.
+
+> **Cambio (2026-11-06, feature 006):** la regla provisional FR-111a queda **reemplazada** por la regla de `specs/006-nivel-regras/` (nivel por CAR según riesgos abiertos; CNPJ = el peor CAR; motivos y sello EUDR). El contrato `Status` agrega `reasons`, `cars_by_level` y `eudr_attention`, y `basis` pasa a `regras`. La ficha pública sigue siendo solo agregada.
+
 ## Propuesta
 
 La plataforma pasa a tener dos públicos:

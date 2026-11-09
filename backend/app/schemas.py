@@ -42,8 +42,14 @@ class CarSummary(BaseModel):
     alerts_count: int | None
     embargoes_count: int | None
     embargoes_status: Literal["ok", "not_determinable", "unavailable"]
+    # Feature 007: quem determinou os embargos, quando, e se vêm de uma cópia anterior (nenhuma fonte respondeu).
+    embargoes_source: Literal["mapbiomas", "ibama"] | None = None
+    embargoes_checked_at: datetime | None = None
+    embargoes_stale: bool = False
     fetched_at: datetime
     stale: bool = False
+    # Nível do CAR: a mesma regra do CNPJ aplicada só a este imóvel (o painel o preenche; nunca é público).
+    status: "Status | None" = None
 
 
 class Alert(BaseModel):
@@ -61,6 +67,10 @@ class Embargo(BaseModel):
     registered_at: date | None
     expired_at: date | None
     descriptions: list[str]
+    # Feature 007 (só IBAMA): termo de embargo "<número>/<série>" e ha sobrepostos ao CAR.
+    # Nunca nome nem CPF/CNPJ do embargado (princípio III).
+    term: str | None = None
+    overlap_ha: float | None = None
 
 
 class CarDetail(BaseModel):
@@ -69,18 +79,51 @@ class CarDetail(BaseModel):
     embargoes: list[Embargo]
 
 
-class Status(BaseModel):
-    """Nivel de un CNPJ (specs/002 data-model.md §Status)."""
+Level = Literal["gold", "silver", "bronze", "sem_dados"]
+ReasonCode = Literal["EMBARGO_VIGENTE", "TI_UC_INTEGRAL", "RL_APP_POS2020", "DETER_GRAVE",
+                     "ALERTA_ABERTA", "DETER_DEGRADACAO", "DADOS_PARCIAIS"]
+
+
+class Reason(BaseModel):
+    """Motivo do nível (specs/006 data-model.md). No CAR traz números; no CNPJ, quantos CARs (`cars`)."""
 
     model_config = ConfigDict(extra="forbid")
 
-    level: Literal["gold", "silver", "bronze", "sem_dados"]
+    code: ReasonCode
+    severity: Literal["bronze", "silver"]
+    n: int | None = None
+    ha: float | None = None
+    pct: float | None = None
+    cars: int | None = None
+
+
+class CarsByLevel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    gold: int = 0
+    silver: int = 0
+    bronze: int = 0
+    sem_dados: int = 0
+
+
+class Status(BaseModel):
+    """Nível de um CAR ou de um CNPJ (specs/002 e specs/006 data-model.md §Status)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    level: Level
     reason: Literal["not_registered", "no_properties", "data_unavailable"] | None  # solo con sem_dados
     partial: bool
-    basis: Literal["provisional", "score"]
-    # Conteos que usó la regla (agregados, públicos): permiten explicar el nivel con números.
+    basis: Literal["provisional", "regras", "score"]
+    reasons: list[Reason] = []
+    cars_by_level: CarsByLevel | None = None  # solo no CNPJ
+    eudr_attention: bool | None = None  # None = indeterminado (sem dados de alertas)
+    # Conteos do CAR (alertas abertas, embargos vigentes); None no CNPJ.
     alerts_count: int | None = None
     embargoes_count: int | None = None
+
+
+CarSummary.model_rebuild()  # resolve a referência a Status (definido depois)
 
 
 class Score(BaseModel):
@@ -250,13 +293,15 @@ class ReportProperty(BaseModel):
 
     car_code: str
     resumo: str
+    # 008: nível do imóvel pelas regras (preenchido pelo backend, nunca pela IA nem pelo exemplo).
+    nivel: Literal["gold", "silver", "bronze", "sem_dados"] | None = None
 
 
 class CnpjReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     status: Literal["ok", "indisponivel"]
-    origem: Literal["exemplo", "agente"] | None = None
+    origem: Literal["exemplo", "agente", "regras"] | None = None  # 008: "regras" = texto sem IA
     nivel: Literal["gold", "silver", "bronze", "sem_dados"] | None = None
     titulo: str | None = None
     riscos: list[str] = Field(default_factory=list, max_length=3)

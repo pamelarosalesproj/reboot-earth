@@ -1,4 +1,4 @@
-"""Nivel de punta a punta con MapBiomas simulado (feature 002, US2, FR-111a)."""
+"""Nivel de punta a punta con MapBiomas simulado (regla de la feature 006, vista pública de la 002)."""
 
 from sqlmodel import Session
 
@@ -12,7 +12,7 @@ EMBARGO = {"code": "1", "source": "IBAMA", "processCode": "P1", "areaHa": 5.0, "
 def status(client):
     client.cookies.clear()
     d = client.get(f"/api/public/cnpj/{CNPJ}").json()
-    assert d["status"]["basis"] == "provisional"
+    assert d["status"]["basis"] == "regras"
     assert not (d["status"]["level"] == "gold" and d["status"]["partial"])
     return d["status"]
 
@@ -20,20 +20,37 @@ def status(client):
 def test_gold_without_alerts_or_embargoes(client, mapbiomas_mock):
     mapbiomas_mock.properties[REF_CAR]["alerts"] = []
     register(client)
-    assert status(client) == {"level": "gold", "reason": None, "partial": False, "basis": "provisional",
-                              "alerts_count": 0, "embargoes_count": 0}
+    s = status(client)
+    assert (s["level"], s["reason"], s["partial"], s["reasons"]) == ("gold", None, False, [])
+    assert s["cars_by_level"] == {"gold": 1, "silver": 0, "bronze": 0, "sem_dados": 0}
 
 
-def test_silver_with_alerts(client):
-    register(client)  # el fixture de referencia tiene 3 alertas y 0 embargos
-    assert status(client)["level"] == "silver"
+def clear_rl_app(mapbiomas_mock):
+    for a in mapbiomas_mock.properties[REF_CAR]["alerts"]:
+        mapbiomas_mock.alert_extra[a["alertCode"]] = {"crossedLegalReservesArea": 0,
+                                                      "crossedPermanentProtectedAreaTotal": 0}
+
+
+def test_silver_with_open_alerts_outside_rl_app(client, mapbiomas_mock):
+    clear_rl_app(mapbiomas_mock)
+    register(client)  # el fixture de referencia tiene 3 alertas abiertas y 0 embargos
+    s = status(client)
+    assert s["level"] == "silver" and [r["code"] for r in s["reasons"]] == ["ALERTA_ABERTA"]
+    assert s["reasons"][0]["cars"] == 1 and s["eudr_attention"] is True
+
+
+def test_bronze_with_open_alerts_in_rl_app_after_2020(client):
+    register(client)  # fixture: 3 alertas de 2026 en reserva legal / APP (28 % del CAR)
+    s = status(client)
+    assert s["level"] == "bronze" and s["reasons"][0]["code"] == "RL_APP_POS2020"
 
 
 def test_bronze_with_embargo(client, mapbiomas_mock):
     mapbiomas_mock.embargoes[REF_CAR] = [EMBARGO]
     register(client)
     s = status(client)
-    assert s["level"] == "bronze" and s["embargoes_count"] == 1  # el conteo explica el nivel
+    assert s["level"] == "bronze" and s["reasons"][0] == {"code": "EMBARGO_VIGENTE", "severity": "bronze",
+                                                          "n": None, "ha": None, "pct": None, "cars": 1}
 
 
 def test_sem_dados_when_mapbiomas_down_without_cache(client, engine, mapbiomas_mock):

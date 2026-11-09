@@ -1,72 +1,59 @@
-"""Relatório do CNPJ para o Início gerado em tempo real pelo Agente IA / Motor ESG.
+"""Relatório do CNPJ para o Início (features 005 e 008).
 
-Consolida dados reais de:
-- MapBiomas Alerta (polígono, alertas abertas, alertas superadas, embargos, RL/APP)
-- INPE (DETER, PRODES, focos de calor)
-- IBAMA / SINAFLOR (planos de manejo POA e cotas)
-
-Respeita estritamente:
-- Princípio do Nível: calculado exclusivamente por regras fixas (compute_status), nunca pelo texto.
-- Princípio do Vocabulário: jamais usa palavras proibidas como 'crime' ou 'ilegal' no parecer.
-- Tolerância a falhas: fallback analítico determinístico se a API do LLM estiver sem chave ou falhar.
+A IA só consolida e explica os dados que o sistema já calculou (feature 008):
+- entrada = `build_report_facts` (nível e motivos, indicadores e embargos de cada CAR; totais do CNPJ), com
+  pseudônimos ("Imóvel A"...) no lugar dos códigos de CAR e sem o CNPJ;
+- a resposta é validada (formato, até 3 riscos/contexto, vocabulário, números presentes nos dados,
+  pseudônimos existentes); um retry; se falhar, texto por regras (`origem="regras"`);
+- o nível vem sempre das regras (feature 006), nunca do texto;
+- cache em memória por conteúdo: a IA só é chamada de novo quando os dados mudam.
+O exemplo escrito à mão (`MOCK_REPORTS_DIR/<cnpj>.json`) só é usado com `REPORT_DEMO_MODE=true`.
 """
 
 from __future__ import annotations
 
-import asyncio
+import hashlib
 import json
 import logging
-import os
 import re
+import time
+from collections import OrderedDict
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
 import httpx
-from sqlalchemy.engine import Engine
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from app.config import settings
-from app.mapbiomas.client import MapBiomasClient, MapBiomasError, MapBiomasUnavailable
-from app.models import Producer, ProducerCar
-from app.schemas import (
-    OPEN_SITUACOES,
-    CarDetail,
-    CarIndicators,
-    CnpjReport,
-    ReportProperty,
+from app.mapbiomas.client import MapBiomasClient
+from app.reports.facts import (
+    CarInput,
+    allowed_numbers,
+    build_report_facts,
+    invented_numbers,
+    restore_aliases,
+    unknown_aliases,
 )
-from app.services.car_indicators import get_indicators
-from app.services.car_service import get_detail
-from app.services.cnpj_report import cnpj_aggregate, compute_status
+from app.reports.prompt import PROMPT_VERSION, SYSTEM_PROMPT
+from app.schemas import OPEN_SITUACOES, CarDetail, CarIndicators, CnpjReport, ReportProperty
+from app.services.cnpj_report import car_inputs, cnpj_codes
+from app.services.level_rules import car_level, cnpj_level
 
 log = logging.getLogger("app.reports")
 
 FORBIDDEN = re.compile(r"\b(ilegal\w*|crime\w*|criminos\w*)", re.IGNORECASE)
 UNAVAILABLE = CnpjReport(status="indisponivel")
+PLACEHOLDER_KEYS = ("", "mock-key", "sua_chave_api_do_llm_aqui")
+RULES_CACHE_S = 15 * 60
+CACHE_MAX = 256
 
-CNPJ_AGENT_PROMPT = """Você é o Agente Analista e Auditor Socioambiental/ESG da plataforma RebootEarth.
-Sua missão é redigir a síntese executiva do 'Relatório do CNPJ' para o produtor rural autenticado, a partir de dados consolidados de MapBiomas Alerta, INPE (DETER/PRODES/Focos) e IBAMA (SINAFLOR).
+# hash dos dados → (relatório, expira_em | None)
+_cache: OrderedDict[str, tuple[CnpjReport, float | None]] = OrderedDict()
 
-Diretrizes Obrigatórias (Constituição do RebootEarth):
-1. O Nível (Gold, Silver ou Bronze) já foi definido pelo sistema de regras fixas. Você NUNCA altera e NÃO discute a legitimidade do nível, apenas explica suas razões.
-2. Vocabulário: NUNCA use palavras sensacionalistas ou jurídicas conclusivas como 'crime', 'ilegal' ou 'criminoso'. Use 'sem autorização registrada', 'com embargo vigente' ou 'sem comprovação documental'.
-3. Riscos: cite exclusivamente riscos em aberto (máximo 3 tópicos, focando em embargos, alertas abertas pós-2020/EUDR e reserva legal/APP).
-4. Contexto: fatos atenuantes ou contextuais que NÃO diminuem o nível (máximo 3 tópicos, ex: alertas autorizadas, APAs de uso sustentável, focos de calor, manejo).
-5. Ressalvas e Melhorias: no mínimo 2 ressalvas técnicas (ex: PRODES não mede regeneração, MapBiomas calcula sobreposição) e recomendações claras de como o produtor pode regularizar sua situação.
-6. Por Imóvel: forneça um resumo conciso de uma frase para cada CAR analisado.
 
-Responda OBRIGATORIAMENTE em JSON válido com exatamente esta estrutura:
-{
-  "titulo": "<Frase executiva de síntese>",
-  "riscos": ["<risco 1>", "<risco 2>", "<risco 3>"],
-  "contexto": ["<contexto 1>", "<contexto 2>"],
-  "ressalvas": ["<ressalva 1>", "<ressalva 2>", "<como melhorar classificação>"],
-  "imoveis": [
-    {"car_code": "<código CAR>", "resumo": "<resumo do CAR>"}
-  ]
-}
-"""
+def clear_report_cache() -> None:
+    _cache.clear()
 
 
 def _now_utc() -> datetime:
@@ -78,6 +65,7 @@ def _texts(r: CnpjReport) -> list[str]:
 
 
 def _validate(raw: dict) -> CnpjReport | None:
+    """Validação estrita do exemplo escrito à mão (formato e vocabulário)."""
     try:
         report = CnpjReport.model_validate({**raw, "status": "ok"})
     except Exception as e:  # noqa: BLE001
@@ -89,186 +77,199 @@ def _validate(raw: dict) -> CnpjReport | None:
     return report
 
 
-async def _car_data(bind: Engine, client: MapBiomasClient, code: str) -> tuple[CarIndicators | None, CarDetail | None]:
-    with Session(bind) as db:
-        try:
-            detail = await get_detail(db, client, code)
-        except (MapBiomasUnavailable, MapBiomasError):
-            detail = None
-        try:
-            ind = await get_indicators(db, client, code)
-        except Exception:  # noqa: BLE001
-            ind = None
-    return ind, detail
+# --------------------------------------------------------------------------- #
+# Texto por regras (sem IA)
+# --------------------------------------------------------------------------- #
+def _car_sentence(ind: CarIndicators | None, detail: CarDetail | None) -> tuple[str, dict[str, Any]]:
+    """Frase de um imóvel e seus números (usados também nos totais)."""
+    n = {"emb": 0, "open": 0, "open_ha": 0.0, "post": 0, "post_ha": 0.0, "rl_ha": 0.0, "app": 0,
+         "auth": 0, "auth_ha": 0.0, "focos": 0, "emb_known": False}
+    if detail and detail.summary.embargoes_status == "ok":
+        n["emb_known"] = True
+        n["emb"] = sum(1 for e in detail.embargoes if not e.expired_at)
+    if ind and ind.sources.get("mapbiomas") and ind.sources["mapbiomas"].status == "ok":
+        for a in ind.alerts:
+            if a.status in OPEN_SITUACOES:
+                n["open"] += 1
+                n["open_ha"] += a.area_in_car_ha
+                if a.post_2020:
+                    n["post"] += 1
+                    n["post_ha"] += a.area_in_car_ha
+                n["rl_ha"] += a.legal_reserve_ha
+                n["app"] += 1 if a.touches_app else 0
+            elif a.status == "autorizada":
+                n["auth"] += 1
+                n["auth_ha"] += a.area_in_car_ha
+        if ind.context and ind.context.hotspots_12m:
+            n["focos"] = ind.context.hotspots_12m.count
+    parts = []
+    if n["emb"]:
+        parts.append(f"{n['emb']} embargo(s) vigente(s)")
+    if n["open"]:
+        sub = f"{n['open']} alertas em aberto ({n['open_ha']:.1f} ha)"
+        if n["rl_ha"] > 0:
+            sub += f", {n['rl_ha']:.1f} ha em reserva legal"
+        if n["app"]:
+            sub += f" e {n['app']} tocando APP"
+        parts.append(sub)
+    if not detail:
+        parts.append("Dados do MapBiomas indisponíveis no momento")
+    elif not n["emb_known"]:
+        parts.append("embargos não puderam ser verificados")
+    if not parts:
+        parts.append("Sem alertas em aberto nem embargos vigentes")
+    return "; ".join(parts), n
 
 
-def _build_deterministic_report(
-    nivel: str,
-    cars_data: list[tuple[str, CarIndicators | None, CarDetail | None]],
-    today_str: str,
-) -> CnpjReport:
-    """Gera o relatório analítico determinístico estruturado caso o LLM esteja indisponível."""
-    total_cars = len(cars_data)
-    imoveis_list: list[ReportProperty] = []
-
-    active_embargoes_total = 0
-    open_alerts_count = 0
-    open_alerts_ha = 0.0
-    post_2020_count = 0
-    post_2020_ha = 0.0
-    rl_app_ha = 0.0
-    hotspots_total = 0
-    authorized_alerts_count = 0
-    authorized_alerts_ha = 0.0
-
-    cars_with_active_embargoes = []
-    cars_with_open_alerts = []
-
+def _build_deterministic_report(nivel: str, cars_data: list[tuple[str, CarIndicators | None, CarDetail | None]],
+                                today_str: str) -> CnpjReport:
+    """Relatório montado por regras quando a IA não está disponível ou não passou nos controles."""
+    total = len(cars_data)
+    imoveis: list[ReportProperty] = []
+    tot = {"emb": 0, "open": 0, "open_ha": 0.0, "post": 0, "post_ha": 0.0, "rl_ha": 0.0, "auth": 0,
+           "auth_ha": 0.0, "focos": 0}
+    with_emb: list[str] = []
+    with_open: list[str] = []
     for code, ind, detail in cars_data:
-        car_short = code[:10]
-        car_embargoes = 0
-        if detail and detail.summary.embargoes_status == "ok":
-            active_embs = [e for e in detail.embargoes if not e.expired_at]
-            car_embargoes = len(active_embs)
-            active_embargoes_total += car_embargoes
-            if car_embargoes > 0:
-                cars_with_active_embargoes.append(car_short)
+        sentence, n = _car_sentence(ind, detail)
+        imoveis.append(ReportProperty(car_code=code, resumo=sentence))
+        for k in tot:
+            tot[k] += n[k]
+        short = "-".join(code.split("-")[:2])
+        if n["emb"]:
+            with_emb.append(short)
+        if n["open"]:
+            with_open.append(short)
 
-        car_open_alerts = 0
-        car_open_ha = 0.0
-        car_rl_ha = 0.0
-        car_app_touch = 0
-
-        if ind and ind.sources.get("mapbiomas") and ind.sources["mapbiomas"].status == "ok":
-            for a in ind.alerts:
-                if a.status in OPEN_SITUACOES:
-                    open_alerts_count += 1
-                    open_alerts_ha += a.area_in_car_ha
-                    car_open_alerts += 1
-                    car_open_ha += a.area_in_car_ha
-                    if a.post_2020:
-                        post_2020_count += 1
-                        post_2020_ha += a.area_in_car_ha
-                    if a.legal_reserve_ha > 0:
-                        rl_app_ha += a.legal_reserve_ha
-                        car_rl_ha += a.legal_reserve_ha
-                    if a.touches_app:
-                        car_app_touch += 1
-                elif a.status == "autorizada":
-                    authorized_alerts_count += 1
-                    authorized_alerts_ha += a.area_in_car_ha
-
-            if ind.context and ind.context.hotspots_12m:
-                hotspots_total += ind.context.hotspots_12m.count
-
-        if car_open_alerts > 0:
-            cars_with_open_alerts.append(car_short)
-
-        # Frase descritiva do imóvel
-        parts = []
-        if car_embargoes > 0:
-            parts.append(f"{car_embargoes} embargo(s) vigente(s)")
-        if car_open_alerts > 0:
-            sub = f"{car_open_alerts} alertas abertas ({car_open_ha:.1f} ha)"
-            if car_rl_ha > 0:
-                sub += f", {car_rl_ha:.1f} ha em reserva legal"
-            if car_app_touch > 0:
-                sub += f" e {car_app_touch} tocando APP"
-            parts.append(sub)
-        elif car_embargoes == 0:
-            parts.append("Sem alertas ativas; operações regulares")
-
-        imoveis_list.append(ReportProperty(car_code=code, resumo="; ".join(parts) or "Sem alertas ativas"))
-
-    # Monta Riscos
     riscos: list[str] = []
-    if active_embargoes_total > 0:
-        c_str = ", ".join(cars_with_active_embargoes[:3])
-        riscos.append(f"{active_embargoes_total} embargos vigentes em {len(cars_with_active_embargoes)} imóveis ({c_str}).")
-    if open_alerts_count > 0:
-        post_str = f"; {post_2020_count} ({post_2020_ha:.1f} ha) detectadas pós-31/12/2020 (marco EUDR)" if post_2020_count > 0 else ""
-        riscos.append(f"{open_alerts_count} alertas abertas somam {open_alerts_ha:.1f} ha{post_str}.")
-    if rl_app_ha > 0:
-        riscos.append(f"{rl_app_ha:.1f} ha de alertas abertas incidentes sobre áreas de reserva legal ou preservação permanente.")
-
+    if tot["emb"]:
+        riscos.append(f"{tot['emb']} embargos vigentes em {len(with_emb)} imóveis ({', '.join(with_emb[:3])}).")
+    if tot["open"]:
+        post = (f"; {tot['post']} ({tot['post_ha']:.1f} ha) detectadas depois de 31/12/2020, a data de corte da EUDR"
+                if tot["post"] else "")
+        riscos.append(f"{tot['open']} alertas em aberto somam {tot['open_ha']:.1f} ha{post}.")
+    if tot["rl_ha"] > 0:
+        riscos.append(f"{tot['rl_ha']:.1f} ha de alertas em aberto em reserva legal.")
     if not riscos:
-        riscos.append("Nenhum risco de embargo ou alerta ativa identificado nos imóveis cadastrados.")
+        riscos.append("Nenhum embargo vigente nem alerta em aberto nos imóveis cadastrados.")
 
-    # Monta Contexto
     contexto: list[str] = []
-    if authorized_alerts_count > 0:
-        contexto.append(f"{authorized_alerts_count} alertas ({authorized_alerts_ha:.1f} ha) possuem autorização de supressão registrada e não contam como risco aberto.")
-    if hotspots_total > 0:
-        contexto.append(f"{hotspots_total} focos de calor registrados nos últimos 12 meses pelo satélite de referência do INPE.")
-    contexto.append("Planos de Manejo Florestal Sustentável (POA) consultados na base pública do SINAFLOR/IBAMA.")
+    if tot["auth"]:
+        contexto.append(f"{tot['auth']} alertas ({tot['auth_ha']:.1f} ha) têm autorização registrada e não contam "
+                        "como risco aberto.")
+    if tot["focos"]:
+        contexto.append(f"{tot['focos']} focos de calor nos últimos 12 meses (INPE).")
 
-    # Título
-    if active_embargoes_total > 0 and open_alerts_count > 0:
-        titulo = f"Embargos vigentes e desmatamento recente sem autorização registrada em {len(set(cars_with_active_embargoes + cars_with_open_alerts))} dos {total_cars} imóveis"
-    elif active_embargoes_total > 0:
-        titulo = f"Imóveis com embargos ambientais vigentes registrados no MapBiomas em {len(cars_with_active_embargoes)} de {total_cars} imóveis"
-    elif open_alerts_count > 0:
-        titulo = f"Alertas de supressão sem comprovação de autorização registradas em {len(cars_with_open_alerts)} de {total_cars} imóveis"
+    affected = len(set(with_emb + with_open))
+    if tot["emb"] and tot["open"]:
+        titulo = f"Embargos vigentes e alertas sem autorização registrada em {affected} dos {total} imóveis"
+    elif tot["emb"]:
+        titulo = f"Embargos vigentes em {len(with_emb)} dos {total} imóveis"
+    elif tot["open"]:
+        titulo = f"Alertas sem autorização registrada em {len(with_open)} dos {total} imóveis"
     else:
-        titulo = f"Conformidade socioambiental positiva em todos os {total_cars} imóveis rurais cadastrados"
+        titulo = f"Nenhum risco em aberto nos {total} imóveis"
 
-    # Ressalvas
     ressalvas = [
-        "A vegetação nativa calculada pelo PRODES/INPE considera o histórico de supressão e não registra regeneração recente.",
-        "Reserva legal e APP são calculadas pelo MapBiomas sobre a área da alerta, limitadas à geometria do imóvel.",
-        "'Sem autorização registrada' indica ausência nas bases consultadas até o momento; não constitui conclusão jurídica definitiva.",
-        "Recomenda-se realizar a comprovação de títulos autorizativos estaduais e retificação cadastral para elevar a nota ESG do CNPJ.",
+        "A vegetação nativa do PRODES (INPE) considera o histórico de desmatamento e não registra regeneração.",
+        "Reserva legal e APP são calculadas pelo MapBiomas sobre a área da alerta, limitadas à área do imóvel.",
+        ("\"Sem autorização registrada\" indica ausência de registro nas bases consultadas; não é uma conclusão "
+         "jurídica."),
     ]
-
     return CnpjReport(
-        status="ok",
-        origem="agente",
-        nivel=nivel,  # type: ignore[arg-type]
-        titulo=titulo,
-        riscos=riscos[:3],
-        contexto=contexto[:3],
-        ressalvas=ressalvas,
-        imoveis=imoveis_list,
-        data_dos_dados=date.today(),
-        gerado_em=_now_utc(),
+        status="ok", origem="regras", nivel=nivel,  # type: ignore[arg-type]
+        titulo=titulo, riscos=riscos[:3], contexto=contexto[:3], ressalvas=ressalvas, imoveis=imoveis,
+        data_dos_dados=date.fromisoformat(today_str), gerado_em=_now_utc(),
     )
 
 
-async def call_llm(prompt: str) -> dict[str, Any] | None:
-    key = os.getenv("LLM_API_KEY") or settings.llm_api_key
-    if not key or key in ("", "mock-key", "sua_chave_api_do_llm_aqui"):
+# --------------------------------------------------------------------------- #
+# IA
+# --------------------------------------------------------------------------- #
+def _llm_key() -> str | None:
+    key = settings.llm_api_key
+    return None if key in PLACEHOLDER_KEYS else key
+
+
+async def call_llm(facts: dict[str, Any]) -> dict[str, Any] | None:
+    """Uma chamada à API compatível com a da OpenAI. None se não há chave, se falha ou se não é JSON."""
+    key = _llm_key()
+    if not key:
         return None
-
-    endpoint = os.getenv("LLM_API_URL") or settings.llm_api_url
-    model = os.getenv("LLM_MODEL") or settings.llm_model
-
-    headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
     payload = {
-        "model": model,
+        "model": settings.llm_model,
         "messages": [
-            {"role": "system", "content": CNPJ_AGENT_PROMPT},
-            {"role": "user", "content": prompt},
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": json.dumps(facts, ensure_ascii=False)},
         ],
         "temperature": 0.2,
         "response_format": {"type": "json_object"},
     }
     try:
-        async with httpx.AsyncClient(timeout=12.0) as client:
-            resp = await client.post(endpoint, json=payload, headers=headers)
-            if resp.status_code != 200:
-                return None
-            body = resp.json()
-            content = ""
-            if body.get("choices"):
-                content = body["choices"][0]["message"]["content"]
-            elif body.get("candidates"):
-                content = body["candidates"][0]["content"]["parts"][0]["text"]
-            return json.loads(content.strip())
-    except Exception as e:  # noqa: BLE001
-        log.warning("Falha na chamada ao LLM para resumo do CNPJ: %s", str(e)[:150])
+        async with httpx.AsyncClient(timeout=settings.llm_timeout_s) as http:
+            resp = await http.post(settings.llm_api_url, json=payload,
+                                   headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
+        if resp.status_code != 200:
+            log.warning("LLM respondeu HTTP %s", resp.status_code)
+            return None
+        body = resp.json()
+        if body.get("choices"):
+            content = body["choices"][0]["message"]["content"]
+        else:
+            content = body["candidates"][0]["content"]["parts"][0]["text"]
+        data = json.loads(content.strip())
+        return data if isinstance(data, dict) else None
+    except Exception as e:  # noqa: BLE001 — qualquer falha cai no texto por regras
+        log.warning("falha na chamada ao LLM: %s", type(e).__name__)
         return None
 
 
+def _validate_llm(raw: dict[str, Any], facts: dict[str, Any], aliases: dict[str, str],
+                  sentences: dict[str, str]) -> CnpjReport | None:
+    """Controles da resposta da IA (FR-805). Devolve o relatório com os códigos reais, ou None."""
+    try:
+        props = [{"id": str(p["id"]), "resumo": str(p["resumo"])} for p in raw.get("imoveis") or []]
+        titulo = str(raw.get("titulo") or "").strip()
+        riscos = [str(x) for x in raw.get("riscos") or []][:3]
+        contexto = [str(x) for x in raw.get("contexto") or []][:3]
+        ressalvas = [str(x) for x in raw.get("ressalvas") or []]
+    except (TypeError, KeyError, AttributeError) as e:
+        log.warning("resposta da IA fora do formato: %s", type(e).__name__)
+        return None
+    if not titulo:
+        log.warning("resposta da IA sem título")
+        return None
+    texts = [titulo, *riscos, *contexto, *ressalvas, *(p["resumo"] for p in props)]
+    if any(FORBIDDEN.search(t) for t in texts):
+        log.warning("resposta da IA com vocabulário proibido")
+        return None
+    unknown = unknown_aliases(texts + [p["id"] for p in props], aliases)
+    if unknown:
+        log.warning("resposta da IA cita imóveis inexistentes: %s", sorted(unknown))
+        return None
+    bad = invented_numbers(texts, allowed_numbers(facts))
+    if bad:
+        log.warning("resposta da IA com números ausentes dos dados: %s", bad[:5])
+        return None
+    by_alias = {p["id"]: p["resumo"] for p in props}
+    imoveis = [ReportProperty(car_code=code,
+                              resumo=restore_aliases(by_alias[a], aliases) if a in by_alias else sentences[code])
+               for a, code in aliases.items()]
+    # Imóveis além do limite enviado à IA recebem a frase por regras.
+    imoveis += [ReportProperty(car_code=c, resumo=s) for c, s in sentences.items() if c not in aliases.values()]
+    return CnpjReport(
+        status="ok", origem="agente",
+        titulo=restore_aliases(titulo, aliases),
+        riscos=[restore_aliases(t, aliases) for t in riscos],
+        contexto=[restore_aliases(t, aliases) for t in contexto],
+        ressalvas=[restore_aliases(t, aliases) for t in ressalvas],
+        imoveis=imoveis,
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Orquestração
+# --------------------------------------------------------------------------- #
 def _example_report(cnpj: str) -> dict | None:
     if not settings.mock_reports_dir:
         return None
@@ -281,64 +282,80 @@ def _example_report(cnpj: str) -> dict | None:
         return None
 
 
+def _cache_key(facts: dict[str, Any]) -> str:
+    raw = json.dumps(facts, sort_keys=True, ensure_ascii=False) + PROMPT_VERSION + settings.llm_model
+    return hashlib.sha256(raw.encode()).hexdigest()
+
+
+def _cache_get(key: str) -> CnpjReport | None:
+    hit = _cache.get(key)
+    if not hit:
+        return None
+    report, expires = hit
+    if expires is not None and time.monotonic() > expires:
+        del _cache[key]
+        return None
+    _cache.move_to_end(key)
+    return report
+
+
+def _cache_put(key: str, report: CnpjReport) -> None:
+    _cache[key] = (report, None if report.origem == "agente" else time.monotonic() + RULES_CACHE_S)
+    _cache.move_to_end(key)
+    while len(_cache) > CACHE_MAX:
+        _cache.popitem(last=False)
+
+
+def _set_property_levels(report: CnpjReport, levels: dict[str, str]) -> None:
+    """Nível de cada imóvel pelas regras (coluna "Nível" do relatório); nunca do texto."""
+    for p in report.imoveis:
+        p.nivel = levels.get(p.car_code)  # type: ignore[assignment]
+
+
 async def get_report(db: Session, client: MapBiomasClient, cnpj: str) -> CnpjReport:
-    """Gera o relatório do CNPJ em tempo real a partir dos dados do MapBiomas, INPE e IBAMA."""
-    # 1. Se houver mock explícito configurado para testes de integração (feature 005), prioriza
-    raw_mock = _example_report(cnpj)
-    if raw_mock:
-        validated = _validate(raw_mock)
+    today = date.today()
+    registered, codes = cnpj_codes(db, cnpj)
+
+    if settings.report_demo_mode and (raw := _example_report(cnpj)):
+        validated = _validate(raw)
         if not validated:
             return UNAVAILABLE
-        registered, agg = await cnpj_aggregate(db, client, cnpj)
-        validated.nivel = compute_status(agg, registered).level  # o nível nunca vem do texto
+        inputs = await car_inputs(db, client, codes)
+        statuses = [car_level(d, i, today) for d, i in inputs]
+        validated.nivel = cnpj_level(statuses, registered).level
         validated.origem = "exemplo"
+        _set_property_levels(validated, {c: st.level for c, st in zip(codes, statuses, strict=True)})
         return validated
-    registered, agg = await cnpj_aggregate(db, client, cnpj)
-    if not registered or not agg or agg.cars_count == 0:
+
+    if not registered or not codes:
         return UNAVAILABLE
 
-    computed_level = compute_status(agg, registered).level
+    inputs = await car_inputs(db, client, codes)
+    statuses = [car_level(d, i, today) for d, i in inputs]
+    cnpj_st = cnpj_level(statuses, registered)
+    cars: list[CarInput] = [(code, d, i, s) for code, (d, i), s in zip(codes, inputs, statuses, strict=True)]
+    facts, aliases = build_report_facts(cars, cnpj_st, today)
 
-    ids = db.exec(select(Producer.id).where(Producer.cnpj == cnpj)).all()
-    codes = sorted(set(db.exec(
-        select(ProducerCar.car_code).where(ProducerCar.producer_id.in_(ids))  # type: ignore[union-attr]
-    ).all())) if ids else []
+    key = _cache_key(facts)
+    if cached := _cache_get(key):
+        return cached
 
-    if not codes:
-        return UNAVAILABLE
-
-    # Coleta de indicadores de cada CAR em paralelo
-    results = await asyncio.gather(*(_car_data(db.get_bind(), client, c) for c in codes))
-    cars_data = [(codes[i], results[i][0], results[i][1]) for i in range(len(codes))]
-
-    # Tenta gerar com LLM se configurado
-    payload_summary = {
-        "cnpj": cnpj,
-        "nivel_calculado": computed_level,
-        "total_imoveis": len(codes),
-        "imoveis": [
-            {
-                "car_code": c[0],
-                "alertas": [a.model_dump(mode="json") for a in (c[1].alerts if c[1] else [])],
-                "embargos": [e.model_dump(mode="json") for e in (c[2].embargoes if c[2] else [])],
-                "hotspots": c[1].context.hotspots_12m.model_dump(mode="json") if (c[1] and c[1].context and c[1].context.hotspots_12m) else None,
-            }
-            for c in cars_data
-        ],
-    }
-
-    prompt = f"Gere o resumo executivo estruturado com base nos dados seguintes:\n{json.dumps(payload_summary, ensure_ascii=False, indent=2)}"
-    llm_resp = await call_llm(prompt)
-
-    if llm_resp:
-        validated = _validate(llm_resp)
-        if validated:
-            validated.origem = "agente"
-            validated.nivel = computed_level  # type: ignore[assignment]
-            validated.data_dos_dados = date.today()
-            validated.gerado_em = _now_utc()
-            return validated
-
-    # Fallback determinístico robusto (não quebra a página caso a IA esteja offline)
-    det_report = _build_deterministic_report(computed_level, cars_data, str(date.today()))
-    return det_report
+    sentences = {code: _car_sentence(i, d)[0] for code, (d, i) in zip(codes, inputs, strict=True)}
+    report: CnpjReport | None = None
+    if _llm_key():
+        for _ in range(2):  # uma tentativa + um retry
+            raw = await call_llm(facts)
+            if raw is None:
+                break  # sem resposta (erro/timeout): não insiste
+            report = _validate_llm(raw, facts, aliases, sentences)
+            if report:
+                break
+    if report is None:
+        report = _build_deterministic_report(cnpj_st.level, [(c, i, d) for c, (d, i) in zip(codes, inputs, strict=True)],
+                                             today.isoformat())
+    report.nivel = cnpj_st.level  # type: ignore[assignment]
+    _set_property_levels(report, {c: st.level for c, st in zip(codes, statuses, strict=True)})
+    report.data_dos_dados = today
+    report.gerado_em = report.gerado_em or _now_utc()
+    _cache_put(key, report)
+    return report

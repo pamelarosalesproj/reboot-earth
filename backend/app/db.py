@@ -1,11 +1,16 @@
 from collections.abc import Iterator
 from datetime import UTC, datetime
 
+from sqlalchemy.pool import NullPool
 from sqlmodel import Session, SQLModel, create_engine
 
 from app.config import settings
 
-engine = create_engine(settings.database_url, connect_args={"check_same_thread": False})
+# NullPool: cada Session abre y cierra su propia conexión SQLite. Con el QueuePool por defecto
+# (5 + 10) las vistas que cargan varios CARs en paralelo (una Session por CAR con asyncio.gather)
+# agotaban el pool; el checkout bloqueaba el event loop y el servidor entero se colgaba.
+engine = create_engine(settings.database_url, connect_args={"check_same_thread": False},
+                       poolclass=NullPool)
 
 
 def utcnow() -> datetime:
